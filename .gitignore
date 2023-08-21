@@ -399,3 +399,4 @@ FodyWeavers.xsd
 InTouchApp/appsettings.json
 InTouchApp/appsettings.Development.json
 InTouchApp/Properties/launchSettings.json
+/InTouchApp/Infrastructure/Data/Migrations
