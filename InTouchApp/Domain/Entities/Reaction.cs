@@ -6,5 +6,6 @@ namespace InTouchApi.Domain.Entities
     {
         public string ReactionType { get; set; } = REACTIONS.LIKE;
         public int UserId { get; set; }
+        public virtual User Author { get; set; }
     }
 }

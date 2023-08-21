@@ -38,15 +38,15 @@ namespace InTouchApi.Infrastructure.Data
                 .HasForeignKey(f => f.UserId);
 
                 builder.HasMany(u => u.Comments)
-                .WithOne()
+                .WithOne(p => p.Author)
                 .HasForeignKey(c => c.UserId);
 
                 builder.HasMany(u => u.PostReactions)
-                .WithOne()
+                .WithOne(p => p.Author)
                 .HasForeignKey(p => p.UserId);
 
                 builder.HasMany(u => u.CommentReactions)
-                .WithOne()
+                .WithOne(p => p.Author)
                 .HasForeignKey(c => c.UserId);
             });
 
