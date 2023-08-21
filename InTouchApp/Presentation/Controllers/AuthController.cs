@@ -1,5 +1,6 @@
 ﻿using InTouchApi.Application.Interfaces;
 using InTouchApi.Application.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InTouchApi.Presentation.Controllers
@@ -27,6 +28,14 @@ namespace InTouchApi.Presentation.Controllers
         {
             var id = await _service.SignUpAsync(signUpDto);
             return StatusCode(200, id);
+        }
+
+        [Authorize]
+        [HttpPut("password")]
+        public async Task<ActionResult> UpdatePasswordAsync([FromBody] UpdatePasswordDto updatePasswordDto)
+        {
+            await _service.UpdatePasswordAsync(updatePasswordDto);
+            return StatusCode(200);
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using InTouchApi.Application.Interfaces;
 using InTouchApi.Application.Models;
+using InTouchApi.Domain.Constants;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InTouchApi.Presentation.Controllers
@@ -29,6 +31,7 @@ namespace InTouchApi.Presentation.Controllers
             return StatusCode(200, userDto);
         }
 
+        [Authorize(Roles = ROLES.ADMIN)]
         [HttpPost]
         public async Task<ActionResult<int>> CreateUserAsync([FromBody] CreateUserDto createUserDto)
         {
@@ -36,6 +39,7 @@ namespace InTouchApi.Presentation.Controllers
             return StatusCode(200, id);
         }
 
+        [Authorize(Roles = ROLES.ADMIN)]
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateUserAsync([FromRoute] int id, [FromBody] UpdateUserDto updateUserDto)
         {
@@ -43,6 +47,7 @@ namespace InTouchApi.Presentation.Controllers
             return StatusCode(200);
         }
 
+        [Authorize(Roles = ROLES.ADMIN)]
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteUserAsync([FromRoute] int id)
         {

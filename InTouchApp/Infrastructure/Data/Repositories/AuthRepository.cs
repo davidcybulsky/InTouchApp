@@ -14,6 +14,14 @@ namespace InTouchApi.Infrastructure.Data.Repositories
             _dbContext = apiContext;
         }
 
+        public async Task ChangePasswordAsync(int id, string NewPasswordHash)
+        {
+            var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == id)
+                ?? throw new NotFoundException("The user was not found");
+            user.PasswordHash = NewPasswordHash;
+            await _dbContext.SaveChangesAsync();
+        }
+
         public async Task<User> GetLoginDataAsync(string email)
         {
             var user = await _dbContext.Users.AsNoTracking()
@@ -21,6 +29,15 @@ namespace InTouchApi.Infrastructure.Data.Repositories
                 throw new BadRequestException("Bad email or password");
 
             return user;
+        }
+
+        public async Task<User> GetUserByIdAsync(int id)
+        {
+            var user = await _dbContext.Users.AsNoTracking()
+                .FirstOrDefaultAsync(u => u.Id == id) ??
+                throw new NotFoundException("The user was not found");
+            return user;
+
         }
 
         public async Task<int> SignUpUserAsync(User user)
