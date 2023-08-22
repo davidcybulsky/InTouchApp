@@ -1,24 +1,28 @@
 <div class="form-wrapper">
-    <form>
+    <form #LoginForm ="ngForm" [formGroup]="loginForm" (ngSubmit)="onLogin()">
         <h5>
-            Login
+            Email
         </h5>
-        <input>
+        <input
+            formControlName="email"
+            placeholder="Email">
         <h5>
             Password
         </h5>
-        <input>
+        <input
+            formControlName="password"
+            placeholder="Password">
         <a>
             I forgot my password
         </a>
-        <button class="btn">
+        <button class="btn" type="submit">
             Log in
         </button>
+        <h5>
+            Dont have an account?
+        </h5>
+        <button class="btn" type="button">
+            Sign up
+        </button>
     </form>
-    <h5>
-        Dont have an account?
-    </h5>
-    <button class="btn">
-        Sign up
-    </button>
 </div>

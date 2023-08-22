@@ -10,10 +10,6 @@ builder.Services.AddSingleton(configuration);
 builder.Services.AddInfrastructure(configuration)
                 .AddPresentation(configuration);
 
-builder.Services.AddControllers();
-
-builder.Services.AddScoped<ExceptionHandlingMiddleware>();
-
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -24,6 +20,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors(opt => opt.AllowAnyHeader().AllowAnyMethod().WithOrigins(configuration["Cors:Client"]));
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
