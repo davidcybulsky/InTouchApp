@@ -1,5 +1,6 @@
 using InTouchApi.Infrastructure;
 using InTouchApi.Presentation;
+using InTouchApi.Presentation.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,10 @@ builder.Services.AddSingleton(configuration);
 
 builder.Services.AddInfrastructure(configuration)
                 .AddPresentation(configuration);
+
+builder.Services.AddControllers();
+
+builder.Services.AddScoped<ExceptionHandlingMiddleware>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -19,6 +24,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseHttpsRedirection();
 

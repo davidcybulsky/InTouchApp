@@ -19,9 +19,4 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Application\Interfaces\Comment\" />
-    <Folder Include="Application\Interfaces\Reaction\" />
-  </ItemGroup>
-
 </Project>

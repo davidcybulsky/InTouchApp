@@ -20,14 +20,14 @@ namespace InTouchApi.Presentation.Controllers
         public async Task<ActionResult<TokenDto>> LoginAsync(LoginDto loginDto)
         {
             var tokenDto = await _service.LoginAsync(loginDto);
-            return StatusCode(200, tokenDto);
+            return StatusCode(StatusCodes.Status202Accepted, tokenDto);
         }
 
         [HttpPost("signup")]
         public async Task<ActionResult<int>> SignUpAsync(SignUpDto signUpDto)
         {
             var id = await _service.SignUpAsync(signUpDto);
-            return StatusCode(200, id);
+            return StatusCode(StatusCodes.Status201Created, id);
         }
 
         [Authorize]
@@ -35,7 +35,7 @@ namespace InTouchApi.Presentation.Controllers
         public async Task<ActionResult> UpdatePasswordAsync([FromBody] UpdatePasswordDto updatePasswordDto)
         {
             await _service.UpdatePasswordAsync(updatePasswordDto);
-            return StatusCode(200);
+            return StatusCode(StatusCodes.Status202Accepted);
         }
     }
 }

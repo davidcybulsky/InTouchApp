@@ -21,14 +21,14 @@ namespace InTouchApi.Presentation.Controllers
         public async Task<ActionResult<IEnumerable<UserDto>>> GetAllUsersAsync()
         {
             var userDtos = await _service.GetAllUsersAsync();
-            return StatusCode(200, userDtos);
+            return StatusCode(StatusCodes.Status200OK, userDtos);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<UserDto>> GetUserByIdAsync([FromRoute] int id)
         {
             var userDto = await _service.GetUserByIdAsync(id);
-            return StatusCode(200, userDto);
+            return StatusCode(StatusCodes.Status200OK, userDto);
         }
 
         [Authorize(Roles = ROLES.ADMIN)]
@@ -36,7 +36,7 @@ namespace InTouchApi.Presentation.Controllers
         public async Task<ActionResult<int>> CreateUserAsync([FromBody] CreateUserDto createUserDto)
         {
             var id = await _service.CreateUserAsync(createUserDto);
-            return StatusCode(200, id);
+            return StatusCode(StatusCodes.Status201Created, id);
         }
 
         [Authorize(Roles = ROLES.ADMIN)]
@@ -44,7 +44,7 @@ namespace InTouchApi.Presentation.Controllers
         public async Task<ActionResult> UpdateUserAsync([FromRoute] int id, [FromBody] UpdateUserDto updateUserDto)
         {
             await _service.UpdateUserAsync(id, updateUserDto);
-            return StatusCode(200);
+            return StatusCode(StatusCodes.Status204NoContent);
         }
 
         [Authorize(Roles = ROLES.ADMIN)]
@@ -52,7 +52,7 @@ namespace InTouchApi.Presentation.Controllers
         public async Task<ActionResult> DeleteUserAsync([FromRoute] int id)
         {
             await _service.DeleteUserAsync(id);
-            return StatusCode(200);
+            return StatusCode(StatusCodes.Status204NoContent);
         }
     }
 }
