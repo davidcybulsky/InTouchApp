@@ -6,6 +6,7 @@ import { Observable, of } from 'rxjs';
 import { PostModel } from '../core/models/post.model';
 import { PostCardComponent } from '../shared/components/post/post-card/post-card.component';
 import { CommonModule } from '@angular/common';
+import { CreateQuickPostComponent } from '../shared/components/post/create-quick-post/create-quick-post.component';
 
 @Component({
   standalone: true,
@@ -13,7 +14,8 @@ import { CommonModule } from '@angular/common';
     CommonModule,
     HeaderComponent,
     FooterComponent,
-    PostCardComponent
+    PostCardComponent,
+    CreateQuickPostComponent
   ],
   selector: 'app-homepage',
   templateUrl: './homepage.component.html',

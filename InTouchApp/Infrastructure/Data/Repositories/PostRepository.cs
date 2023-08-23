@@ -33,13 +33,14 @@ namespace InTouchApi.Infrastructure.Data.Repositories
 
         public async Task<IEnumerable<Post>> GetAllPostsAsync()
         {
-            var posts = await _dbContext.Posts.AsNoTracking().Where(p => p.IsDeleted == false).ToListAsync();
+            var posts = await _dbContext.Posts.AsNoTracking().Include(p => p.Author)
+                .Where(p => p.IsDeleted == false).ToListAsync();
             return posts;
         }
 
         public async Task<Post> GetPostByIdAsync(int id)
         {
-            var post = await _dbContext.Posts.AsNoTracking()
+            var post = await _dbContext.Posts.AsNoTracking().Include(p => p.Author)
                 .Where(p => p.IsDeleted == false).FirstOrDefaultAsync(p => p.Id == id)
                 ?? throw new NotFoundException("The post was not found");
             return post;

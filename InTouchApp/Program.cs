@@ -1,6 +1,5 @@
 using InTouchApi.Infrastructure;
 using InTouchApi.Presentation;
-using InTouchApi.Presentation.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,7 +22,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors(opt => opt.AllowAnyHeader().AllowAnyMethod().WithOrigins(configuration["Cors:Client"]));
 
-app.UseMiddleware<ExceptionHandlingMiddleware>();
+//app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseHttpsRedirection();
 

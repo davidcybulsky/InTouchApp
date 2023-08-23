@@ -1,0 +1,22 @@
+.postcard {
+    padding: 1rem;
+    border-radius: 1rem;
+    border: 1px solid;
+    margin: 2rem auto;
+}
+
+.postcard__user-icon,
+.postcard__user-data {
+    display: inline-block;
+}
+
+.postcard__user-data,
+.postcard__user-icon,
+.postcard__content {
+    margin: 0.5rem 1rem;
+}
+
+.postcard__content__title,
+.postcard__content__content {
+    margin: 0.5rem 0;
+}

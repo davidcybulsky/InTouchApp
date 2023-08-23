@@ -3,6 +3,7 @@
 
 </aside>
 <main>
+    <app-create-quick-post></app-create-quick-post>
     <app-post-card *ngFor="let post of (posts$ | async)"
     [post]="post"></app-post-card>
 </main>

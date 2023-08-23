@@ -12,8 +12,12 @@ namespace InTouchApi.Infrastructure
             CreateMap<CreateUserDto, User>();
             CreateMap<SignUpDto, User>();
             CreateMap<UpdateUserDto, User>();
+            CreateMap<User, IncludeUserDto>();
             CreateMap<Address, AddressDto>();
             CreateMap<CreateAddressDto, Address>();
+            CreateMap<CreatePostDto, Post>();
+            CreateMap<UpdatePostDto, Post>();
+            CreateMap<Post, PostDto>();
         }
     }
 }

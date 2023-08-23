@@ -34,7 +34,7 @@ namespace InTouchApi.Presentation.Controllers
         [HttpPost]
         public async Task<ActionResult<int>> CreatePostAsync([FromBody] CreatePostDto createPostDto)
         {
-            var id = _service.CreatePostAsync(createPostDto);
+            var id = await _service.CreatePostAsync(createPostDto);
             return StatusCode(StatusCodes.Status201Created, id);
         }
 

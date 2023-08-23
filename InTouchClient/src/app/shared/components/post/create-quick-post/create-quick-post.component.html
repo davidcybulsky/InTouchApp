@@ -1,0 +1,17 @@
+<div class="quickpost">
+    <h1>
+        Create your quick post!
+    </h1>
+    <form #QuickPostForm="ngForm" [formGroup]="quickPostForm" (ngSubmit)="onCreateQuickPost()">
+        <input class="quick-post__form__input"
+            placeholder="title"
+            formControlName="title">
+        <input class="quick-post__form__input"
+            placeholder="content"
+            formControlName="content">
+        <button class="btn" type="submit">Create</button>
+        <button class="btn" type="reset">Clear</button>
+        <p>Do you want to share more?</p>
+        <button class="btn" type="button" routerLink="/post/create">Full post</button>
+    </form>
+</div>

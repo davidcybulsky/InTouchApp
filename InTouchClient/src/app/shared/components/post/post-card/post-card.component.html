@@ -1,1 +1,16 @@
-<p>post-card works!</p>
+<div class="postcard">
+    <div class="postcard__user-icon">
+        User icon
+    </div>
+    <div class="postcard__user-data">
+        {{post?.author?.firstName}} {{post?.author?.lastName}} {{post?.author?.role}}
+    </div>
+    <div class="postcard__content">
+        <h3 class="postcard__content__title">
+            {{post?.title}}
+        </h3>
+        <p class="postcard__content__content">
+            {{post?.content}}
+        </p>
+    </div>
+</div>
