@@ -12,7 +12,7 @@ export class StorageService {
   }
 
   getValue(key: string) {
-    localStorage.getItem(key)
+    return localStorage.getItem(key)
   }
 
   removeItem(key: string) {

@@ -1,1 +1,10 @@
-<p>signup works!</p>
+<div class="form-wrapper">
+    <form #SignUpForm="ngForm" [formGroup]="signUpForm" (ngSubmit)="onSignUp()">
+        <label>
+
+        </label>
+        <button class="btn" type="submit">
+            Sign Up
+        </button>
+    </form>
+</div>
