@@ -1,0 +1,15 @@
+.navbar__list {
+    list-style: none;
+}
+
+.navbar__list-item > a {
+    color: black;
+    text-decoration: none;
+}
+
+.navbar__list-item {
+    margin: 0.5rem 1rem;
+    padding: 0.2rem;
+    display: inline-block;
+}
+

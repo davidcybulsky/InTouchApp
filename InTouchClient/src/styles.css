@@ -17,12 +17,20 @@ html, body {
     width: 100%;
 }
 
-.form-wrapper {
-    width: min-content;
-    margin: 3rem auto;
-    border: 1px solid blue;
-    border-radius: 1rem;
-    padding: 1rem;
+header, footer, main {
+    width: 60%;
+}
+
+aside {
+    width: 20%;
+}
+
+main, aside {
+    display: inline-block;
+}
+
+header, footer {
+    margin: 0 auto;
 }
 
 input {
@@ -30,6 +38,14 @@ input {
     border-radius: 0.5rem;
     margin: 0.5rem 0;
     border: 1px solid blue;
+}
+
+.form-wrapper {
+    width: min-content;
+    margin: 3rem auto;
+    border: 1px solid blue;
+    border-radius: 1rem;
+    padding: 1rem;
 }
 
 .btn {

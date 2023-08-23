@@ -3,19 +3,14 @@ import {RouterModule, Routes } from '@angular/router';
 
 const routes : Routes = [
   {
-    path: "",
-    redirectTo: "login", 
-    pathMatch:"full"
-  },
-  {
     path: "login",
-    loadChildren: () => import('src/app/auth/login/login.module')
-      .then(m => m.LoginModule)
+    loadComponent: () => import('src/app/auth/login/login.component')
+      .then(c => c.LoginComponent)
   },
   {
     path: "signup",
-    loadChildren: () => import('src/app/auth/signup/signup.module')
-      .then(m => m.SignupModule)
+    loadComponent: () => import('src/app/auth/signup/signup.component')
+      .then(c => c.SignupComponent)
   }
 ];
 
