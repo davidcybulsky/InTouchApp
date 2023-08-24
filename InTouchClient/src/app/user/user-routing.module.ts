@@ -4,12 +4,12 @@ import { RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: "", 
-    loadChildren: () => import('src/app/user/userpage/userpage.module').then(m => m.UserpageModule)
+    loadComponent: () => import('src/app/user/userpage/userpage.component').then(c => c.UserpageComponent)
   },
   {
     path: "edit",
-    loadChildren: () => import('src/app/user/edit-user/edit-user.module')
-    .then(c => c.EditUserModule)
+    loadComponent: () => import('src/app/user/edit-user/edit-user.component')
+    .then(c => c.EditUserComponent)
   },
 ];
 

@@ -1,1 +1,15 @@
-<p>userpage works!</p>
+<app-header></app-header>
+<aside>
+    <app-user-links-card
+    ></app-user-links-card>
+</aside>
+<main>
+    <app-user-panel
+    ></app-user-panel>
+    <app-post-card *ngFor="let post of (posts$ | async)"
+    [post]="post"></app-post-card>
+</main>
+<aside>
+
+</aside>
+<app-footer></app-footer>

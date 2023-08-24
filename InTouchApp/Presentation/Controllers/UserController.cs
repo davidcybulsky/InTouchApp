@@ -48,6 +48,14 @@ namespace InTouchApi.Presentation.Controllers
         }
 
         [Authorize(Roles = ROLES.ADMIN)]
+        [HttpPut("{id}/role")]
+        public async Task<ActionResult> UpdateUserRoleAsync([FromRoute] int id, [FromBody] UpdateRoleDto updateRoleDto)
+        {
+            await _service.UpdateUserRoleAsync(id, updateRoleDto);
+            return StatusCode(StatusCodes.Status204NoContent);
+        }
+
+        [Authorize(Roles = ROLES.ADMIN)]
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteUserAsync([FromRoute] int id)
         {

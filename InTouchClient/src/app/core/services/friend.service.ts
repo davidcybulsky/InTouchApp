@@ -13,7 +13,25 @@ export class FriendService {
   getFriendRequests(): Observable<FriendModel[]> {
     throw new Error('Method not implemented.');
   }
+
   getFriends(): Observable<FriendModel[]> {
     throw new Error('Method not implemented.');
   }
+
+  getUserFriendRequests(userId: number): Observable<FriendModel[]> {
+    throw new Error('Method not implemented.');
+  }
+
+  getUserFriends(userId: number): Observable<FriendModel[]> {
+    throw new Error('Method not implemented.');
+  }
+
+  acceptFriendRequest(friendId: number): Observable<void> {
+    throw new Error('Method not implemented.');
+  }
+
+  sendFriendRequest(friendId: number): Observable<void> {
+    throw new Error('Method not implemented.');
+  }
+
 }

@@ -2,6 +2,7 @@
 using InTouchApi.Application.Exceptions;
 using InTouchApi.Application.Interfaces;
 using InTouchApi.Application.Models;
+using InTouchApi.Domain.Constants;
 using InTouchApi.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 
@@ -46,6 +47,7 @@ namespace InTouchApi.Infrastructure.Services
         public Task<int> SignUpAsync(SignUpDto signUpDto)
         {
             var user = _mapper.Map<User>(signUpDto);
+            user.Role = ROLES.USER;
             user.PasswordHash = _passwordHasher.HashPassword(user, signUpDto.Password);
             var id = _repository.SignUpUserAsync(user);
             return id;

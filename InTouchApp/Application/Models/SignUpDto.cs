@@ -11,8 +11,6 @@
         public string PhoneNumber { get; set; }
         public string Description { get; set; }
 
-        public string Role { get; set; }
-
         public CreateAddressDto Address { get; set; }
     }
 }

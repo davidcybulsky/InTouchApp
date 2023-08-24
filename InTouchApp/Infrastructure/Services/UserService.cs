@@ -2,6 +2,7 @@
 using InTouchApi.Application.Exceptions;
 using InTouchApi.Application.Interfaces;
 using InTouchApi.Application.Models;
+using InTouchApi.Domain.Constants;
 using InTouchApi.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 
@@ -30,6 +31,18 @@ namespace InTouchApi.Infrastructure.Services
             var user = _mapper.Map<User>(createUserDto);
             var hashedPassword = _passwordHasher.HashPassword(user, createUserDto.Password);
             user.PasswordHash = hashedPassword;
+            if (user.Role == "ADMIN")
+            {
+                user.Role = ROLES.ADMIN;
+            }
+            else if (user.Role == "USER")
+            {
+                user.Role = ROLES.USER;
+            }
+            else
+            {
+                throw new BadRequestException("");
+            }
             var id = await _repository.CreateUserAsync(user);
             return id;
         }
@@ -58,12 +71,31 @@ namespace InTouchApi.Infrastructure.Services
             var user = _mapper.Map<User>(updateUserDto);
             var userInDb = await _repository.GetUserByIdAsync(id);
             user.Id = id;
+            user.Role = userInDb.Role;
             user.CreatedById = userInDb.CreatedById;
             user.CreationDate = userInDb.CreationDate;
             user.LastModificationDate = DateTime.UtcNow;
             user.LastModifiedById = _userHttpContextService.Id ?? throw new UnauthorizedException("");
             user.PasswordHash = userInDb.PasswordHash;
 
+            await _repository.UpdateUserAsync(user);
+        }
+
+        public async Task UpdateUserRoleAsync(int id, UpdateRoleDto updateRoleDto)
+        {
+            var user = await _repository.GetUserByIdAsync(id);
+            if (updateRoleDto.Role == "ADMIN")
+            {
+                user.Role = ROLES.ADMIN;
+            }
+            else if (updateRoleDto.Role == "USER")
+            {
+                user.Role = ROLES.USER;
+            }
+            else
+            {
+                throw new BadRequestException("");
+            }
             await _repository.UpdateUserAsync(user);
         }
     }

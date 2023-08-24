@@ -1,3 +1,3 @@
 export const StorageConstants = {
-    TOKEN_KEY : "token"
+    TOKEN_KEY : "TOKEN"
 }

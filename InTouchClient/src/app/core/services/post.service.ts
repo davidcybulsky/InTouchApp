@@ -20,11 +20,23 @@ export class PostService {
     return this.http.get<PostModel[]>(`${ this.ENVIRONMENT_TOKEN.serverEndpoint }${ PostServiceEndpoints.GET_POSTS}` )
   }
 
+  getUserPosts(id: number): Observable<PostModel[]> {
+    throw new Error('Method not implemented.');
+  }
+
   createPost(model: CreatePostModel): Observable<number> {
     return this.http.post<number>(`${ this.ENVIRONMENT_TOKEN.serverEndpoint }${ PostServiceEndpoints.CREATE_POST}`, model)
   }
 
   createQuickPost(model: CreateQuickPostModel): Observable<number> {
     return this.http.post<number>(`${ this.ENVIRONMENT_TOKEN.serverEndpoint }${ PostServiceEndpoints.CREATE_POST}`, model)
+  }
+
+  updatePost() {
+    throw new Error('Method not implemented.');
+  }
+
+  deletePost() {
+    throw new Error('Method not implemented.');
   }
 }
