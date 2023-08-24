@@ -32,7 +32,11 @@ namespace InTouchApi.Infrastructure.Services
 
         public async Task DeletePostAsync(int id)
         {
-            await _repository.DeletePostAsync(id);
+            var post = await _repository.GetPostByIdAsync(id);
+            post.LastModificationDate = DateTime.UtcNow;
+            post.LastModifiedById = _userHttpContextService.Id ?? throw new UnauthorizedException("");
+            post.IsDeleted = true;
+            await _repository.UpdatePostAsync(post);
         }
 
         public async Task<IEnumerable<PostDto>> GetAllPostsAsync()
@@ -53,9 +57,12 @@ namespace InTouchApi.Infrastructure.Services
         {
             var post = _mapper.Map<Post>(updatePostDto);
             var userId = _userHttpContextService.Id ?? throw new UnauthorizedException("Unauthorized operation");
+            var postInDb = await _repository.GetPostByIdAsync(id);
+            post.AuthorId = postInDb.AuthorId;
+            post.CreationDate = postInDb.CreationDate;
+            post.CreatedById = postInDb.CreatedById;
             post.LastModificationDate = DateTime.UtcNow;
             post.LastModifiedById = userId;
-            post.Id = id;
             await _repository.UpdatePostAsync(post);
         }
     }

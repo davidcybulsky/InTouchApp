@@ -1,6 +1,9 @@
 <app-header></app-header>
 <aside>
-
+    <app-friend-request-card *ngFor="let friendRequest of (friendRequests$ | async)"
+    [friendRequest]="friendRequest"></app-friend-request-card>
+    <app-friend-card *ngFor="let friend of (friends$ | async)"
+    [friend]="friend"></app-friend-card>
 </aside>
 <main>
     <app-create-quick-post></app-create-quick-post>

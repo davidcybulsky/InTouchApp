@@ -4,7 +4,7 @@ import { TokenModel } from '../models/token.model';
 import { ENVIRONMENT_TOKEN } from '../tokens/environment.token';
 import { IEnvoronment } from 'src/environment/environment.interface';
 import { AuthServiceEndpoints } from '../enums/auth.service.endpoints';
-import { map } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { StorageService } from './storage.service';
 import { StorageConstants } from '../enums/storage.constants';
 import { SignupModel } from '../models/signup.model';
@@ -22,24 +22,25 @@ export class AuthService {
               private http: HttpClient,
               private storageService: StorageService) { }
 
-  setTokenFromStorage() {
+  setTokenFromStorage(): void {
     let token = this.storageService.getValue(StorageConstants.TOKEN_KEY)
     if(token !== null)
       this.token = JSON.parse(token)
   }
 
-  login(loginRequestModel: LoginModel) {
+  login(loginRequestModel: LoginModel): Observable<TokenModel> {
     return this.http.post<TokenModel>(`${ this.ENVIRONMENT_TOKEN.serverEndpoint }${AuthServiceEndpoints.LOGIN}`, loginRequestModel)
       .pipe(
       map(response => {
         if(response.token){
-          this.token = response;
+          this.token = response
           this.storageService.setItem(StorageConstants.TOKEN_KEY, JSON.stringify(response))
         }
+        return response
       }));
   }
 
-  signup(signupRequestModel: SignupModel) {
+  signup(signupRequestModel: SignupModel): Observable<number> {
     return this.http.post<number>(`${ this.ENVIRONMENT_TOKEN.serverEndpoint }${AuthServiceEndpoints.SIGNUP}`, signupRequestModel)
   }
 }

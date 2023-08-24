@@ -19,10 +19,12 @@ html, body {
 
 header, footer, main {
     width: 60%;
+    padding: 0 0.5rem;
 }
 
 aside {
     width: 20%;
+    padding: 0 0.2rem;
 }
 
 main, aside {

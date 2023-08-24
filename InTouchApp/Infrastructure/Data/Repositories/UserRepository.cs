@@ -54,9 +54,6 @@ namespace InTouchApi.Infrastructure.Data.Repositories
                 .FirstOrDefaultAsync(u => u.Id == user.Id)
                 ?? throw new BadRequestException("The user can not be updated");
 
-            user.PasswordHash = userInDb.PasswordHash;
-            user.CreationDate = userInDb.CreationDate;
-            user.CreatedById = userInDb.CreatedById;
             userInDb = user;
             await _dbcontext.SaveChangesAsync();
         }

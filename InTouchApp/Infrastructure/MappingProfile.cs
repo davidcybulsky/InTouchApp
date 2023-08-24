@@ -18,6 +18,7 @@ namespace InTouchApi.Infrastructure
             CreateMap<CreatePostDto, Post>();
             CreateMap<UpdatePostDto, Post>();
             CreateMap<Post, PostDto>();
+            CreateMap<User, FriendDto>();
         }
     }
 }

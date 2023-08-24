@@ -6,6 +6,7 @@ import { PostServiceEndpoints } from '../enums/post.service.endpoints';
 import { PostModel } from '../models/post.model';
 import { CreateQuickPostModel } from '../models/create.quick.post.model';
 import { CreatePostModel } from '../models/create.post.model';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -15,15 +16,15 @@ export class PostService {
   constructor(@Inject(ENVIRONMENT_TOKEN) private ENVIRONMENT_TOKEN: IEnvoronment,
               private http: HttpClient) { }
 
-  getPosts() {
+  getPosts(): Observable<PostModel[]> {
     return this.http.get<PostModel[]>(`${ this.ENVIRONMENT_TOKEN.serverEndpoint }${ PostServiceEndpoints.GET_POSTS}` )
   }
 
-  createPost(model: CreatePostModel) {
+  createPost(model: CreatePostModel): Observable<number> {
     return this.http.post<number>(`${ this.ENVIRONMENT_TOKEN.serverEndpoint }${ PostServiceEndpoints.CREATE_POST}`, model)
   }
 
-  createQuickPost(model: CreateQuickPostModel) {
+  createQuickPost(model: CreateQuickPostModel): Observable<number> {
     return this.http.post<number>(`${ this.ENVIRONMENT_TOKEN.serverEndpoint }${ PostServiceEndpoints.CREATE_POST}`, model)
   }
 }

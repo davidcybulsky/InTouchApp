@@ -21,16 +21,6 @@ namespace InTouchApi.Infrastructure.Data.Repositories
             return post.Id;
         }
 
-        public async Task DeletePostAsync(int id)
-        {
-            var post = await _dbContext.Posts
-                .Where(p => p.IsDeleted == false).FirstOrDefaultAsync(p => p.Id == id)
-                ?? throw new BadRequestException("The post can not be deleted");
-
-            post.IsDeleted = true;
-            await _dbContext.SaveChangesAsync();
-        }
-
         public async Task<IEnumerable<Post>> GetAllPostsAsync()
         {
             var posts = await _dbContext.Posts.AsNoTracking().Include(p => p.Author)
@@ -51,9 +41,6 @@ namespace InTouchApi.Infrastructure.Data.Repositories
             var postInDb = await _dbContext.Posts
                 .Where(p => p.IsDeleted == false).FirstOrDefaultAsync(p => p.Id == post.Id)
                 ?? throw new BadRequestException("The post can not be updated");
-            post.CreatedById = postInDb.CreatedById;
-            post.CreationDate = postInDb.CreationDate;
-            post.AuthorId = postInDb.AuthorId;
             postInDb = post;
             await _dbContext.SaveChangesAsync();
         }

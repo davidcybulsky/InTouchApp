@@ -21,11 +21,15 @@ namespace InTouchApi.Infrastructure
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IFriendService, FriendService>();
             services.AddScoped<IUserHttpContextService, UserHttpContextService>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IPostRepository, PostRepository>();
             services.AddScoped<IAuthRepository, AuthRepository>();
+            services.AddScoped<IAccountRepository, AccountRepository>();
+            services.AddScoped<IFriendRepository, FriendRepository>();
             services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddHttpContextAccessor();
