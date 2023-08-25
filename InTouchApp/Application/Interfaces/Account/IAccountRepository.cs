@@ -5,6 +5,7 @@ namespace InTouchApi.Application.Interfaces
     public interface IAccountRepository
     {
         Task<User> GetAccountAsync(int id);
-        Task UpdateAccountAsync(User account);
+        Task<User> GetAccountAsTrackingAsync(int id);
+        Task UpdateAccountAsync();
     }
 }

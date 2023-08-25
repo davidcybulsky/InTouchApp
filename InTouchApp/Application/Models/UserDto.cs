@@ -20,5 +20,6 @@
         public string TwitterURL { get; set; }
 
         public AddressDto Address { get; set; }
+        public IEnumerable<PostDto> Posts { get; set; }
     }
 }

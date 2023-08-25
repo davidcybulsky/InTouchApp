@@ -24,8 +24,8 @@ namespace InTouchApi.Infrastructure.Services
         public async Task AcceptFriendRequestAsync(int friendId)
         {
             var userId = _userHttpContextService.Id ?? throw new UnauthorizedException("");
-            var friendship = await _repository.GetFriendshipAsync(userId, friendId);
-            var friendship2 = await _repository.GetFriendshipAsync(friendId, userId);
+            var friendship = await _repository.GetFriendshipAsTrackingAsync(userId, friendId);
+            var friendship2 = await _repository.GetFriendshipAsTrackingAsync(friendId, userId);
 
             friendship.IsAccepted = true;
             friendship.LastModificationDate = DateTime.UtcNow;
@@ -78,7 +78,7 @@ namespace InTouchApi.Infrastructure.Services
                 FriendId = friendId,
                 SendById = userId,
                 CreatedById = userId,
-                CreationDate = DateTime.Now,
+                CreationDate = DateTime.UtcNow,
                 IsAccepted = false,
             };
             var recursiceFriendship = new Friendship
@@ -87,7 +87,7 @@ namespace InTouchApi.Infrastructure.Services
                 FriendId = friendship.UserId,
                 SendById = userId,
                 CreatedById = userId,
-                CreationDate = DateTime.Now,
+                CreationDate = DateTime.UtcNow,
                 IsAccepted = false,
             };
 

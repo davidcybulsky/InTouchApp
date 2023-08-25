@@ -38,6 +38,11 @@ namespace InTouchApi.Infrastructure.Data.Repositories
             return users;
         }
 
+        public Task<User> GetUserAsTrackingAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<User> GetUserByIdAsync(int id)
         {
             var user = await _dbcontext.Users.AsNoTracking().

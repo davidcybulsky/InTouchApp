@@ -5,7 +5,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ENVIRONMENT_TOKEN } from './core/tokens/environment.token';
 import { EnvironmentDev } from 'src/environment/environment.dev';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { TokenInterceptor } from './core/interceptors/token.interceptor';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,11 @@ import { HttpClientModule } from '@angular/common/http';
     {
       provide: ENVIRONMENT_TOKEN, 
       useClass: EnvironmentDev
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
     }
   ],
   bootstrap: [AppComponent]

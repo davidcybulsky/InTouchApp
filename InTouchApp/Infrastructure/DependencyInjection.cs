@@ -1,4 +1,5 @@
 ﻿using InTouchApi.Application.Interfaces;
+using InTouchApi.Application.Interfaces.Reaction;
 using InTouchApi.Domain.Entities;
 using InTouchApi.Infrastructure.Data;
 using InTouchApi.Infrastructure.Data.Repositories;
@@ -24,12 +25,16 @@ namespace InTouchApi.Infrastructure
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IFriendService, FriendService>();
+            services.AddScoped<ICommentService, CommentService>();
+            services.AddScoped<IReactionService, ReactionService>();
             services.AddScoped<IUserHttpContextService, UserHttpContextService>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IPostRepository, PostRepository>();
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<IAccountRepository, AccountRepository>();
             services.AddScoped<IFriendRepository, FriendRepository>();
+            services.AddScoped<ICommentRepository, CommentRepository>();
+            services.AddScoped<IReactionRepository, ReactionRepository>();
             services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddHttpContextAccessor();

@@ -4,7 +4,7 @@ import { TokenModel } from '../models/token.model';
 import { ENVIRONMENT_TOKEN } from '../tokens/environment.token';
 import { IEnvoronment } from 'src/environment/environment.interface';
 import { AuthServiceEndpoints } from '../enums/auth.service.endpoints';
-import { Observable, map } from 'rxjs';
+import { Observable, map, of } from 'rxjs';
 import { StorageService } from './storage.service';
 import { StorageConstants } from '../enums/storage.constants';
 import { SignupModel } from '../models/signup.model';
@@ -16,7 +16,7 @@ import { LoginModel } from '../models/login.model';
 
 export class AuthService {
 
-  token : TokenModel | null = null;
+  private JWTTokenData$ : Observable<TokenModel | null> = of(null);
 
   constructor(@Inject(ENVIRONMENT_TOKEN) private ENVIRONMENT_TOKEN : IEnvoronment, 
               private http: HttpClient,
@@ -24,8 +24,15 @@ export class AuthService {
 
   setTokenFromStorage(): void {
     let token = this.storageService.getValue(StorageConstants.TOKEN_KEY)
-    if(token !== null)
-      this.token = JSON.parse(token)
+    console.log(token)
+    if(token !== null){
+      this.JWTTokenData$ = of(JSON.parse(token))
+      console.log(token)
+    }
+  }
+
+  getJWTTokenData() {
+    return this.JWTTokenData$
   }
 
   login(loginRequestModel: LoginModel): Observable<TokenModel> {
@@ -33,7 +40,7 @@ export class AuthService {
       .pipe(
       map(response => {
         if(response.token){
-          this.token = response
+          this.JWTTokenData$ = of(response)
           this.storageService.setItem(StorageConstants.TOKEN_KEY, JSON.stringify(response))
         }
         return response

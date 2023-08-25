@@ -21,9 +21,9 @@ namespace InTouchApi.Infrastructure.Data.Repositories
             return friendship.Id;
         }
 
-        public async Task<Friendship> GetFriendshipAsync(int userId, int friendId)
+        public async Task<Friendship> GetFriendshipAsTrackingAsync(int userId, int friendId)
         {
-            var friendship = await _apiContext.Friendships.AsNoTracking()
+            var friendship = await _apiContext.Friendships
                 .Where(f => f.IsDeleted == false)
                 .FirstOrDefaultAsync(f => f.UserId == userId && f.FriendId == friendId)
                 ?? throw new NotFoundException("The friendship was not found");
@@ -48,7 +48,8 @@ namespace InTouchApi.Infrastructure.Data.Repositories
 
         public async Task UpdateFriendshipAsync(Friendship friendship)
         {
-            var friendshipInDb = await _apiContext.Friendships.FirstOrDefaultAsync(f => f.Id == friendship.Id);
+            var friendshipInDb = await _apiContext.Friendships
+                .FirstOrDefaultAsync(f => f.Id == friendship.Id) ?? throw new NotFoundException("");
             friendshipInDb = friendship;
             await _apiContext.SaveChangesAsync();
         }

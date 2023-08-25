@@ -28,6 +28,11 @@ namespace InTouchApi.Infrastructure.Data.Repositories
             return posts;
         }
 
+        public Task<Post> GetPostAsTrackingAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<Post> GetPostByIdAsync(int id)
         {
             var post = await _dbContext.Posts.AsNoTracking().Include(p => p.Author)

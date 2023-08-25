@@ -14,18 +14,23 @@ namespace InTouchApi.Infrastructure.Data.Repositories
             _apiContext = apiContext;
         }
 
+        public async Task<User> GetAccountAsTrackingAsync(int id)
+        {
+            var account = await _apiContext.Users.Where(u => u.IsDeleted == false).Include(u => u.Address)
+                .FirstOrDefaultAsync(u => u.Id == id) ?? throw new NotFoundException("");
+            return account;
+        }
+
         public async Task<User> GetAccountAsync(int id)
         {
-            var user = await _apiContext.Users.Where(u => u.IsDeleted == false)
+            var user = await _apiContext.Users.AsNoTracking().Where(u => u.IsDeleted == false)
+                .Include(u => u.Address).Include(u => u.Posts)
                 .FirstOrDefaultAsync(u => u.Id == id) ?? throw new NotFoundException("");
             return user;
         }
 
-        public async Task UpdateAccountAsync(User account)
+        public async Task UpdateAccountAsync()
         {
-            var userInDb = await _apiContext.Users.Where(u => u.IsDeleted == false)
-                .FirstOrDefaultAsync(u => u.Id == account.Id) ?? throw new NotFoundException("");
-            userInDb = account;
             await _apiContext.SaveChangesAsync();
         }
     }
