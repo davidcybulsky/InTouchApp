@@ -32,33 +32,33 @@ namespace InTouchApi.Presentation.Controllers
             return StatusCode(StatusCodes.Status200OK, friendRequestDtos);
         }
 
-        [HttpGet("user/{id}")]
-        public async Task<ActionResult<IEnumerable<FriendDto>>> GetFriendsAsync([FromRoute] int id)
+        [HttpGet("user/{userId}")]
+        public async Task<ActionResult<IEnumerable<FriendDto>>> GetFriendsAsync([FromRoute] int userId)
         {
-            var friendDtos = await _service.GetUserFriendsAsync(id);
+            var friendDtos = await _service.GetUserFriendsAsync(userId);
             return StatusCode(StatusCodes.Status200OK, friendDtos);
         }
 
-        [HttpGet("user/{id}/requests")]
-        public async Task<ActionResult<IEnumerable<FriendDto>>> GetFriendRequestsAsync([FromRoute] int id)
+        [HttpGet("user/{userId}/requests")]
+        public async Task<ActionResult<IEnumerable<FriendDto>>> GetFriendRequestsAsync([FromRoute] int userId)
         {
-            var friendRequestDtos = await _service.GetUserFriendRequestsAsync(id);
+            var friendRequestDtos = await _service.GetUserFriendRequestsAsync(userId);
             return StatusCode(StatusCodes.Status200OK, friendRequestDtos);
         }
 
-        [HttpPut("accept/{id}")]
+        [HttpPut("accept/{userId}")]
         [Authorize]
-        public async Task<ActionResult> AcceptFriendRequestAsync([FromRoute] int id)
+        public async Task<ActionResult> AcceptFriendRequestAsync([FromRoute] int userId)
         {
-            await _service.AcceptFriendRequestAsync(id);
+            await _service.AcceptFriendRequestAsync(userId);
             return StatusCode(StatusCodes.Status202Accepted);
         }
 
-        [HttpPost("send/{id}")]
+        [HttpPost("send/{userId}")]
         [Authorize]
-        public async Task<ActionResult> SendFriendRequestAsync([FromRoute] int id)
+        public async Task<ActionResult> SendFriendRequestAsync([FromRoute] int userId)
         {
-            await _service.SendFriendRequestAsync(id);
+            await _service.SendFriendRequestAsync(userId);
             return StatusCode(StatusCodes.Status201Created);
         }
     }

@@ -7,6 +7,6 @@ namespace InTouchApi.Application.Interfaces
         Task<PostComment> GetPostCommentAsync(int id);
         Task<PostComment> GetPostCommentAsTrackingAsync(int id);
         Task<int> CreatePostCommentAsync(PostComment comment);
-        Task UpdatePostCommentAsync(PostComment comment);
+        Task UpdatePostCommentAsync();
     }
 }

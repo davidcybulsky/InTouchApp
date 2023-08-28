@@ -27,9 +27,9 @@ namespace InTouchApi.Infrastructure.Data.Repositories
             throw new NotImplementedException();
         }
 
-        public Task UpdatePostCommentAsync(PostComment comment)
+        public async Task UpdatePostCommentAsync()
         {
-            throw new NotImplementedException();
+            await _apiContext.SaveChangesAsync();
         }
     }
 }

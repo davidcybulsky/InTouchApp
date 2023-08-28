@@ -46,11 +46,8 @@ namespace InTouchApi.Infrastructure.Data.Repositories
             return friends;
         }
 
-        public async Task UpdateFriendshipAsync(Friendship friendship)
+        public async Task UpdateFriendshipAsync()
         {
-            var friendshipInDb = await _apiContext.Friendships
-                .FirstOrDefaultAsync(f => f.Id == friendship.Id) ?? throw new NotFoundException("");
-            friendshipInDb = friendship;
             await _apiContext.SaveChangesAsync();
         }
     }

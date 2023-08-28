@@ -23,10 +23,10 @@ namespace InTouchApi.Presentation.Controllers
             return StatusCode(StatusCodes.Status200OK, postDtos);
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<PostDto>> GetPostByIdAsync([FromRoute] int id)
+        [HttpGet("{postId}")]
+        public async Task<ActionResult<PostDto>> GetPostByIdAsync([FromRoute] int postId)
         {
-            var postDto = await _service.GetPostByIdAsync(id);
+            var postDto = await _service.GetPostByIdAsync(postId);
             return StatusCode(StatusCodes.Status200OK, postDto);
         }
 
@@ -39,18 +39,18 @@ namespace InTouchApi.Presentation.Controllers
         }
 
         [Authorize]
-        [HttpPut("{id}")]
-        public async Task<ActionResult> UpdatePostAsync([FromRoute] int id, [FromBody] UpdatePostDto updatePostDto)
+        [HttpPut("{postId}")]
+        public async Task<ActionResult> UpdatePostAsync([FromRoute] int postId, [FromBody] UpdatePostDto updatePostDto)
         {
-            await _service.UpdatePostAsync(id, updatePostDto);
+            await _service.UpdatePostAsync(postId, updatePostDto);
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
         [Authorize]
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> DeletePostAsync([FromRoute] int id)
+        [HttpDelete("{postId}")]
+        public async Task<ActionResult> DeletePostAsync([FromRoute] int postId)
         {
-            await _service.DeletePostAsync(id);
+            await _service.DeletePostAsync(postId);
             return StatusCode(StatusCodes.Status204NoContent);
         }
     }

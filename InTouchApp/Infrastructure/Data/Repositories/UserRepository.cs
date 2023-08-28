@@ -20,16 +20,6 @@ namespace InTouchApi.Infrastructure.Data.Repositories
             return user.Id;
         }
 
-        public async Task DeleteUserAsync(int id)
-        {
-            var user = await _dbcontext.Users
-                .Where(u => u.IsDeleted == false).FirstOrDefaultAsync(u => u.Id == id)
-                ?? throw new BadRequestException("The user can not be deleted");
-
-            user.IsDeleted = true;
-            await _dbcontext.SaveChangesAsync();
-        }
-
         public async Task<IEnumerable<User>> GetAllUsersAsync()
         {
             var users = await _dbcontext.Users.AsNoTracking()
@@ -38,9 +28,12 @@ namespace InTouchApi.Infrastructure.Data.Repositories
             return users;
         }
 
-        public Task<User> GetUserAsTrackingAsync(int id)
+        public async Task<User> GetUserAsTrackingAsync(int id)
         {
-            throw new NotImplementedException();
+            var user = await _dbcontext.Users.Where(u => u.IsDeleted == false)
+                .FirstOrDefaultAsync(u => u.Id == id)
+                ?? throw new NotFoundException("");
+            return user;
         }
 
         public async Task<User> GetUserByIdAsync(int id)
@@ -48,18 +41,11 @@ namespace InTouchApi.Infrastructure.Data.Repositories
             var user = await _dbcontext.Users.AsNoTracking().
                 Where(u => u.IsDeleted == false).FirstOrDefaultAsync(u => u.Id == id)
                 ?? throw new NotFoundException("The user was not found");
-
             return user;
         }
 
-        public async Task UpdateUserAsync(User user)
+        public async Task UpdateUserAsync()
         {
-            var userInDb = await _dbcontext.Users
-                .Where(u => u.IsDeleted == false)
-                .FirstOrDefaultAsync(u => u.Id == user.Id)
-                ?? throw new BadRequestException("The user can not be updated");
-
-            userInDb = user;
             await _dbcontext.SaveChangesAsync();
         }
     }

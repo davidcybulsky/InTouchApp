@@ -24,7 +24,7 @@ namespace InTouchApi.Presentation.Controllers
             return StatusCode(StatusCodes.Status201Created, commentId);
         }
 
-        [HttpPut("{commentId}")]
+        [HttpPut("post/{commentId}")]
         [Authorize]
         public async Task<ActionResult> UpdatePostCommentAsync([FromRoute] int commentId, [FromBody] UpdateCommentDto updateCommentDto)
         {
@@ -32,7 +32,7 @@ namespace InTouchApi.Presentation.Controllers
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
-        [HttpDelete("{commentId}")]
+        [HttpDelete("post/{commentId}")]
         [Authorize]
         public async Task<ActionResult> DeletePostCommentAsync([FromRoute] int commentId)
         {

@@ -28,9 +28,11 @@ namespace InTouchApi.Infrastructure.Data.Repositories
             return posts;
         }
 
-        public Task<Post> GetPostAsTrackingAsync(int id)
+        public async Task<Post> GetPostAsTrackingAsync(int id)
         {
-            throw new NotImplementedException();
+            var post = await _dbContext.Posts.Where(p => p.IsDeleted == false)
+                .FirstOrDefaultAsync(p => p.Id == id) ?? throw new NotFoundException("The user was not found");
+            return post;
         }
 
         public async Task<Post> GetPostByIdAsync(int id)
@@ -41,12 +43,8 @@ namespace InTouchApi.Infrastructure.Data.Repositories
             return post;
         }
 
-        public async Task UpdatePostAsync(Post post)
+        public async Task UpdatePostAsync()
         {
-            var postInDb = await _dbContext.Posts
-                .Where(p => p.IsDeleted == false).FirstOrDefaultAsync(p => p.Id == post.Id)
-                ?? throw new BadRequestException("The post can not be updated");
-            postInDb = post;
             await _dbContext.SaveChangesAsync();
         }
     }

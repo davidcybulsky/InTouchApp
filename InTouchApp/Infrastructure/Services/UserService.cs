@@ -28,9 +28,13 @@ namespace InTouchApi.Infrastructure.Services
 
         public async Task<int> CreateUserAsync(CreateUserDto createUserDto)
         {
+            var userId = _userHttpContextService.Id ?? throw new UnauthorizedException("");
             var user = _mapper.Map<User>(createUserDto);
+
             var hashedPassword = _passwordHasher.HashPassword(user, createUserDto.Password);
+
             user.PasswordHash = hashedPassword;
+
             if (user.Role == "ADMIN")
             {
                 user.Role = ROLES.ADMIN;
@@ -43,13 +47,26 @@ namespace InTouchApi.Infrastructure.Services
             {
                 throw new BadRequestException("");
             }
+
+            user.CreationDate = DateTime.UtcNow;
+            user.CreatedById = userId;
+
             var id = await _repository.CreateUserAsync(user);
+
             return id;
         }
 
         public async Task DeleteUserAsync(int id)
         {
-            await _repository.DeleteUserAsync(id);
+            var userId = _userHttpContextService.Id ?? throw new UnauthorizedException("");
+            var user = await _repository.GetUserAsTrackingAsync(id);
+
+            user.IsDeleted = true;
+
+            user.LastModificationDate = DateTime.UtcNow;
+            user.LastModifiedById = userId;
+
+            await _repository.UpdateUserAsync();
         }
 
         public async Task<IEnumerable<UserDto>> GetAllUsersAsync()
@@ -68,22 +85,44 @@ namespace InTouchApi.Infrastructure.Services
 
         public async Task UpdateUserAsync(int id, UpdateUserDto updateUserDto)
         {
-            var user = _mapper.Map<User>(updateUserDto);
-            var userInDb = await _repository.GetUserByIdAsync(id);
-            user.Id = id;
-            user.Role = userInDb.Role;
-            user.CreatedById = userInDb.CreatedById;
-            user.CreationDate = userInDb.CreationDate;
-            user.LastModificationDate = DateTime.UtcNow;
-            user.LastModifiedById = _userHttpContextService.Id ?? throw new UnauthorizedException("");
-            user.PasswordHash = userInDb.PasswordHash;
+            var userId = _userHttpContextService.Id ?? throw new UnauthorizedException("");
+            var user = await _repository.GetUserAsTrackingAsync(id);
+            user.Email = updateUserDto.Email;
+            user.FirstName = updateUserDto.FirstName;
+            user.LastName = updateUserDto.LastName;
+            user.BirthDate = updateUserDto.BirthDate;
+            user.PhoneNumber = updateUserDto.PhoneNumber;
+            user.Description = updateUserDto.Description;
 
-            await _repository.UpdateUserAsync(user);
+            user.Role = updateUserDto.Role;
+
+            user.FacebookURL = updateUserDto.FacebookURL;
+            user.InstagramURL = updateUserDto.InstagramURL;
+            user.LinkedInURL = updateUserDto.LinkedInURL;
+            user.TikTokURL = updateUserDto.TikTokURL;
+            user.YouTubeURL = updateUserDto.YouTubeURL;
+            user.TwitterURL = updateUserDto.TwitterURL;
+
+            user.Address.BuildingNumber = updateUserDto.Address.BuildingNumber;
+            user.Address.LocalNumber = updateUserDto.Address.LocalNumber;
+            user.Address.Street = updateUserDto.Address.Street;
+            user.Address.ZipCode = updateUserDto.Address.ZipCode;
+            user.Address.City = updateUserDto.Address.City;
+            user.Address.Region = updateUserDto.Address.Region;
+            user.Address.Country = updateUserDto.Address.Country;
+
+            user.LastModificationDate = DateTime.UtcNow;
+            user.LastModifiedById = userId;
+
+            await _repository.UpdateUserAsync();
         }
 
         public async Task UpdateUserRoleAsync(int id, UpdateRoleDto updateRoleDto)
         {
-            var user = await _repository.GetUserByIdAsync(id);
+
+            var userId = _userHttpContextService.Id ?? throw new UnauthorizedException("");
+            var user = await _repository.GetUserAsTrackingAsync(id);
+
             if (updateRoleDto.Role == "ADMIN")
             {
                 user.Role = ROLES.ADMIN;
@@ -96,7 +135,11 @@ namespace InTouchApi.Infrastructure.Services
             {
                 throw new BadRequestException("");
             }
-            await _repository.UpdateUserAsync(user);
+
+            user.LastModificationDate = DateTime.UtcNow;
+            user.LastModifiedById = userId;
+
+            await _repository.UpdateUserAsync();
         }
     }
 }

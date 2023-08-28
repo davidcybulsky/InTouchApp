@@ -27,7 +27,6 @@ namespace InTouchApi.Infrastructure.Data.Repositories
             var user = await _dbContext.Users.AsNoTracking()
                 .FirstOrDefaultAsync(u => u.Email == email) ??
                 throw new BadRequestException("Bad email or password");
-
             return user;
         }
 
@@ -43,6 +42,7 @@ namespace InTouchApi.Infrastructure.Data.Repositories
         public async Task<int> SignUpUserAsync(User user)
         {
             await _dbContext.Users.AddAsync(user);
+            user.CreationDate = DateTime.UtcNow;
             user.CreatedById = user.Id;
             await _dbContext.SaveChangesAsync();
             return user.Id;

@@ -8,7 +8,6 @@ namespace InTouchApi.Application.Interfaces
         Task<User> GetUserAsTrackingAsync(int id);
         Task<IEnumerable<User>> GetAllUsersAsync();
         Task<int> CreateUserAsync(User user);
-        Task UpdateUserAsync(User user);
-        Task DeleteUserAsync(int id);
+        Task UpdateUserAsync();
     }
 }

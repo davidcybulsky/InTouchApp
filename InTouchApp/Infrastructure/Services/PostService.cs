@@ -21,22 +21,27 @@ namespace InTouchApi.Infrastructure.Services
 
         public Task<int> CreatePostAsync(CreatePostDto createPostDto)
         {
+            var userId = _userHttpContextService.Id ?? throw new UnauthorizedException("Unauthorized operation");
             var post = _mapper.Map<Post>(createPostDto);
-            post.AuthorId = _userHttpContextService.Id
-                ?? throw new UnauthorizedException("Unauthorized operation");
+
             post.CreatedById = post.AuthorId;
             post.CreationDate = DateTime.UtcNow;
+
             var id = _repository.CreatePostAsync(post);
             return id;
         }
 
         public async Task DeletePostAsync(int id)
         {
-            var post = await _repository.GetPostByIdAsync(id);
-            post.LastModificationDate = DateTime.UtcNow;
-            post.LastModifiedById = _userHttpContextService.Id ?? throw new UnauthorizedException("");
+            var userId = _userHttpContextService.Id ?? throw new UnauthorizedException("Unauthorized operation");
+            var post = await _repository.GetPostAsTrackingAsync(id);
+
             post.IsDeleted = true;
-            await _repository.UpdatePostAsync(post);
+
+            post.LastModificationDate = DateTime.UtcNow;
+            post.LastModifiedById = userId;
+
+            await _repository.UpdatePostAsync();
         }
 
         public async Task<IEnumerable<PostDto>> GetAllPostsAsync()
@@ -55,15 +60,16 @@ namespace InTouchApi.Infrastructure.Services
 
         public async Task UpdatePostAsync(int id, UpdatePostDto updatePostDto)
         {
-            var post = _mapper.Map<Post>(updatePostDto);
             var userId = _userHttpContextService.Id ?? throw new UnauthorizedException("Unauthorized operation");
-            var postInDb = await _repository.GetPostByIdAsync(id);
-            post.AuthorId = postInDb.AuthorId;
-            post.CreationDate = postInDb.CreationDate;
-            post.CreatedById = postInDb.CreatedById;
+            var post = await _repository.GetPostAsTrackingAsync(id);
+
+            post.Title = updatePostDto.Title;
+            post.Content = updatePostDto.Content;
+
             post.LastModificationDate = DateTime.UtcNow;
             post.LastModifiedById = userId;
-            await _repository.UpdatePostAsync(post);
+
+            await _repository.UpdatePostAsync();
         }
     }
 }

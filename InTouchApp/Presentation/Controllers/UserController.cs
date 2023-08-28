@@ -24,10 +24,10 @@ namespace InTouchApi.Presentation.Controllers
             return StatusCode(StatusCodes.Status200OK, userDtos);
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<UserDto>> GetUserByIdAsync([FromRoute] int id)
+        [HttpGet("{userId}")]
+        public async Task<ActionResult<UserDto>> GetUserByIdAsync([FromRoute] int userId)
         {
-            var userDto = await _service.GetUserByIdAsync(id);
+            var userDto = await _service.GetUserByIdAsync(userId);
             return StatusCode(StatusCodes.Status200OK, userDto);
         }
 
@@ -40,26 +40,26 @@ namespace InTouchApi.Presentation.Controllers
         }
 
         [Authorize(Roles = ROLES.ADMIN)]
-        [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateUserAsync([FromRoute] int id, [FromBody] UpdateUserDto updateUserDto)
+        [HttpPut("{userId}")]
+        public async Task<ActionResult> UpdateUserAsync([FromRoute] int userId, [FromBody] UpdateUserDto updateUserDto)
         {
-            await _service.UpdateUserAsync(id, updateUserDto);
+            await _service.UpdateUserAsync(userId, updateUserDto);
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
         [Authorize(Roles = ROLES.ADMIN)]
-        [HttpPut("{id}/role")]
-        public async Task<ActionResult> UpdateUserRoleAsync([FromRoute] int id, [FromBody] UpdateRoleDto updateRoleDto)
+        [HttpPut("{userId}/role")]
+        public async Task<ActionResult> UpdateUserRoleAsync([FromRoute] int userId, [FromBody] UpdateRoleDto updateRoleDto)
         {
-            await _service.UpdateUserRoleAsync(id, updateRoleDto);
+            await _service.UpdateUserRoleAsync(userId, updateRoleDto);
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
         [Authorize(Roles = ROLES.ADMIN)]
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteUserAsync([FromRoute] int id)
+        [HttpDelete("{userId}")]
+        public async Task<ActionResult> DeleteUserAsync([FromRoute] int userId)
         {
-            await _service.DeleteUserAsync(id);
+            await _service.DeleteUserAsync(userId);
             return StatusCode(StatusCodes.Status204NoContent);
         }
     }

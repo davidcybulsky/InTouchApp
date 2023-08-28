@@ -8,6 +8,6 @@ namespace InTouchApi.Application.Interfaces
         Task<Post> GetPostAsTrackingAsync(int id);
         Task<IEnumerable<Post>> GetAllPostsAsync();
         Task<int> CreatePostAsync(Post post);
-        Task UpdatePostAsync(Post post);
+        Task UpdatePostAsync();
     }
 }

@@ -8,6 +8,6 @@ namespace InTouchApi.Application.Interfaces
         Task<IEnumerable<User>> GetUserFriendRequestsAsync(int userId);
         Task<Friendship> GetFriendshipAsTrackingAsync(int userId, int friendId);
         Task<int> CreateFriendshipAsync(Friendship friendship);
-        Task UpdateFriendshipAsync(Friendship friendship);
+        Task UpdateFriendshipAsync();
     }
 }

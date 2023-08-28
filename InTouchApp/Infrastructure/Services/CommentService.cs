@@ -28,7 +28,7 @@ namespace InTouchApi.Infrastructure.Services
             postComment.IsDeleted = true;
             postComment.LastModificationDate = DateTime.UtcNow;
             postComment.LastModifiedById = userId;
-            await _repository.UpdatePostCommentAsync(postComment);
+            await _repository.UpdatePostCommentAsync();
         }
 
         public async Task UpdatePostCommentAsync(int id, UpdateCommentDto updateCommentDto)
@@ -43,7 +43,7 @@ namespace InTouchApi.Infrastructure.Services
             postComment.LastModificationDate = DateTime.UtcNow;
             postComment.Id = postCommentInDb.Id;
             postComment.PostId = postCommentInDb.PostId;
-            await _repository.UpdatePostCommentAsync(postComment);
+            await _repository.UpdatePostCommentAsync();
         }
 
         public async Task<int> CreatePostCommentAsync(int postId, CreateCommentDto createCommentDto)

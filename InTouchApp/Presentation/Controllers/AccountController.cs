@@ -7,6 +7,7 @@ namespace InTouchApi.Presentation.Controllers
 {
     [ApiController]
     [Route("account")]
+    [Authorize]
     public class AccountController : ControllerBase
     {
         private readonly IAccountService _service;
@@ -17,7 +18,6 @@ namespace InTouchApi.Presentation.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<ActionResult<AccountDto>> GetAccountAsync()
         {
             var accountDto = await _service.GetAccountAsync();
@@ -25,7 +25,6 @@ namespace InTouchApi.Presentation.Controllers
         }
 
         [HttpPut]
-        [Authorize]
         public async Task<ActionResult> UpdateAccountAsync([FromBody] UpdateAccountDto updateAccountDto)
         {
             await _service.UpdateAccountAsync(updateAccountDto);
@@ -33,7 +32,6 @@ namespace InTouchApi.Presentation.Controllers
         }
 
         [HttpDelete]
-        [Authorize]
         public async Task<ActionResult> DeleteAccountAsync()
         {
             await _service.DeleteAccountAsync();

@@ -35,8 +35,7 @@ namespace InTouchApi.Infrastructure.Services
             friendship2.LastModificationDate = friendship.LastModificationDate;
             friendship2.LastModifiedById = userId;
 
-            await _repository.UpdateFriendshipAsync(friendship);
-            await _repository.UpdateFriendshipAsync(friendship2);
+            await _repository.UpdateFriendshipAsync();
         }
 
         public async Task<IEnumerable<FriendDto>> GetFriendRequestsAsync()
@@ -72,6 +71,7 @@ namespace InTouchApi.Infrastructure.Services
         public async Task SendFriendRequestAsync(int friendId)
         {
             var userId = _userHttpContextService.Id ?? throw new UnauthorizedException("Anauthorized access");
+
             var friendship = new Friendship
             {
                 UserId = userId,
@@ -81,6 +81,7 @@ namespace InTouchApi.Infrastructure.Services
                 CreationDate = DateTime.UtcNow,
                 IsAccepted = false,
             };
+
             var recursiceFriendship = new Friendship
             {
                 UserId = friendship.FriendId,
