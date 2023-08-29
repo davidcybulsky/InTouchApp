@@ -1,12 +1,14 @@
 <app-header></app-header>
 <aside>
     <app-user-links-card
-    ></app-user-links-card>
+    [user]="user$|async"></app-user-links-card>
+    <app-friend-card *ngFor="let friend of (friends$|async)"
+    [friend]="friend"></app-friend-card>
 </aside>
 <main>
     <app-user-panel
-    ></app-user-panel>
-    <app-post-card *ngFor="let post of (posts$ | async)"
+    [user]="user$|async"></app-user-panel>
+    <app-post-card *ngFor="let post of (user$ | async)?.posts"
     [post]="post"></app-post-card>
 </main>
 <aside>

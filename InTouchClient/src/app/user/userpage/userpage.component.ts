@@ -8,6 +8,12 @@ import { PostCardComponent } from 'src/app/shared/components/post/post-card/post
 import { Observable, of } from 'rxjs';
 import { PostModel } from 'src/app/core/models/post.model';
 import { PostService } from 'src/app/core/services/post.service';
+import { ActivatedRoute, Params } from '@angular/router';
+import { UserModel } from 'src/app/core/models/user.model';
+import { UserService } from 'src/app/core/services/user.service';
+import { FriendCardComponent } from 'src/app/shared/components/friend/friend-card/friend-card.component';
+import { FriendService } from 'src/app/core/services/friend.service';
+import { FriendModel } from 'src/app/core/models/friend.model';
 
 @Component({
   standalone: true,
@@ -17,7 +23,8 @@ import { PostService } from 'src/app/core/services/post.service';
     UserPanelComponent,
     HeaderComponent,
     FooterComponent,
-    PostCardComponent
+    PostCardComponent,
+    FriendCardComponent
   ],
   selector: 'app-userpage',
   templateUrl: './userpage.component.html',
@@ -25,13 +32,25 @@ import { PostService } from 'src/app/core/services/post.service';
 })
 export class UserpageComponent implements OnInit{
 
+  userId: number | null = null;
+  user$: Observable<UserModel|null> = of(null);
   posts$: Observable<PostModel[]> = of([]);  
+  friends$: Observable<FriendModel[]> = of([]);
 
-  constructor(private postService: PostService) { }
+  constructor(private postService: PostService,
+              private userService: UserService,
+              private friendService: FriendService,
+              private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    let id = 0;
-    this.posts$ = this.postService.getUserPosts(id);
+    this.route.params
+        .subscribe((params: Params) => {
+      this.userId = params['id'];
+      if(this.userId) {
+        this.user$ = this.userService.getUserById(this.userId);
+        this.posts$ = this.postService.getUserPosts(this.userId);
+        this.friends$ = this.friendService.getUserFriends(this.userId);
+    }})
   }
 
 }

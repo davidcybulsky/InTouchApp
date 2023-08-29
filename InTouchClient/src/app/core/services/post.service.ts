@@ -7,6 +7,8 @@ import { PostModel } from '../models/post.model';
 import { CreateQuickPostModel } from '../models/create.quick.post.model';
 import { CreatePostModel } from '../models/create.post.model';
 import { Observable } from 'rxjs';
+import { UserModel } from '../models/user.model';
+import { UpdatePostModel } from '../models/update.post.model';
 
 @Injectable({
   providedIn: 'root'
@@ -20,8 +22,8 @@ export class PostService {
     return this.http.get<PostModel[]>(`${ this.ENVIRONMENT_TOKEN.serverEndpoint }${ PostServiceEndpoints.GET_POSTS}` )
   }
 
-  getUserPosts(id: number): Observable<PostModel[]> {
-    throw new Error('Method not implemented.');
+  getUserPosts(userId: number): Observable<PostModel[]> {
+    return this.http.get<PostModel[]>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${PostServiceEndpoints.GET_USER_POSTS}/${userId}`);
   }
 
   createPost(model: CreatePostModel): Observable<number> {
@@ -32,11 +34,11 @@ export class PostService {
     return this.http.post<number>(`${ this.ENVIRONMENT_TOKEN.serverEndpoint }${ PostServiceEndpoints.CREATE_POST}`, model)
   }
 
-  updatePost() {
-    throw new Error('Method not implemented.');
+  updatePost(postId: number, model: UpdatePostModel): Observable<void> {
+    return this.http.put<void>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${PostServiceEndpoints.UPDATE_POST}/${postId}`,model)
   }
 
-  deletePost() {
-    throw new Error('Method not implemented.');
+  deletePost(postId: number) {
+    return this.http.delete<void>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${PostServiceEndpoints.DELETE_POST}/${postId}`)
   }
 }

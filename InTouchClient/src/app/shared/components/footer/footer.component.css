@@ -1,0 +1,10 @@
+.footer-links__list{
+    list-style: none;
+    text-align: center;
+}
+
+.footer-links__list > li {
+    display: inline-block;
+    margin: 0.2rem 0.5rem;
+    padding: 0.2rem 0.5rem;
+}

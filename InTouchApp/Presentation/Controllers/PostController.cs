@@ -30,6 +30,13 @@ namespace InTouchApi.Presentation.Controllers
             return StatusCode(StatusCodes.Status200OK, postDto);
         }
 
+        [HttpGet("user/{userId}")]
+        public async Task<ActionResult<IEnumerable<PostDto>>> GetUserPostsAsync([FromRoute] int userId)
+        {
+            var postDtos = await _service.GetUserPostsAsync(userId);
+            return StatusCode(StatusCodes.Status200OK, postDtos);
+        }
+
         [Authorize]
         [HttpPost]
         public async Task<ActionResult<int>> CreatePostAsync([FromBody] CreatePostDto createPostDto)

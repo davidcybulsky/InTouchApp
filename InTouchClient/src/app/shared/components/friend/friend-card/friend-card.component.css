@@ -1,0 +1,16 @@
+.friend-card:first-child {
+    margin: 2rem 0.5rem 0.2rem 0.5rem;
+}
+.friend-card {
+    margin: 0.2rem 0.5rem;
+}
+.friend-card__image,
+.friend-card__data {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.friend-card__image {
+    width: 40px;
+    margin: 0.2rem;
+}

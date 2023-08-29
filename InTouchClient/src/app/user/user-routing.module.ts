@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: "", 
+    path: ":id", 
     loadComponent: () => import('src/app/user/userpage/userpage.component').then(c => c.UserpageComponent)
   },
   {

@@ -39,7 +39,7 @@ namespace InTouchApi.Infrastructure.Data.Repositories
         public async Task<User> GetUserByIdAsync(int id)
         {
             var user = await _dbcontext.Users.AsNoTracking().
-                Where(u => u.IsDeleted == false).FirstOrDefaultAsync(u => u.Id == id)
+                Where(u => u.IsDeleted == false).Include(u => u.Posts).FirstOrDefaultAsync(u => u.Id == id)
                 ?? throw new NotFoundException("The user was not found");
             return user;
         }

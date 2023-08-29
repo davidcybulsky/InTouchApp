@@ -5,18 +5,26 @@
     margin: 2rem auto;
 }
 
+.postcard__header {
+    margin: 0.2rem;
+}
+
 .postcard__user-icon,
 .postcard__user-data {
     display: inline-block;
+    vertical-align: middle;
+    padding: 0.2rem;
 }
 
-.postcard__user-data,
-.postcard__user-icon,
 .postcard__content {
-    margin: 0.5rem 1rem;
+    margin: 0.5rem;
 }
 
 .postcard__content__title,
 .postcard__content__content {
     margin: 0.5rem 0;
+}
+
+.postcard__user-icon > img {
+    width: 50px;
 }

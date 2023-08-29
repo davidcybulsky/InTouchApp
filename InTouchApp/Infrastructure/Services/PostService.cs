@@ -58,6 +58,14 @@ namespace InTouchApi.Infrastructure.Services
             return postDto;
         }
 
+        public async Task<IEnumerable<PostDto>> GetUserPostsAsync(int id)
+        {
+            var posts = await _repository.GetAllPostsAsync();
+            var userPosts = posts.Where(p => p.AuthorId == id).ToList();
+            var postDtos = _mapper.Map<IEnumerable<PostDto>>(userPosts);
+            return postDtos;
+        }
+
         public async Task UpdatePostAsync(int id, UpdatePostDto updatePostDto)
         {
             var userId = _userHttpContextService.Id ?? throw new UnauthorizedException("Unauthorized operation");
