@@ -1,1 +1,12 @@
-<p>create-post works!</p>
+<div class="form-wrapper">
+    <form #CreatePostForm="ngForm" [formGroup]="createPostForm" (ngSubmit)="onCreatePost()">
+        <label>Title</label>
+        <input 
+        type="text"
+        formControlName="title">
+        <label>Content</label>
+        <input
+        type="text"
+        formControlName="content">
+    </form>
+</div>

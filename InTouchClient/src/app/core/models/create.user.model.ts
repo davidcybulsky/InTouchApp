@@ -9,6 +9,8 @@ export interface CreateUserModel {
     birthDate: string
     phoneNumber: string
     description: string
+
     role: string
+    
     address: AddressModel
 }

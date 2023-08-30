@@ -1,1 +1,93 @@
-<p>edit-account works!</p>
+<div class="form-wrapper">
+    <form #EditAccountForm="ngForm" [formGroup]="editAccountForm" (ngSubmit)="onEditAccount()">
+        <button type="button" (click)="onDelete()">Delete</button>
+        <label for="firstname">First name</label>
+        <input  
+        id="firstname"
+        type="text"
+        formControlName="firstName">
+        <label for="lastname">Last name</label>
+        <input 
+        id="lastname"
+        type="text"
+        formControlName="lastName">
+        <label for="phonenumber">Phone number</label>
+        <input 
+        id="phonenumber"
+        type="text"
+        formControlName="phoneNumber">
+        <label for="description">Description</label>
+        <input 
+        id="description"
+        type="text"
+        formControlName="description">
+        <label for="facebookurl">FacebookURL</label>
+        <input 
+        id="facebookurl"
+        type="text"
+        formControlName="facebookURL">
+        <label for="instagramurl">InstagramURL</label>
+        <input  
+        id="instagramurl"
+        type="text"
+        formControlName="instagramURL">
+        <label for="linkedinurl">LinkedInURL</label>
+        <input 
+        id="linkedinurl"
+        type="text"
+        formControlName="linkedInURL">
+        <label for="tiktokurl">TikTokURL</label>
+        <input 
+        id="tiktokurl"
+        type="text"
+        formControlName="tikTokURL">
+        <label for="youtubeurl">YouTubeURL</label>
+        <input 
+        id="youtubeurl"
+        type="text"
+        formControlName="youTubeURL">
+        <label for="twitterurl">TwitterURL</label>
+        <input 
+        id="twitterurl"
+        type="text"
+        formControlName="twitterURL">
+        <label>Address</label>
+        <div formGroupName="address">
+            <input
+            id="localnumber"
+            type="text"
+            formControlName="localNumber">
+            <input 
+            id="buildingnumber"
+            type="text"
+            formControlName="buildingNumber">
+            <label for="street">Street</label>
+            <input
+            id="street"
+            type="text"
+            formControlName="street">
+            <label for="zipcode">Zip code</label>
+            <input 
+            id="zipcode"
+            type="text"
+            formControlName="zipCode">
+            <label for="city">City</label>
+            <input
+            id="city"
+            type="text"
+            formControlName="city">
+            <label for="region">Region</label>
+            <input 
+            id="region"
+            type="text"
+            formControlName="region">
+            <label for="country">Country</label>
+            <input 
+            id="country"
+            type="text"
+            formControlName="country">
+        </div>
+        <button type="submit">Save</button>
+        <button type="button" (click)="onCancel()">Cancel</button>
+    </form>
+</div>

@@ -1,7 +1,8 @@
 ﻿namespace InTouchApi.Application.Models
 {
-    public class UpdateCommentDto
+    public class CreateQuickPostDto
     {
+        public string Title { get; set; }
         public string Content { get; set; }
     }
 }

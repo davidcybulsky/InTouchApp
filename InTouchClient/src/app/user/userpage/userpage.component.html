@@ -2,8 +2,6 @@
 <aside>
     <app-user-links-card
     [user]="user$|async"></app-user-links-card>
-    <app-friend-card *ngFor="let friend of (friends$|async)"
-    [friend]="friend"></app-friend-card>
 </aside>
 <main>
     <app-user-panel
@@ -12,6 +10,7 @@
     [post]="post"></app-post-card>
 </main>
 <aside>
-
+    <app-friend-card *ngFor="let friend of (friends$|async)"
+    [friend]="friend"></app-friend-card>
 </aside>
 <app-footer></app-footer>

@@ -2,5 +2,6 @@
 {
     public class UpdateReactionDto
     {
+        public string ReactionType { get; set; }
     }
 }

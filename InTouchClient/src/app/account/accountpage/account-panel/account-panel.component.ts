@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AccountModel } from 'src/app/core/models/account.model';
 
@@ -11,4 +11,11 @@ import { AccountModel } from 'src/app/core/models/account.model';
 })
 export class AccountPanelComponent {
   @Input() account: AccountModel | null = null;
+  @Output() editAccount = new EventEmitter<void>();
+
+  onEditAccount() {
+    console.log("emitted");
+    
+    this.editAccount.emit();
+  }
 }

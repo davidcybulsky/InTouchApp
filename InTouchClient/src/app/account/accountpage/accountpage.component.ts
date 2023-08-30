@@ -13,6 +13,7 @@ import { CreateQuickPostComponent } from 'src/app/shared/components/post/create-
 import { PostCardComponent } from 'src/app/shared/components/post/post-card/post-card.component';
 import { UserLinksCardComponent } from 'src/app/shared/components/user/user-links-card/user-links-card.component';
 import { AccountPanelComponent } from './account-panel/account-panel.component';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   standalone: true,
@@ -34,7 +35,8 @@ import { AccountPanelComponent } from './account-panel/account-panel.component';
 })
 export class AccountpageComponent implements OnInit{  
   constructor(private accountService: AccountService,
-              private friendService: FriendService) { }
+              private friendService: FriendService,
+              private router: Router) { }
   
   account$: Observable<AccountModel | null> = of(null);
   friends$: Observable<FriendModel[]> = of([]);
@@ -44,5 +46,9 @@ export class AccountpageComponent implements OnInit{
     this.account$ = this.accountService.getAccount()
     this.friends$ = this.friendService.getFriends()
     this.friendRequests$ = this.friendService.getFriendRequests()
+  }
+
+  onEditAccount() {
+    this.router.navigate(['account','edit']);
   }
 }
