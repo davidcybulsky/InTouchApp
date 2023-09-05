@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { PostService } from 'src/app/core/services/post.service';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-create-post',
@@ -9,7 +10,7 @@ import { PostService } from 'src/app/core/services/post.service';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    FormsModule
+    RouterModule
   ],
   templateUrl: './create-post.component.html',
   styleUrls: ['./create-post.component.css']
@@ -18,7 +19,8 @@ export class CreatePostComponent implements OnInit {
   createPostForm!: FormGroup
 
   constructor(private postService: PostService,
-              private formBuilder: FormBuilder) { }
+              private formBuilder: FormBuilder,
+              private router: Router) { }
 
   ngOnInit(): void {
     this.InitForm()
@@ -33,6 +35,10 @@ export class CreatePostComponent implements OnInit {
 
   onCreatePost(): void {
     this.postService.createPost(this.createPostForm.value)
+  }
+
+  onCancel() {
+    this.router.navigate(['']);
   }
 
 }

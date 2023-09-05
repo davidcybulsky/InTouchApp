@@ -11,4 +11,9 @@ export class ReactionService {
   constructor(@Inject(ENVIRONMENT_TOKEN) private ENVIRONMENT_TOKEN: IEnvoronment,
               private httpClient: HttpClient) { }
               
+  addPostLike(postId: number) {
+  }
+
+  addPostDisLike(postId: number) {
+  }
 }

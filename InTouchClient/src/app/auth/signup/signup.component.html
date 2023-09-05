@@ -1,138 +1,182 @@
 <div class="form-wrapper">
-    <form #SignUpForm="ngForm" [formGroup]="signUpForm" (ngSubmit)="onSignUp()">
-        <label for="firstname">First name</label>
+    <form 
+        #SignUpForm="ngForm" 
+        [formGroup]="signUpForm" 
+        (ngSubmit)="onSignUp()">
+        <label 
+            for="firstname">
+            First name
+        </label>
         <input 
-        id="firstname"
-        type="text"
-        formControlName="firstName"
-        [class.invalid]="signUpForm.get('firstName')?.invalid &&
-        (signUpForm.get('firstName')?.dirty ||
-        signUpForm.get('firstName')?.touched)||
-        isSubmitted">
-        <label for="lastname">Last name</label>
+            id="firstname"
+            type="text"
+            formControlName="firstName"
+            [class.invalid]="signUpForm.get('firstName')?.invalid &&
+                (signUpForm.get('firstName')?.dirty ||
+                signUpForm.get('firstName')?.touched ||
+                isSubmitted)">
+        <label 
+            for="lastname">
+            Last name
+        </label>
         <input 
-        id="lastname"
-        type="text"
-        formControlName="lastName"
-        [class.invalid]="signUpForm.get('lastName')?.invalid &&
-        (signUpForm.get('lastName')?.dirty ||
-        signUpForm.get('lastName')?.touched)||
-        isSubmitted">
-        <label for="birthDate">Date of birth</label>
+            id="lastname"
+            type="text"
+            formControlName="lastName"
+            [class.invalid]="signUpForm.get('lastName')?.invalid &&
+                (signUpForm.get('lastName')?.dirty ||
+                signUpForm.get('lastName')?.touched ||
+                isSubmitted)">
+        <label 
+            for="birthDate">
+            Date of birth
+        </label>
         <input 
-        id="birthDate"
-        type="text"
-        formControlName="birthDate"
-        [class.invalid]="signUpForm.get('birthDate')?.invalid &&
-        (signUpForm.get('birthDate')?.dirty ||
-        signUpForm.get('birthDate')?.touched)||
-        isSubmitted">
-        <label for="phonenumber">Phone number</label>
+            id="birthDate"
+            type="text"
+            formControlName="birthDate"
+            [class.invalid]="signUpForm.get('birthDate')?.invalid &&
+                (signUpForm.get('birthDate')?.dirty ||
+                signUpForm.get('birthDate')?.touched ||
+                isSubmitted)">
+        <label 
+            for="phonenumber">
+            Phone number
+        </label>
         <input 
-        id="phonenumber"
-        type="text"
-        formControlName="phoneNumber"
-        [class.invalid]="signUpForm.get('phoneNumber')?.invalid &&
-        (signUpForm.get('phoneNumber')?.dirty ||
-        signUpForm.get('phoneNumber')?.touched)||
-        isSubmitted">
-        <label for="email">Email</label>
+            id="phonenumber"
+            type="text"
+            formControlName="phoneNumber"
+            [class.invalid]="signUpForm.get('phoneNumber')?.invalid &&
+                (signUpForm.get('phoneNumber')?.dirty ||
+                signUpForm.get('phoneNumber')?.touched ||
+                isSubmitted)">
+        <label 
+            for="email">
+            Email
+        </label>
         <input 
-        id="email"
-        type="text"
-        formControlName="email"
-        [class.invalid]="signUpForm.get('email')?.invalid &&
-        (signUpForm.get('email')?.dirty ||
-        signUpForm.get('email')?.touched)|| 
-        isSubmitted">
-        <span class="form-error"
-        *ngIf="signUpForm.get('email')?.invalid &&
-        (signUpForm.get('email')?.dirty ||
-        signUpForm.get('email')?.touched)|| 
-        isSubmitted">This field is required</span>
-        <label for="password">Password</label>
+            id="email"
+            type="email"
+            formControlName="email"
+            [class.invalid]="signUpForm.get('email')?.invalid &&
+                (signUpForm.get('email')?.dirty ||
+                signUpForm.get('email')?.touched || 
+                isSubmitted)">
+        <span 
+            class="form-error"
+            *ngIf="signUpForm.get('email')?.invalid &&
+                (signUpForm.get('email')?.dirty ||
+                signUpForm.get('email')?.touched || 
+                isSubmitted)">
+            This field is required
+        </span>
+        <label 
+            for="password">
+            Password
+        </label>
         <input
-        id="password"
-        type="password"
-        formControlName="password"
-        [class.invalid]="signUpForm.get('password')?.invalid &&
-        (signUpForm.get('password')?.dirty ||
-        signUpForm.get('password')?.touched) ||
-        isSubmitted">
-        <label for="confirmpassword">Confirm password</label>
+            id="password"
+            type="password"
+            formControlName="password"
+            [class.invalid]="signUpForm.get('password')?.invalid &&
+                (signUpForm.get('password')?.dirty ||
+                signUpForm.get('password')?.touched ||
+                isSubmitted)">
+        <label 
+            for="confirmpassword">
+            Confirm password
+        </label>
         <input
-        id="confirmpassword"
-        type="password"
-        formControlName="confirmPassword"
-        [class.invalid]="signUpForm.get('confirmPassword')?.invalid &&
-        (signUpForm.get('confirmPassword')?.dirty ||
-        signUpForm.get('confirmPassword')?.touched)||
-        isSubmitted">
-        <label for="description">Description</label>
+            id="confirmpassword"
+            type="password"
+            formControlName="confirmPassword"
+            [class.invalid]="signUpForm.get('confirmPassword')?.invalid &&
+                (signUpForm.get('confirmPassword')?.dirty ||
+                signUpForm.get('confirmPassword')?.touched ||
+                isSubmitted)">
+        <label 
+            for="description">
+            Description
+        </label>
         <input 
-        id="description"
-        type="text">
-        <label>Address</label>
-        <div formGroupName="address">
-            <label for="street">Street</label>
+            id="description"
+            type="text">
+        <label>
+            Address
+        </label>
+        <div 
+            formGroupName="address">
+            <label 
+                for="street">
+                Street
+            </label>
             <input 
-            id="localnumber"
-            type="text"
-            formControlName="localNumber">
+                id="localnumber"
+                type="text"
+                formControlName="localNumber">
             <input 
-            id="buildingnumber"
-            type="text"
-            formControlName="buildingNumber"
-            [class.invalid]="signUpForm.get('address')?.get('buildingNumber')?.invalid&&
-            (signUpForm.get('address')?.get('buildingNumber')?.dirty ||
-            signUpForm.get('address')?.get('buildingNumber')?.touched)||
-            isSubmitted">
+                id="buildingnumber"
+                type="text"
+                formControlName="buildingNumber"
+                [class.invalid]="signUpForm.get('address')?.get('buildingNumber')?.invalid&&
+                    (signUpForm.get('address')?.get('buildingNumber')?.dirty ||
+                    signUpForm.get('address')?.get('buildingNumber')?.touched ||
+                    isSubmitted)">
             <input 
-            id="street"
-            type="text"
-            formControlName="street"
-            [class.invalid]="signUpForm.get('address')?.get('street')?.invalid&&
-            (signUpForm.get('address')?.get('street')?.dirty ||
-            signUpForm.get('address')?.get('street')?.touched)||
-            isSubmitted">
-            <label for="city">City</label>
+                id="street"
+                type="text"
+                formControlName="street"
+                [class.invalid]="signUpForm.get('address')?.get('street')?.invalid&&
+                    (signUpForm.get('address')?.get('street')?.dirty ||
+                    signUpForm.get('address')?.get('street')?.touched ||
+                    isSubmitted)">
+            <label 
+                for="city">
+                City
+            </label>
             <input 
-            id="zipcode"
-            type="text"
-            formControlName="zipCode"
-            [class.invalid]="signUpForm.get('address')?.get('zipCode')?.invalid&&
-            (signUpForm.get('address')?.get('zipCode')?.dirty ||
-            signUpForm.get('address')?.get('zipCode')?.touched)||
-            isSubmitted">
+                id="zipcode"
+                type="text"
+                formControlName="zipCode"
+                [class.invalid]="signUpForm.get('address')?.get('zipCode')?.invalid&&
+                    (signUpForm.get('address')?.get('zipCode')?.dirty ||
+                    signUpForm.get('address')?.get('zipCode')?.touched ||
+                    isSubmitted)">
             <input 
-            id="city"
-            type="text"
-            formControlName="city"
-            [class.invalid]="signUpForm.get('address')?.get('city')?.invalid&&
-            (signUpForm.get('address')?.get('city')?.dirty ||
-            signUpForm.get('address')?.get('city')?.touched)||
-            isSubmitted">
+                id="city"
+                type="text"
+                formControlName="city"
+                [class.invalid]="signUpForm.get('address')?.get('city')?.invalid&&
+                    (signUpForm.get('address')?.get('city')?.dirty ||
+                    signUpForm.get('address')?.get('city')?.touched ||
+                    isSubmitted)">
             <input
-            id="region"
-            type="text"
-            formControlName="region"
-            [class.invalid]="signUpForm.get('address')?.get('region')?.invalid&&
-            (signUpForm.get('address')?.get('region')?.dirty ||
-            signUpForm.get('address')?.get('region')?.touched)||
-            isSubmitted">
+                id="region"
+                type="text"
+                formControlName="region"
+                [class.invalid]="signUpForm.get('address')?.get('region')?.invalid&&
+                    (signUpForm.get('address')?.get('region')?.dirty ||
+                    signUpForm.get('address')?.get('region')?.touched ||
+                    isSubmitted)">
             <input
-            id="country"
-            type="text"
-            formControlName="country"
-            [class.invalid]="signUpForm.get('address')?.get('country')?.invalid&&
-            (signUpForm.get('address')?.get('country')?.dirty ||
-            signUpForm.get('address')?.get('country')?.touched)||
-            isSubmitted">
+                id="country"
+                type="text"
+                formControlName="country"
+                [class.invalid]="signUpForm.get('address')?.get('country')?.invalid&&
+                    (signUpForm.get('address')?.get('country')?.dirty ||
+                    signUpForm.get('address')?.get('country')?.touched ||
+                    isSubmitted)">
         </div>
-        <button class="btn" type="submit">
+        <button 
+            class="btn" 
+            type="submit">
             Sign Up
         </button>
-        <button class="btn" type="button" (click)="onCancel()">
+        <button 
+            class="btn" 
+            type="button" 
+            (click)="onCancel()">
             Cancel
         </button>
     </form>

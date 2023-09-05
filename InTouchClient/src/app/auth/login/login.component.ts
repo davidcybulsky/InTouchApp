@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
+
 import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
@@ -17,26 +18,29 @@ import { AuthService } from 'src/app/core/services/auth.service';
 })
 export class LoginComponent implements OnInit {
 
-  loginForm!: FormGroup;
+  loginForm!: FormGroup
+  isSubmitted: boolean | null = null;
 
   constructor(private authService: AuthService, 
               private formBuilder: FormBuilder,
               private router: Router) { }
 
   ngOnInit(): void {
-    this.InitForm();
+    this.isSubmitted = false
+    this.InitForm()
   }
   
   InitForm() {
     this.loginForm = this.formBuilder.group({
-      email: [''],
-      password: ['']
-    });
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(8)]]
+    })
   }
 
   onLogin() {
-    console.log(this.loginForm.value);
-    this.authService.login(this.loginForm.value).subscribe();
+    console.log(this.loginForm.value)
+    this.isSubmitted = true
+    this.authService.login(this.loginForm.value).subscribe()
   }
 
   onSignup() {

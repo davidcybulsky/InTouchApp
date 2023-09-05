@@ -1,93 +1,114 @@
 <div class="form-wrapper">
-    <form #EditAccountForm="ngForm" [formGroup]="editAccountForm" (ngSubmit)="onEditAccount()">
-        <button type="button" (click)="onDelete()">Delete</button>
-        <label for="firstname">First name</label>
+    <form 
+        #EditAccountForm="ngForm" 
+        [formGroup]="editAccountForm" 
+        (ngSubmit)="onEditAccount()">
+        <button
+            id="delete-account-button" 
+            type="button" 
+            (click)="onDelete()">
+            Delete
+        </button>
         <input  
-        id="firstname"
-        type="text"
-        formControlName="firstName">
-        <label for="lastname">Last name</label>
+            id="firstname"
+            type="text"
+            formControlName="firstName"
+            placeholder="First name">
         <input 
-        id="lastname"
-        type="text"
-        formControlName="lastName">
-        <label for="phonenumber">Phone number</label>
+            id="lastname"
+            type="text"
+            formControlName="lastName"
+            placeholder="Last name">
         <input 
-        id="phonenumber"
-        type="text"
-        formControlName="phoneNumber">
-        <label for="description">Description</label>
+            id="phonenumber"
+            type="text"
+            formControlName="phoneNumber"
+            placeholder="Phone number">
+        <textarea 
+            id="description"
+            formControlName="description"
+            placeholder="Share yourself! 
+Add your description."
+            rows="4"
+            cols="60">
+        </textarea>
         <input 
-        id="description"
-        type="text"
-        formControlName="description">
-        <label for="facebookurl">FacebookURL</label>
-        <input 
-        id="facebookurl"
-        type="text"
-        formControlName="facebookURL">
-        <label for="instagramurl">InstagramURL</label>
+            id="facebookurl"
+            type="text"
+            formControlName="facebookURL"
+            placeholder="Facebook URL">
         <input  
-        id="instagramurl"
-        type="text"
-        formControlName="instagramURL">
-        <label for="linkedinurl">LinkedInURL</label>
+            id="instagramurl"
+            type="text"
+            formControlName="instagramURL"
+            placeholder="Instagram URL">
         <input 
-        id="linkedinurl"
-        type="text"
-        formControlName="linkedInURL">
-        <label for="tiktokurl">TikTokURL</label>
+            id="linkedinurl"
+            type="text"
+            formControlName="linkedInURL"
+            placeholder="LinkedIn URL">
         <input 
-        id="tiktokurl"
-        type="text"
-        formControlName="tikTokURL">
-        <label for="youtubeurl">YouTubeURL</label>
+            id="tiktokurl"
+            type="text"
+            formControlName="tikTokURL"
+            placeholder="TikTok URL">
         <input 
-        id="youtubeurl"
-        type="text"
-        formControlName="youTubeURL">
-        <label for="twitterurl">TwitterURL</label>
+            id="youtubeurl"
+            type="text"
+            formControlName="youTubeURL"
+            placeholder="YouTube URL">
         <input 
-        id="twitterurl"
-        type="text"
-        formControlName="twitterURL">
-        <label>Address</label>
-        <div formGroupName="address">
+            id="twitterurl"
+            type="text"
+            formControlName="twitterURL"
+            placeholder="Twitter URL">
+        <label>
+            Address
+        </label>
+        <div 
+            formGroupName="address">
             <input
-            id="localnumber"
-            type="text"
-            formControlName="localNumber">
+                id="localnumber"
+                type="text"
+                formControlName="localNumber">
             <input 
-            id="buildingnumber"
-            type="text"
-            formControlName="buildingNumber">
-            <label for="street">Street</label>
+                id="buildingnumber"
+                type="text"
+                formControlName="buildingNumber">
             <input
-            id="street"
-            type="text"
-            formControlName="street">
-            <label for="zipcode">Zip code</label>
+                id="street"
+                type="text"
+                formControlName="street"
+                placeholder="Street">
             <input 
-            id="zipcode"
-            type="text"
-            formControlName="zipCode">
-            <label for="city">City</label>
+                id="zipcode"
+                type="text"
+                formControlName="zipCode"
+                placeholder="Zip Code">
             <input
-            id="city"
-            type="text"
-            formControlName="city">
-            <label for="region">Region</label>
+                id="city"
+                type="text"
+                formControlName="city"
+                placeholder="City">
             <input 
-            id="region"
-            type="text"
-            formControlName="region">
-            <label for="country">Country</label>
+                id="region"
+                type="text"
+                formControlName="region"
+                placeholder="Region">
             <input 
-            id="country"
-            type="text"
-            formControlName="country">
+                id="country"
+                type="text"
+                formControlName="country"
+                placeholder="Country">
         </div>
-        <button type="submit">Save</button>
-        <button type="button" (click)="onCancel()">Cancel</button>
+        <button 
+            type="submit">
+            Save
+        </button>
+        <button 
+            type="button" 
+            (click)="onCancel()">
+            Cancel
+        </button>
     </form>
 </div>

@@ -1,12 +1,28 @@
 <div class="form-wrapper">
-    <form #CreatePostForm="ngForm" [formGroup]="createPostForm" (ngSubmit)="onCreatePost()">
-        <label>Title</label>
+    <form 
+        #CreatePostForm="ngForm" 
+        [formGroup]="createPostForm" 
+        (ngSubmit)="onCreatePost()">
         <input 
-        type="text"
-        formControlName="title">
-        <label>Content</label>
+            id="title"
+            type="text"
+            formControlName="title"
+            placeholder="Title">
         <input
-        type="text"
-        formControlName="content">
+            id="content"
+            type="text"
+            formControlName="content"
+            placeholder="Content">
+        <button 
+            type="submit"
+            class="btn">
+            Create
+        </button>
+        <button
+            (click)="onCancel()"
+            type="button"
+            class="btn">
+            Cancel
+        </button>
     </form>
 </div>

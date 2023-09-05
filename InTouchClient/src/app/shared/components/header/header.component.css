@@ -1,3 +1,6 @@
+.navbar {
+    padding: 0.2rem;
+}
 .navbar__list {
     list-style: none;
 }
@@ -13,3 +16,7 @@
     display: inline-block;
 }
 
+.header__icon {
+    width: 1rem;
+    vertical-align: middle;
+}

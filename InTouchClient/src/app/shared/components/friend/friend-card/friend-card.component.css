@@ -1,8 +1,13 @@
 .friend-card:first-child {
-    margin: 2rem 0.5rem 0.2rem 0.5rem;
+    margin: 2rem 0.2rem 0.2rem 0.2rem;
 }
 .friend-card {
-    margin: 0.2rem 0.5rem;
+    display: flex;
+    margin: 0.2rem 0.2rem;
+    border: 1px solid black;
+    padding: 0.2rem 0.5rem;
+    justify-content: space-between;
+    align-items: center;
 }
 .friend-card__image,
 .friend-card__data {
@@ -13,4 +18,8 @@
 .friend-card__image {
     width: 40px;
     margin: 0.2rem;
+}
+
+#message-icon {
+    vertical-align: middle;
 }

@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AccountService } from 'src/app/core/services/account.service';
 
@@ -58,9 +58,9 @@ export class EditAccountComponent implements OnInit, OnDestroy {
 
   InitForm(): void {
     this.editAccountForm = this.formBuilder.group({
-      firstName: [''],
-      lastName: [''],
-      phoneNumber: [''],
+      firstName: ['', [Validators.required]],
+      lastName: ['', [Validators.required]],
+      phoneNumber: ['', [Validators.required]],
       description: [''],
       facebookURL: [''],
       instagramURL: [''],
@@ -70,12 +70,12 @@ export class EditAccountComponent implements OnInit, OnDestroy {
       twitterURL: [''],
       address: this.formBuilder.group({
         localNumber: [],
-        buildingNumber: [],
-        street: [''],
-        zipCode: [''],
-        city: [''],
-        region: [''],
-        country: ['']
+        buildingNumber: [, [Validators.required]],
+        street: ['', [Validators.required]],
+        zipCode: ['', [Validators.required]],
+        city: ['', [Validators.required]],
+        region: ['', [Validators.required]],
+        country: ['', [Validators.required]]
     })})
   }
 

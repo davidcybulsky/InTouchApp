@@ -13,3 +13,6 @@
     padding: 0.5rem 0;
     vertical-align: top;
 }
+.user-panel-container {
+    border: 1px solid black;
+}

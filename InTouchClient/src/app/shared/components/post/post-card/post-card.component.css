@@ -28,3 +28,11 @@
 .postcard__user-icon > img {
     width: 50px;
 }
+
+.postcard__user__link {
+    color: #000;
+}
+
+#postcard__options {
+    float: right;
+}
