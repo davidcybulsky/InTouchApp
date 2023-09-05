@@ -1,3 +1,4 @@
+using InTouchApi.Application;
 using InTouchApi.Infrastructure;
 using InTouchApi.Presentation;
 using InTouchApi.Presentation.Middlewares;
@@ -7,7 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 builder.Services.AddSingleton(configuration);
 
-builder.Services.AddInfrastructure(configuration)
+builder.Services.AddAplication(configuration)
+                .AddInfrastructure(configuration)
                 .AddPresentation(configuration);
 
 builder.Services.AddEndpointsApiExplorer();

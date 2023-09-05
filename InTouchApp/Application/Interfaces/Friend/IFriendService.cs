@@ -10,5 +10,6 @@ namespace InTouchApi.Application.Interfaces
         Task<IEnumerable<FriendDto>> GetUserFriendRequestsAsync(int id);
         Task SendFriendRequestAsync(int friendId);
         Task AcceptFriendRequestAsync(int friendId);
+        Task DeleteFriendAsync(int friendId);
     }
 }

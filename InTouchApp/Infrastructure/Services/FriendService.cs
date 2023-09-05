@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using InTouchApi.Application.Authorization;
 using InTouchApi.Application.Exceptions;
 using InTouchApi.Application.Interfaces;
 using InTouchApi.Application.Models;
 using InTouchApi.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace InTouchApi.Infrastructure.Services
 {
@@ -11,31 +13,59 @@ namespace InTouchApi.Infrastructure.Services
         private readonly IFriendRepository _repository;
         private readonly IUserHttpContextService _userHttpContextService;
         private readonly IMapper _mapper;
+        private readonly IAuthorizationService _authorizationService;
 
         public FriendService(IFriendRepository repository,
                              IUserHttpContextService userHttpContextService,
-                             IMapper mapper)
+                             IMapper mapper,
+                             IAuthorizationService authorizationService)
         {
             _repository = repository;
             _userHttpContextService = userHttpContextService;
             _mapper = mapper;
+            _authorizationService = authorizationService;
         }
 
         public async Task AcceptFriendRequestAsync(int friendId)
         {
             var userId = _userHttpContextService.Id ?? throw new UnauthorizedException("");
-            var friendship = await _repository.GetFriendshipAsTrackingAsync(userId, friendId);
-            var friendship2 = await _repository.GetFriendshipAsTrackingAsync(friendId, userId);
+            var friendship = await _repository.GetFriendshipAsync(userId, friendId);
+            var friendship2 = await _repository.GetFriendshipAsync(friendId, userId);
+
+            var authorizationResult = _authorizationService
+                .AuthorizeAsync(_userHttpContextService.User,
+                                friendship,
+                                new CanAcceptFriendRequestRequirement()).Result;
+
+            if (!authorizationResult.Succeeded)
+            {
+                throw new ForbiddenException("You can not accept the request");
+            }
 
             friendship.IsAccepted = true;
-            friendship.LastModificationDate = DateTime.UtcNow;
             friendship.LastModifiedById = userId;
 
             friendship2.IsAccepted = true;
-            friendship2.LastModificationDate = friendship.LastModificationDate;
             friendship2.LastModifiedById = userId;
 
-            await _repository.UpdateFriendshipAsync();
+            await _repository.UpdateFriendshipAsync(friendship);
+            await _repository.UpdateFriendshipAsync(friendship2);
+        }
+
+        public async Task DeleteFriendAsync(int friendId)
+        {
+            var userId = _userHttpContextService.Id
+                ?? throw new UnauthorizedException("Unable to delete friendship");
+
+            var friendship = await _repository.GetFriendshipAsync(userId, friendId);
+            var friendship2 = await _repository.GetFriendshipAsync(friendId, userId);
+
+            friendship.LastModifiedById = userId;
+            friendship2.LastModifiedById = userId;
+
+            await _repository.DeleteFriendshipAsync(friendship);
+            await _repository.DeleteFriendshipAsync(friendship2);
+
         }
 
         public async Task<IEnumerable<FriendDto>> GetFriendRequestsAsync()
@@ -72,28 +102,68 @@ namespace InTouchApi.Infrastructure.Services
         {
             var userId = _userHttpContextService.Id ?? throw new UnauthorizedException("Anauthorized access");
 
-            var friendship = new Friendship
-            {
-                UserId = userId,
-                FriendId = friendId,
-                SendById = userId,
-                CreatedById = userId,
-                CreationDate = DateTime.UtcNow,
-                IsAccepted = false,
-            };
+            var friendshipInDb = await _repository.DoesFriendshipExist(userId, friendId);
+            var friendshipInDb2 = await _repository.DoesFriendshipExist(friendId, userId);
 
-            var recursiceFriendship = new Friendship
+            if (friendshipInDb == true)
             {
-                UserId = friendship.FriendId,
-                FriendId = friendship.UserId,
-                SendById = userId,
-                CreatedById = userId,
-                CreationDate = DateTime.UtcNow,
-                IsAccepted = false,
-            };
+                var friendship = new Friendship
+                {
+                    UserId = userId,
+                    FriendId = friendId,
+                    SendById = userId,
+                    LastModifiedById = userId,
+                    CreatedById = userId,
+                    CreationDate = DateTime.UtcNow,
+                    IsAccepted = false,
+                };
+                await _repository.RecreateFriendshipAsync(friendship);
+            }
+            else
+            {
+                var friendship = new Friendship
+                {
+                    UserId = userId,
+                    FriendId = friendId,
+                    SendById = userId,
+                    CreatedById = userId,
+                    CreationDate = DateTime.UtcNow,
+                    IsAccepted = false,
+                };
 
-            await _repository.CreateFriendshipAsync(friendship);
-            await _repository.CreateFriendshipAsync(recursiceFriendship);
+                await _repository.CreateFriendshipAsync(friendship);
+            }
+
+            if (friendshipInDb2 == true)
+            {
+                var recursiceFriendship = new Friendship
+                {
+                    UserId = friendId,
+                    FriendId = userId,
+                    SendById = userId,
+                    CreatedById = userId,
+                    CreationDate = DateTime.UtcNow,
+                    IsAccepted = false,
+                };
+
+                await _repository.RecreateFriendshipAsync(recursiceFriendship);
+            }
+            else
+            {
+                var recursiceFriendship = new Friendship
+                {
+                    UserId = friendId,
+                    FriendId = userId,
+                    SendById = userId,
+                    CreatedById = userId,
+                    CreationDate = DateTime.UtcNow,
+                    LastModifiedById = userId,
+                    IsAccepted = false,
+                };
+
+                await _repository.CreateFriendshipAsync(recursiceFriendship);
+            }
+
         }
     }
 }

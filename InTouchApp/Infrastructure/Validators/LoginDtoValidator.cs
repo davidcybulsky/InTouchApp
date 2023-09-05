@@ -12,6 +12,11 @@ namespace InTouchApi.Infrastructure.Validators
                 .NotEmpty()
                 .EmailAddress()
                 .WithMessage("This is not an email address");
+
+            RuleFor(x => x.Password)
+                .NotEmpty()
+                .MinimumLength(8)
+                .MaximumLength(32);
         }
     }
 }

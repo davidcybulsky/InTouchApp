@@ -66,6 +66,7 @@ namespace InTouchApi.Infrastructure
 
             services.AddScoped<IValidator<LoginDto>, LoginDtoValidator>();
             services.AddScoped<IValidator<SignUpDto>, SignUpDtoValidator>();
+            services.AddScoped<IValidator<UpdatePasswordDto>, UpdatePasswordDtoValidator>();
 
             return services;
         }

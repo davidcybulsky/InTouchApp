@@ -61,5 +61,13 @@ namespace InTouchApi.Presentation.Controllers
             await _service.SendFriendRequestAsync(userId);
             return StatusCode(StatusCodes.Status201Created);
         }
+
+        [HttpDelete("{friendId}")]
+        [Authorize]
+        public async Task<ActionResult> DeleteFriendAsync([FromRoute] int friendId)
+        {
+            await _service.DeleteFriendAsync(friendId);
+            return StatusCode(StatusCodes.Status204NoContent);
+        }
     }
 }
