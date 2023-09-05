@@ -24,7 +24,8 @@ namespace InTouchApi.Infrastructure.Services
             var userId = _userHttpContextService.Id ?? throw new UnauthorizedException("Unauthorized operation");
             var post = _mapper.Map<Post>(createPostDto);
 
-            post.CreatedById = post.AuthorId;
+            post.AuthorId = userId;
+            post.CreatedById = userId;
             post.CreationDate = DateTime.UtcNow;
 
             var id = _repository.CreatePostAsync(post);
@@ -34,14 +35,11 @@ namespace InTouchApi.Infrastructure.Services
         public async Task DeletePostAsync(int id)
         {
             var userId = _userHttpContextService.Id ?? throw new UnauthorizedException("Unauthorized operation");
-            var post = await _repository.GetPostAsTrackingAsync(id);
+            var post = await _repository.GetPostByIdAsync(id);
 
-            post.IsDeleted = true;
-
-            post.LastModificationDate = DateTime.UtcNow;
             post.LastModifiedById = userId;
 
-            await _repository.UpdatePostAsync();
+            await _repository.DeletePostAsync(post);
         }
 
         public async Task<IEnumerable<PostDto>> GetAllPostsAsync()
@@ -69,15 +67,13 @@ namespace InTouchApi.Infrastructure.Services
         public async Task UpdatePostAsync(int id, UpdatePostDto updatePostDto)
         {
             var userId = _userHttpContextService.Id ?? throw new UnauthorizedException("Unauthorized operation");
-            var post = await _repository.GetPostAsTrackingAsync(id);
+            var post = _mapper.Map<Post>(updatePostDto);
 
-            post.Title = updatePostDto.Title;
-            post.Content = updatePostDto.Content;
+            post.Id = id;
 
-            post.LastModificationDate = DateTime.UtcNow;
             post.LastModifiedById = userId;
 
-            await _repository.UpdatePostAsync();
+            await _repository.UpdatePostAsync(post);
         }
     }
 }

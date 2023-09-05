@@ -29,7 +29,8 @@ namespace InTouchApi.Infrastructure.Services
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
 
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-            var expires = DateTime.UtcNow.AddDays(int.Parse(_configuration["Jwt:ExpiresInDays"]));
+            var created = DateTime.UtcNow;
+            var expires = created.AddDays(int.Parse(_configuration["Jwt:ExpiresInDays"]));
 
             var token = new JwtSecurityToken(
                 claims: claims,
@@ -40,7 +41,12 @@ namespace InTouchApi.Infrastructure.Services
 
             var tokenHandler = new JwtSecurityTokenHandler();
 
-            return new TokenDto { Token = $"bearer {tokenHandler.WriteToken(token)}", Expires = expires };
+            return new TokenDto
+            {
+                Token = $"bearer {tokenHandler.WriteToken(token)}",
+                Created = created,
+                Expires = expires
+            };
         }
     }
 }

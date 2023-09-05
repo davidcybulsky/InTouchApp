@@ -35,11 +35,11 @@ namespace InTouchApi.Infrastructure.Services
 
             user.PasswordHash = hashedPassword;
 
-            if (user.Role == "ADMIN")
+            if (user.Role.ToUpper() == "ADMIN")
             {
                 user.Role = ROLES.ADMIN;
             }
-            else if (user.Role == "USER")
+            else if (user.Role.ToUpper() == "USER")
             {
                 user.Role = ROLES.USER;
             }
@@ -59,14 +59,11 @@ namespace InTouchApi.Infrastructure.Services
         public async Task DeleteUserAsync(int id)
         {
             var userId = _userHttpContextService.Id ?? throw new UnauthorizedException("");
-            var user = await _repository.GetUserAsTrackingAsync(id);
+            var user = await _repository.GetUserByIdAsync(id);
 
-            user.IsDeleted = true;
-
-            user.LastModificationDate = DateTime.UtcNow;
             user.LastModifiedById = userId;
 
-            await _repository.UpdateUserAsync();
+            await _repository.DeleteUserAsync(user);
         }
 
         public async Task<IEnumerable<UserDto>> GetAllUsersAsync()
@@ -86,48 +83,25 @@ namespace InTouchApi.Infrastructure.Services
         public async Task UpdateUserAsync(int id, UpdateUserDto updateUserDto)
         {
             var userId = _userHttpContextService.Id ?? throw new UnauthorizedException("");
-            var user = await _repository.GetUserAsTrackingAsync(id);
-            user.Email = updateUserDto.Email;
-            user.FirstName = updateUserDto.FirstName;
-            user.LastName = updateUserDto.LastName;
-            user.BirthDate = updateUserDto.BirthDate;
-            user.PhoneNumber = updateUserDto.PhoneNumber;
-            user.Description = updateUserDto.Description;
 
-            user.Role = updateUserDto.Role;
-
-            user.FacebookURL = updateUserDto.FacebookURL;
-            user.InstagramURL = updateUserDto.InstagramURL;
-            user.LinkedInURL = updateUserDto.LinkedInURL;
-            user.TikTokURL = updateUserDto.TikTokURL;
-            user.YouTubeURL = updateUserDto.YouTubeURL;
-            user.TwitterURL = updateUserDto.TwitterURL;
-
-            user.Address.BuildingNumber = updateUserDto.Address.BuildingNumber;
-            user.Address.LocalNumber = updateUserDto.Address.LocalNumber;
-            user.Address.Street = updateUserDto.Address.Street;
-            user.Address.ZipCode = updateUserDto.Address.ZipCode;
-            user.Address.City = updateUserDto.Address.City;
-            user.Address.Region = updateUserDto.Address.Region;
-            user.Address.Country = updateUserDto.Address.Country;
-
-            user.LastModificationDate = DateTime.UtcNow;
+            var user = _mapper.Map<User>(updateUserDto);
+            user.Id = id;
             user.LastModifiedById = userId;
 
-            await _repository.UpdateUserAsync();
+            await _repository.UpdateUserAsync(user);
         }
 
         public async Task UpdateUserRoleAsync(int id, UpdateRoleDto updateRoleDto)
         {
 
             var userId = _userHttpContextService.Id ?? throw new UnauthorizedException("");
-            var user = await _repository.GetUserAsTrackingAsync(id);
+            var user = await _repository.GetUserByIdAsync(id);
 
-            if (updateRoleDto.Role == "ADMIN")
+            if (updateRoleDto.Role.ToUpper() == "ADMIN")
             {
                 user.Role = ROLES.ADMIN;
             }
-            else if (updateRoleDto.Role == "USER")
+            else if (updateRoleDto.Role.ToUpper() == "USER")
             {
                 user.Role = ROLES.USER;
             }
@@ -136,10 +110,9 @@ namespace InTouchApi.Infrastructure.Services
                 throw new BadRequestException("");
             }
 
-            user.LastModificationDate = DateTime.UtcNow;
             user.LastModifiedById = userId;
 
-            await _repository.UpdateUserAsync();
+            await _repository.UpdateUserAsync(user);
         }
     }
 }

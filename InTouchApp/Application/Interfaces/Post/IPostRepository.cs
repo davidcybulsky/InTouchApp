@@ -5,9 +5,9 @@ namespace InTouchApi.Application.Interfaces
     public interface IPostRepository
     {
         Task<Post> GetPostByIdAsync(int id);
-        Task<Post> GetPostAsTrackingAsync(int id);
         Task<IEnumerable<Post>> GetAllPostsAsync();
         Task<int> CreatePostAsync(Post post);
-        Task UpdatePostAsync();
+        Task UpdatePostAsync(Post post);
+        Task DeletePostAsync(Post post);
     }
 }
