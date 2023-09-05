@@ -6,7 +6,7 @@ namespace InTouchApi.Application.Interfaces
     {
         Task<User> GetLoginDataAsync(string email);
         Task<int> SignUpUserAsync(User user);
-        Task<User> GetUserByIdAsync(int id);
-        Task ChangePasswordAsync(int id, string NewPasswordHash);
+        Task<User> GetUserByIdAsync(int userId);
+        Task ChangePasswordAsync(int userId, string NewPasswordHash);
     }
 }
