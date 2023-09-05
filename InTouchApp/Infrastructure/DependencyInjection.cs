@@ -1,9 +1,13 @@
-﻿using InTouchApi.Application.Interfaces;
+﻿using FluentValidation;
+using FluentValidation.AspNetCore;
+using InTouchApi.Application.Interfaces;
 using InTouchApi.Application.Interfaces.Reaction;
+using InTouchApi.Application.Models;
 using InTouchApi.Domain.Entities;
 using InTouchApi.Infrastructure.Data;
 using InTouchApi.Infrastructure.Data.Repositories;
 using InTouchApi.Infrastructure.Services;
+using InTouchApi.Infrastructure.Validators;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -57,6 +61,11 @@ namespace InTouchApi.Infrastructure
                 .MinimumLevel.Information()
                 .WriteTo.Console()
                 .CreateLogger();
+
+            services.AddFluentValidationAutoValidation().AddFluentValidationAutoValidation();
+
+            services.AddScoped<IValidator<LoginDto>, LoginDtoValidator>();
+            services.AddScoped<IValidator<SignUpDto>, SignUpDtoValidator>();
 
             return services;
         }
