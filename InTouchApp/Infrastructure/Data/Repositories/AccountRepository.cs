@@ -22,7 +22,7 @@ namespace InTouchApi.Infrastructure.Data.Repositories
                 .Include(u => u.Address)
                 .Include(u => u.Posts)
                 .FirstOrDefaultAsync(u => u.Id == id)
-                ?? throw new NotFoundException("");
+                ?? throw new NotFoundException("Your account was not found");
             return user;
         }
 
