@@ -4,9 +4,9 @@ namespace InTouchApi.Application.Interfaces
 {
     public interface ICommentRepository
     {
-        Task<PostComment> GetPostCommentAsync(int id);
-        Task<PostComment> GetPostCommentAsTrackingAsync(int id);
+        Task<PostComment> GetPostCommentByIdAsync(int id);
         Task<int> CreatePostCommentAsync(PostComment comment);
-        Task UpdatePostCommentAsync();
+        Task UpdatePostCommentAsync(PostComment comment);
+        Task DeletePostCommentAsync(PostComment comment);
     }
 }

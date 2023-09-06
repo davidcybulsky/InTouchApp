@@ -20,7 +20,7 @@ namespace InTouchApi.Infrastructure.Data.Repositories
                 .AsNoTracking()
                 .Where(u => u.IsDeleted == false)
                 .Include(u => u.Address)
-                .Include(u => u.Posts)
+                .Include(u => u.Posts.Where(c => c.IsDeleted == false))
                 .ToListAsync();
 
             return users;
@@ -32,7 +32,7 @@ namespace InTouchApi.Infrastructure.Data.Repositories
                 .AsNoTracking()
                 .Where(u => u.IsDeleted == false)
                 .Include(u => u.Address)
-                .Include(u => u.Posts)
+                .Include(u => u.Posts.Where(c => c.IsDeleted == false))
                 .FirstOrDefaultAsync(u => u.Id == id)
                 ?? throw new NotFoundException("The user was not found");
 

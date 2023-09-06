@@ -41,6 +41,7 @@ namespace InTouchApi.Infrastructure.Services
             }
 
             var token = await _tokenService.CreateTokenAsync(user);
+
             return token;
         }
 

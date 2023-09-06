@@ -42,22 +42,14 @@ namespace InTouchApi.Infrastructure.Data.Repositories
             var posts = await _dbContext.Posts
                 .AsNoTracking()
                 .Include(p => p.Author)
-                .Include(p => p.Comments)
+                .Include(p => p.Comments.Where(c => c.IsDeleted == false))
                 .ThenInclude(c => c.Author)
-                .Include(p => p.Comments)
-                .ThenInclude(c => c.CommentReactions)
+                .Include(p => p.Comments.Where(c => c.IsDeleted == false))
+                .ThenInclude(c => c.CommentReactions.Where(c => c.IsDeleted == false))
                 .Where(p => p.IsDeleted == false)
                 .ToListAsync();
-            return posts;
-        }
 
-        public async Task<Post> GetPostAsTrackingAsync(int id)
-        {
-            var post = await _dbContext.Posts
-                .Where(p => p.IsDeleted == false)
-                .FirstOrDefaultAsync(p => p.Id == id)
-                ?? throw new NotFoundException("The user was not found");
-            return post;
+            return posts;
         }
 
         public async Task<Post> GetPostByIdAsync(int id)
@@ -65,8 +57,10 @@ namespace InTouchApi.Infrastructure.Data.Repositories
             var post = await _dbContext.Posts
                 .AsNoTracking()
                 .Include(p => p.Author)
-                .Include(p => p.Comments)
+                .Include(p => p.Comments.Where(c => c.IsDeleted == false))
                 .ThenInclude(c => c.Author)
+                .Include(p => p.Comments.Where(c => c.IsDeleted == false))
+                .ThenInclude(c => c.CommentReactions.Where(c => c.IsDeleted == false))
                 .Where(p => p.IsDeleted == false)
                 .FirstOrDefaultAsync(p => p.Id == id)
                 ?? throw new NotFoundException("The post was not found");

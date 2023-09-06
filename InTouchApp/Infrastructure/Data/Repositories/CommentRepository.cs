@@ -1,5 +1,7 @@
-﻿using InTouchApi.Application.Interfaces;
+﻿using InTouchApi.Application.Exceptions;
+using InTouchApi.Application.Interfaces;
 using InTouchApi.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace InTouchApi.Infrastructure.Data.Repositories
 {
@@ -12,23 +14,49 @@ namespace InTouchApi.Infrastructure.Data.Repositories
             _apiContext = apiContext;
         }
 
-        public Task<int> CreatePostCommentAsync(PostComment comment)
+        public async Task<int> CreatePostCommentAsync(PostComment comment)
         {
-            throw new NotImplementedException();
+            await _apiContext.AddAsync(comment);
+            await _apiContext.SaveChangesAsync();
+            return comment.Id;
         }
 
-        public Task<PostComment> GetPostCommentAsTrackingAsync(int id)
+        public async Task DeletePostCommentAsync(PostComment comment)
         {
-            throw new NotImplementedException();
+            var postComment = await _apiContext.PostComments
+                .Where(c => c.IsDeleted == false)
+                .FirstOrDefaultAsync(p => p.Id == comment.Id)
+                ?? throw new NotFoundException("The comment was not found");
+
+            postComment.IsDeleted = true;
+
+            postComment.LastModifiedById = comment.LastModifiedById;
+            postComment.LastModificationDate = DateTime.UtcNow;
+
+            await _apiContext.SaveChangesAsync();
         }
 
-        public Task<PostComment> GetPostCommentAsync(int id)
+        public async Task<PostComment> GetPostCommentByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var postComment = await _apiContext.PostComments
+                .Where(c => c.IsDeleted == false)
+                .FirstOrDefaultAsync(c => c.Id == id)
+                ?? throw new NotFoundException("The comment was not found");
+            return postComment;
         }
 
-        public async Task UpdatePostCommentAsync()
+        public async Task UpdatePostCommentAsync(PostComment comment)
         {
+            var postComment = await _apiContext.PostComments
+                .Where(c => c.IsDeleted == false)
+                .FirstOrDefaultAsync(p => p.Id == comment.Id)
+                ?? throw new NotFoundException("The comment was not found");
+
+            postComment.Content = comment.Content;
+
+            postComment.LastModifiedById = comment.LastModifiedById;
+            postComment.LastModificationDate = DateTime.UtcNow;
+
             await _apiContext.SaveChangesAsync();
         }
     }

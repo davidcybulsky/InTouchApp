@@ -24,37 +24,38 @@ namespace InTouchApi.Infrastructure.Services
         public async Task DeletePostCommentAsync(int id)
         {
             var userId = _userHttpContextService.Id ?? throw new UnauthorizedException("");
-            var postComment = await _repository.GetPostCommentAsync(id);
-            postComment.IsDeleted = true;
-            postComment.LastModificationDate = DateTime.UtcNow;
+            var postComment = await _repository.GetPostCommentByIdAsync(id);
+
             postComment.LastModifiedById = userId;
-            await _repository.UpdatePostCommentAsync();
+
+            await _repository.DeletePostCommentAsync(postComment);
         }
 
         public async Task UpdatePostCommentAsync(int id, UpdateCommentDto updateCommentDto)
         {
             var userId = _userHttpContextService.Id ?? throw new UnauthorizedException("");
             var postComment = _mapper.Map<PostComment>(updateCommentDto);
-            var postCommentInDb = await _repository.GetPostCommentAsync(id);
-            postComment.UserId = postCommentInDb.UserId;
-            postComment.CreatedById = postCommentInDb.CreatedById;
-            postComment.CreationDate = postCommentInDb.CreationDate;
+
+            postComment.Id = id;
             postComment.LastModifiedById = userId;
-            postComment.LastModificationDate = DateTime.UtcNow;
-            postComment.Id = postCommentInDb.Id;
-            postComment.PostId = postCommentInDb.PostId;
-            await _repository.UpdatePostCommentAsync();
+
+            await _repository.UpdatePostCommentAsync(postComment);
         }
 
         public async Task<int> CreatePostCommentAsync(int postId, CreateCommentDto createCommentDto)
         {
             var userId = _userHttpContextService.Id ?? throw new UnauthorizedException("");
+
             var postComment = _mapper.Map<PostComment>(createCommentDto);
-            postComment.CreationDate = DateTime.UtcNow;
-            postComment.CreatedById = userId;
+
             postComment.PostId = postId;
             postComment.UserId = userId;
+
+            postComment.CreationDate = DateTime.UtcNow;
+            postComment.CreatedById = userId;
+
             var postCommentId = await _repository.CreatePostCommentAsync(postComment);
+
             return postCommentId;
         }
     }
