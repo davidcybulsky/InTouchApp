@@ -5,6 +5,7 @@ using InTouchApi.Application.Interfaces;
 using InTouchApi.Application.Models;
 using InTouchApi.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
+using Serilog;
 
 namespace InTouchApi.Infrastructure.Services
 {
@@ -28,7 +29,10 @@ namespace InTouchApi.Infrastructure.Services
 
         public async Task AcceptFriendRequestAsync(int friendId)
         {
-            var userId = _userHttpContextService.Id ?? throw new UnauthorizedException("");
+            var userId = _userHttpContextService.Id ??
+                throw new UnauthorizedException("Unauthorized",
+                $"Unauthorized user tried to accept friend request with friendId: {friendId}");
+
             var friendship = await _repository.GetFriendshipAsync(userId, friendId);
             var friendship2 = await _repository.GetFriendshipAsync(friendId, userId);
 
@@ -39,7 +43,8 @@ namespace InTouchApi.Infrastructure.Services
 
             if (!authorizationResult.Succeeded)
             {
-                throw new ForbiddenException("You can not accept the request");
+                throw new ForbiddenException("You can not accept the request",
+                    $"User with id: {userId}, tried accept friend request with friendId {friendId}, which is a forbidden operation");
             }
 
             friendship.IsAccepted = true;
@@ -50,12 +55,15 @@ namespace InTouchApi.Infrastructure.Services
 
             await _repository.UpdateFriendshipAsync(friendship);
             await _repository.UpdateFriendshipAsync(friendship2);
+
+            Log.Logger.Information($"User with id: {userId} accepted friend request from user with id: {friendId}");
         }
 
         public async Task DeleteFriendAsync(int friendId)
         {
             var userId = _userHttpContextService.Id
-                ?? throw new UnauthorizedException("Unable to delete friendship");
+                ?? throw new UnauthorizedException("Unauthorized",
+                $"Unauthorized user tried to delete friend with friendId: {friendId}");
 
             var friendship = await _repository.GetFriendshipAsync(userId, friendId);
             var friendship2 = await _repository.GetFriendshipAsync(friendId, userId);
@@ -66,21 +74,34 @@ namespace InTouchApi.Infrastructure.Services
             await _repository.DeleteFriendshipAsync(friendship);
             await _repository.DeleteFriendshipAsync(friendship2);
 
+            Log.Logger.Information($"User with id: {userId} deleted friend with id: {friendId}");
         }
 
         public async Task<IEnumerable<FriendDto>> GetFriendRequestsAsync()
         {
-            var userId = _userHttpContextService.Id ?? throw new UnauthorizedException("");
+            var userId = _userHttpContextService.Id
+                ?? throw new UnauthorizedException("Unauthorized",
+                $"Unauthorized user tried to get its friend requests");
+
             var friendRequests = await _repository.GetUserFriendRequestsAsync(userId);
             var friendRequestDtos = _mapper.Map<IEnumerable<FriendDto>>(friendRequests);
+
+            Log.Logger.Information($"User with id: {userId} got friend requests. Count: {friendRequestDtos.Count()}");
+
             return friendRequestDtos;
         }
 
         public async Task<IEnumerable<FriendDto>> GetFriendsAsync()
         {
-            var userId = _userHttpContextService.Id ?? throw new UnauthorizedException("Anauthorized access");
+            var userId = _userHttpContextService.Id
+                ?? throw new UnauthorizedException("Unauthorized",
+                $"Unauthorized user tried to get its friends");
+
             var friends = await _repository.GetUserFriendsAsync(userId);
             var friendDtos = _mapper.Map<IEnumerable<FriendDto>>(friends);
+
+            Log.Logger.Information($"User with id: {userId} got friends. Count: {friendDtos.Count()}");
+
             return friendDtos;
         }
 
@@ -88,6 +109,9 @@ namespace InTouchApi.Infrastructure.Services
         {
             var friendRequests = await _repository.GetUserFriendRequestsAsync(id);
             var friendRequestDtos = _mapper.Map<IEnumerable<FriendDto>>(friendRequests);
+
+            Log.Logger.Information($"List of user with id: {id} friends was returned");
+
             return friendRequestDtos;
         }
 
@@ -95,12 +119,17 @@ namespace InTouchApi.Infrastructure.Services
         {
             var friends = await _repository.GetUserFriendsAsync(id);
             var friendDtos = _mapper.Map<IEnumerable<FriendDto>>(friends);
+
+            Log.Logger.Information($"List of user with id: {id} friend requests was returned");
+
             return friendDtos;
         }
 
         public async Task SendFriendRequestAsync(int friendId)
         {
-            var userId = _userHttpContextService.Id ?? throw new UnauthorizedException("Anauthorized access");
+            var userId = _userHttpContextService.Id
+                ?? throw new UnauthorizedException("Unauthorized",
+                $"Unauthorized user tried to send friend request. FriendId: {friendId}");
 
             var friendshipInDb = await _repository.DoesFriendshipExist(userId, friendId);
             var friendshipInDb2 = await _repository.DoesFriendshipExist(friendId, userId);
@@ -164,6 +193,7 @@ namespace InTouchApi.Infrastructure.Services
                 await _repository.CreateFriendshipAsync(recursiceFriendship);
             }
 
+            Log.Logger.Information($"User with id: {userId} sent friend request to user with id: {friendId}");
         }
     }
 }

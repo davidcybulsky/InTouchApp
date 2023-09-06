@@ -9,6 +9,7 @@ namespace InTouchApi.Application
         {
             services.AddScoped<IAuthorizationHandler, AcceptFriendRequestRequirementHandler>();
             services.AddScoped<IAuthorizationHandler, EditPostRequirementHandler>();
+            services.AddScoped<IAuthorizationHandler, DeletePostRequirementHandler>();
 
             return services;
         }

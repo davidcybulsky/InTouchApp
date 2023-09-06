@@ -4,9 +4,9 @@ using InTouchApi.Infrastructure.Data;
 
 namespace InTouchApi.Infrastructure.Validators
 {
-    public class SignUpDtoValidator : AbstractValidator<SignUpDto>
+    public class CreateUserDtoValidator : AbstractValidator<CreateUserDto>
     {
-        public SignUpDtoValidator(ApiContext apiContext)
+        public CreateUserDtoValidator(ApiContext apiContext)
         {
             RuleFor(x => x.Email)
                 .NotEmpty()

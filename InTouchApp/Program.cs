@@ -23,10 +23,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors(opt => opt.AllowAnyHeader().AllowAnyMethod().WithOrigins(configuration["Cors:Client"]));
+app.UseCors(opt => opt
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .AllowCredentials()
+        .WithOrigins(configuration["Cors:Client"]));
 
-if (!app.Environment.IsDevelopment())
-    app.UseMiddleware<ExceptionHandlingMiddleware>();
+//if (!app.Environment.IsDevelopment())
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseHttpsRedirection();
 

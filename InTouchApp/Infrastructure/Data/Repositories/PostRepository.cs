@@ -26,7 +26,8 @@ namespace InTouchApi.Infrastructure.Data.Repositories
             var postInDb = await _dbContext.Posts
                 .Where(p => p.IsDeleted == false)
                 .FirstOrDefaultAsync(p => p.Id == post.Id)
-                ?? throw new NotFoundException("The post was not found");
+                ?? throw new NotFoundException("The post was not found",
+                $"User with id: {post.LastModifiedById} tried to delete post with id: {post.Id}, but it was not found");
 
             postInDb.IsDeleted = true;
 
@@ -63,7 +64,8 @@ namespace InTouchApi.Infrastructure.Data.Repositories
                 .ThenInclude(c => c.CommentReactions.Where(c => c.IsDeleted == false))
                 .Where(p => p.IsDeleted == false)
                 .FirstOrDefaultAsync(p => p.Id == id)
-                ?? throw new NotFoundException("The post was not found");
+                ?? throw new NotFoundException("The post was not found",
+                $"Post with id: {id} was not found");
             return post;
         }
 
@@ -72,7 +74,8 @@ namespace InTouchApi.Infrastructure.Data.Repositories
             var postInDb = await _dbContext.Posts
                 .Where(p => p.IsDeleted == false)
                 .FirstOrDefaultAsync(p => p.Id == post.Id)
-                ?? throw new NotFoundException("The post was not found");
+                ?? throw new NotFoundException("The post was not found",
+                $"User with id: {post.LastModifiedById} tried to update post with id: {post.Id}, but post was not found");
 
             postInDb.Title = post.Title;
             postInDb.Content = post.Content;

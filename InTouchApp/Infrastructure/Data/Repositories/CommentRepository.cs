@@ -26,7 +26,8 @@ namespace InTouchApi.Infrastructure.Data.Repositories
             var postComment = await _apiContext.PostComments
                 .Where(c => c.IsDeleted == false)
                 .FirstOrDefaultAsync(p => p.Id == comment.Id)
-                ?? throw new NotFoundException("The comment was not found");
+                ?? throw new NotFoundException("The comment was not found",
+                $"User with id: {comment.LastModifiedById} tried to deleted comment with id: {comment.Id}, but it was not found");
 
             postComment.IsDeleted = true;
 
@@ -41,7 +42,8 @@ namespace InTouchApi.Infrastructure.Data.Repositories
             var postComment = await _apiContext.PostComments
                 .Where(c => c.IsDeleted == false)
                 .FirstOrDefaultAsync(c => c.Id == id)
-                ?? throw new NotFoundException("The comment was not found");
+                ?? throw new NotFoundException("The comment was not found",
+                $"Comment with id: {id} was not found");
             return postComment;
         }
 
@@ -50,7 +52,8 @@ namespace InTouchApi.Infrastructure.Data.Repositories
             var postComment = await _apiContext.PostComments
                 .Where(c => c.IsDeleted == false)
                 .FirstOrDefaultAsync(p => p.Id == comment.Id)
-                ?? throw new NotFoundException("The comment was not found");
+                ?? throw new NotFoundException("The comment was not found",
+                $"User with id: {comment.LastModifiedById} tried to update comment with id: {comment.Id}, but it was not found");
 
             postComment.Content = comment.Content;
 

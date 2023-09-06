@@ -20,7 +20,8 @@ namespace InTouchApi.Infrastructure.Data.Repositories
                 .AsNoTracking()
                 .Where(f => f.IsDeleted == false)
                 .FirstOrDefaultAsync(f => f.UserId == userId && f.FriendId == FriendId)
-                ?? throw new NotFoundException("The friendship was not found");
+                ?? throw new NotFoundException("The friendship was not found",
+                $"Friendship with userId: {userId} and friendId: {FriendId} was not found");
 
             return friendship;
         }
@@ -64,7 +65,8 @@ namespace InTouchApi.Infrastructure.Data.Repositories
             var friendshipInDb = await _apiContext.Friendships
                 .Where(f => f.IsDeleted == false)
                 .FirstOrDefaultAsync(f => f.Id == friendship.Id)
-                ?? throw new NotFoundException("The friendship was not found");
+                ?? throw new NotFoundException("The friendship was not found",
+                $"User with id: {friendship.LastModifiedById} tried to update friendship with id: {friendship.Id}, but it was not found");
 
             friendshipInDb.IsAccepted = friendship.IsAccepted;
 
@@ -79,7 +81,8 @@ namespace InTouchApi.Infrastructure.Data.Repositories
             var friendshipInDb = await _apiContext.Friendships
                 .Where(f => f.IsDeleted == false)
                 .FirstOrDefaultAsync(f => f.Id == friendship.Id)
-                ?? throw new NotFoundException("The friendship was not found");
+                ?? throw new NotFoundException("The friendship was not found",
+                $"User with id: {friendship.LastModifiedById} tried to delete friendship with id: {friendship.Id}, but it was not found");
 
             friendshipInDb.IsDeleted = true;
 
@@ -103,7 +106,8 @@ namespace InTouchApi.Infrastructure.Data.Repositories
             var friendshipInDb = await _apiContext.Friendships
                 .FirstOrDefaultAsync(f => f.UserId == friendship.UserId
                                     && f.FriendId == friendship.FriendId)
-                ?? throw new NotFoundException("The friendship does not exist");
+                ?? throw new NotFoundException("The friendship does not exist",
+                $"User with id: {friendship.LastModifiedById} tried to send friend request but friendship with userId: {friendship.UserId} and FriendId: {friendship.FriendId} was not found");
 
             friendshipInDb.IsDeleted = false;
             friendshipInDb.IsAccepted = false;

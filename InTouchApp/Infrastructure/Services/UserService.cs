@@ -5,6 +5,7 @@ using InTouchApi.Application.Models;
 using InTouchApi.Domain.Constants;
 using InTouchApi.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
+using Serilog;
 
 namespace InTouchApi.Infrastructure.Services
 {
@@ -28,7 +29,10 @@ namespace InTouchApi.Infrastructure.Services
 
         public async Task<int> CreateUserAsync(CreateUserDto createUserDto)
         {
-            var userId = _userHttpContextService.Id ?? throw new UnauthorizedException("");
+            var userId = _userHttpContextService.Id
+                ?? throw new UnauthorizedException("Unauthorized",
+                "Unauthorized user tried to create a user");
+
             var user = _mapper.Map<User>(createUserDto);
 
             var hashedPassword = _passwordHasher.HashPassword(user, createUserDto.Password);
@@ -45,7 +49,8 @@ namespace InTouchApi.Infrastructure.Services
             }
             else
             {
-                throw new BadRequestException("");
+                throw new BadRequestException("Choose a valid role",
+                    $"User with id: {userId} tried to create user with invalid role: {user.Role}");
             }
 
             user.CreationDate = DateTime.UtcNow;
@@ -53,23 +58,33 @@ namespace InTouchApi.Infrastructure.Services
 
             var id = await _repository.CreateUserAsync(user);
 
+            Log.Logger.Information($"User with id: {userId} created user with id: {id}");
+
             return id;
         }
 
         public async Task DeleteUserAsync(int id)
         {
-            var userId = _userHttpContextService.Id ?? throw new UnauthorizedException("");
+            var userId = _userHttpContextService.Id
+                ?? throw new UnauthorizedException("Unauthorized",
+                $"Unauthorized user tried to delete user with id: {id}");
+
             var user = await _repository.GetUserByIdAsync(id);
 
             user.LastModifiedById = userId;
 
             await _repository.DeleteUserAsync(user);
+
+            Log.Logger.Information($"User with id: {userId} deleted user with id: {id}");
         }
 
         public async Task<IEnumerable<UserDto>> GetAllUsersAsync()
         {
             var users = await _repository.GetAllUsersAsync();
             var userDtos = _mapper.Map<IEnumerable<UserDto>>(users);
+
+            Log.Logger.Information($"List of users was returned. Count: {userDtos.Count()}");
+
             return userDtos;
         }
 
@@ -77,24 +92,35 @@ namespace InTouchApi.Infrastructure.Services
         {
             var user = await _repository.GetUserByIdAsync(id);
             var userDto = _mapper.Map<UserDto>(user);
+
+            Log.Logger.Information($"User with id: {id} was returned");
+
             return userDto;
         }
 
         public async Task UpdateUserAsync(int id, UpdateUserDto updateUserDto)
         {
-            var userId = _userHttpContextService.Id ?? throw new UnauthorizedException("");
+            var userId = _userHttpContextService.Id
+                ?? throw new UnauthorizedException("Unauthorized",
+                $"Unauthorized user tried to update user with id: {id}");
 
             var user = _mapper.Map<User>(updateUserDto);
             user.Id = id;
             user.LastModifiedById = userId;
 
             await _repository.UpdateUserAsync(user);
+
+            Log.Logger.Information($"User with id: {userId} updated user with id: {id}");
+
         }
 
         public async Task UpdateUserRoleAsync(int id, UpdateRoleDto updateRoleDto)
         {
 
-            var userId = _userHttpContextService.Id ?? throw new UnauthorizedException("");
+            var userId = _userHttpContextService.Id
+                ?? throw new UnauthorizedException("Unauthorized",
+                $"Unauthorized user tried to change role for user with id: {id}");
+
             var user = await _repository.GetUserByIdAsync(id);
 
             if (updateRoleDto.Role.ToUpper() == "ADMIN")
@@ -107,12 +133,16 @@ namespace InTouchApi.Infrastructure.Services
             }
             else
             {
-                throw new BadRequestException("");
+                throw new BadRequestException("Choose a valid role",
+                    $"User with id: {userId} tried to change role for user with id: {user.Id}, but role was invalid: {updateRoleDto.Role}");
             }
 
             user.LastModifiedById = userId;
 
             await _repository.UpdateUserAsync(user);
+
+            Log.Logger.Information($"User with id: {userId} changed role of user with id: {id} to role: {user.Role}");
+
         }
     }
 }

@@ -2,6 +2,11 @@
 {
     public class BadRequestException : Exception
     {
-        public BadRequestException(string Message) : base(Message) { }
+        public BadRequestException(string Message, string LoggerMessage) : base(Message)
+        {
+            this.LoggerMessage = LoggerMessage;
+        }
+
+        public string LoggerMessage { get; }
     }
 }

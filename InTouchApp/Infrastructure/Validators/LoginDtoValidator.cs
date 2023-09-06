@@ -1,12 +1,11 @@
 ﻿using FluentValidation;
 using InTouchApi.Application.Models;
-using InTouchApi.Infrastructure.Data;
 
 namespace InTouchApi.Infrastructure.Validators
 {
     public class LoginDtoValidator : AbstractValidator<LoginDto>
     {
-        public LoginDtoValidator(ApiContext apiContext)
+        public LoginDtoValidator()
         {
             RuleFor(x => x.Email)
                 .NotEmpty()

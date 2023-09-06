@@ -2,6 +2,11 @@
 {
     public class ForbiddenException : Exception
     {
-        public ForbiddenException(string Message) : base(Message) { }
+        public ForbiddenException(string Message, string LoggerMessage) : base(Message)
+        {
+            this.LoggerMessage = LoggerMessage;
+        }
+
+        public string LoggerMessage { get; }
     }
 }

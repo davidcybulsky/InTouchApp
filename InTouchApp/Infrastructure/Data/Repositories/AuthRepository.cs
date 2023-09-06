@@ -17,7 +17,8 @@ namespace InTouchApi.Infrastructure.Data.Repositories
         public async Task ChangePasswordAsync(int userId, string NewPasswordHash)
         {
             var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId)
-                ?? throw new NotFoundException("The user was not found");
+                ?? throw new NotFoundException("The user was not found",
+                $"User with id: {userId} tried to change its id, but the user was not found");
 
             user.PasswordHash = NewPasswordHash;
 
@@ -32,7 +33,8 @@ namespace InTouchApi.Infrastructure.Data.Repositories
             var user = await _dbContext.Users
                 .AsNoTracking()
                 .FirstOrDefaultAsync(u => u.Email == email) ??
-                throw new BadRequestException("Bad email or password");
+                throw new BadRequestException("Bad email or password",
+                $"User with email ${email} was not found while loging in");
 
             return user;
         }
@@ -42,10 +44,10 @@ namespace InTouchApi.Infrastructure.Data.Repositories
             var user = await _dbContext.Users
                 .AsNoTracking()
                 .FirstOrDefaultAsync(u => u.Id == userId) ??
-                throw new NotFoundException("The user was not found");
+                throw new NotFoundException("The user was not found",
+                $"The user with id: {userId} was not found. Executed in auth repository");
 
             return user;
-
         }
 
         public async Task<int> SignUpUserAsync(User user)

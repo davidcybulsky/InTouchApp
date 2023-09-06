@@ -5,6 +5,7 @@ using InTouchApi.Application.Interfaces;
 using InTouchApi.Application.Models;
 using InTouchApi.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
+using Serilog;
 
 namespace InTouchApi.Infrastructure.Services
 {
@@ -26,43 +27,58 @@ namespace InTouchApi.Infrastructure.Services
             _authorizationService = authorizationService;
         }
 
-        public Task<int> CreatePostAsync(CreatePostDto createPostDto)
+        public async Task<int> CreatePostAsync(CreatePostDto createPostDto)
         {
-            var userId = _userHttpContextService.Id ?? throw new UnauthorizedException("Unauthorized operation");
+            var userId = _userHttpContextService.Id
+                ?? throw new UnauthorizedException("Unauthorized",
+                $"Unauthorized user tried to create a post");
+
             var post = _mapper.Map<Post>(createPostDto);
 
             post.AuthorId = userId;
             post.CreatedById = userId;
             post.CreationDate = DateTime.UtcNow;
 
-            var id = _repository.CreatePostAsync(post);
+            var id = await _repository.CreatePostAsync(post);
+
+            Log.Logger.Information($"User with id: {userId} created post with id: {id}");
+
             return id;
         }
 
         public async Task DeletePostAsync(int id)
         {
-            var postToDelete = _repository.GetPostByIdAsync(id);
+            var postToDelete = await _repository.GetPostByIdAsync(id);
+
+            var userId = _userHttpContextService.Id
+                ?? throw new UnauthorizedException("Unauthorized",
+                $"Unauthorized user tried to delete post with id: {id}");
 
             var authorizationResult = _authorizationService
                 .AuthorizeAsync(_userHttpContextService.User, postToDelete, new DeleteResourceRequirement()).Result;
 
             if (!authorizationResult.Succeeded)
             {
-                throw new ForbiddenException("");
+                throw new ForbiddenException("Forbidden operation",
+                    $"User with id: {userId} tried to delete post with id: {id}, which is a forbidden operation");
             }
 
-            var userId = _userHttpContextService.Id ?? throw new UnauthorizedException("Unauthorized operation");
             var post = await _repository.GetPostByIdAsync(id);
 
             post.LastModifiedById = userId;
 
             await _repository.DeletePostAsync(post);
+
+            Log.Logger.Information($"User with id: {userId} deleted post with id: {id}");
         }
 
         public async Task<IEnumerable<PostDto>> GetAllPostsAsync()
         {
             var posts = await _repository.GetAllPostsAsync();
             var postDtos = _mapper.Map<IEnumerable<PostDto>>(posts);
+
+            Log.Logger.Information($"List of posts was returned. Count: {postDtos.Count()}");
+
             return postDtos;
         }
 
@@ -70,6 +86,9 @@ namespace InTouchApi.Infrastructure.Services
         {
             var post = await _repository.GetPostByIdAsync(id);
             var postDto = _mapper.Map<PostDto>(post);
+
+            Log.Logger.Information($"Post with id: {id} was returned");
+
             return postDto;
         }
 
@@ -78,22 +97,31 @@ namespace InTouchApi.Infrastructure.Services
             var posts = await _repository.GetAllPostsAsync();
             var userPosts = posts.Where(p => p.AuthorId == id).ToList();
             var postDtos = _mapper.Map<IEnumerable<PostDto>>(userPosts);
+
+            Log.Logger.Information($"List of user with id: {id} posts was returned");
+
             return postDtos;
         }
 
         public async Task UpdatePostAsync(int id, UpdatePostDto updatePostDto)
         {
-            var postToEdit = await _repository.GetPostByIdAsync(id) ?? throw new NotFoundException("");
+            var postToEdit = await _repository.GetPostByIdAsync(id)
+                ?? throw new NotFoundException("The post was not found",
+                $"Post with id: {id} was not found");
+
+            var userId = _userHttpContextService.Id
+                ?? throw new UnauthorizedException("Unauthorized",
+                $"Unauthorized user tried to update post with id: {id}");
 
             var authorizationResult = _authorizationService
                 .AuthorizeAsync(_userHttpContextService.User, postToEdit, new EditResourceRequirement()).Result;
 
             if (!authorizationResult.Succeeded)
             {
-                throw new ForbiddenException("");
+                throw new ForbiddenException("Forbidden operation",
+                    $"User with id: {userId} tried to update post with id: {id}, which is a forbidden operation");
             }
 
-            var userId = _userHttpContextService.Id ?? throw new UnauthorizedException("Unauthorized");
             var post = _mapper.Map<Post>(updatePostDto);
 
             post.Id = id;
@@ -101,6 +129,8 @@ namespace InTouchApi.Infrastructure.Services
             post.LastModifiedById = userId;
 
             await _repository.UpdatePostAsync(post);
+
+            Log.Logger.Information($"Post with id: {id} was updated by user with id: {userId}");
         }
     }
 }

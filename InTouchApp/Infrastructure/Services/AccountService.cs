@@ -24,7 +24,9 @@ namespace InTouchApi.Infrastructure.Services
 
         public async Task DeleteAccountAsync()
         {
-            var id = _userHttpContextService.Id ?? throw new UnauthorizedException("");
+            var id = _userHttpContextService.Id ??
+                throw new UnauthorizedException("Unauthorized",
+                "Unauthorized user tried to delete account");
             var account = await _repository.GetAccountAsync(id);
 
             account.Id = id;
@@ -36,7 +38,9 @@ namespace InTouchApi.Infrastructure.Services
 
         public async Task<AccountDto> GetAccountAsync()
         {
-            var id = _userHttpContextService.Id ?? throw new UnauthorizedException("");
+            var id = _userHttpContextService.Id
+                ?? throw new UnauthorizedException("Unauthorized",
+                "Unauthorized user tried to get account");
             var account = await _repository.GetAccountAsync(id);
 
             var accountDto = _mapper.Map<AccountDto>(account);
@@ -48,7 +52,9 @@ namespace InTouchApi.Infrastructure.Services
 
         public async Task UpdateAccountAsync(UpdateAccountDto updateAccountDto)
         {
-            var id = _userHttpContextService.Id ?? throw new UnauthorizedException("");
+            var id = _userHttpContextService.Id
+                ?? throw new UnauthorizedException("Unauthorized",
+                "Unauthorized user tried to update account");
 
             var account = _mapper.Map<User>(updateAccountDto);
 

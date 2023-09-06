@@ -60,6 +60,7 @@ namespace InTouchApi.Infrastructure
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Information()
                 .WriteTo.Console()
+                .WriteTo.File("Infrastructure/Logging/log.txt", rollingInterval: RollingInterval.Infinite)
                 .CreateLogger();
 
             services.AddFluentValidationAutoValidation().AddFluentValidationAutoValidation();
@@ -67,6 +68,7 @@ namespace InTouchApi.Infrastructure
             services.AddScoped<IValidator<LoginDto>, LoginDtoValidator>();
             services.AddScoped<IValidator<SignUpDto>, SignUpDtoValidator>();
             services.AddScoped<IValidator<UpdatePasswordDto>, UpdatePasswordDtoValidator>();
+            services.AddScoped<IValidator<CreateUserDto>, CreateUserDtoValidator>();
 
             return services;
         }

@@ -34,7 +34,8 @@ namespace InTouchApi.Infrastructure.Data.Repositories
                 .Include(u => u.Address)
                 .Include(u => u.Posts.Where(c => c.IsDeleted == false))
                 .FirstOrDefaultAsync(u => u.Id == id)
-                ?? throw new NotFoundException("The user was not found");
+                ?? throw new NotFoundException("The user was not found",
+                $"User with id: {id} was not found");
 
             return user;
         }
@@ -53,7 +54,8 @@ namespace InTouchApi.Infrastructure.Data.Repositories
                 .Where(u => u.IsDeleted == false)
                 .Include(u => u.Address)
                 .FirstOrDefaultAsync(u => u.Id == user.Id)
-                ?? throw new NotFoundException("The user was not found");
+                ?? throw new NotFoundException("The user was not found",
+                $"User with id: {user.LastModifiedById} tried to update user with id: {user.Id}, but the user to update was not found");
 
             userInDb.Email = user.Email;
             userInDb.FirstName = user.FirstName;
@@ -92,7 +94,8 @@ namespace InTouchApi.Infrastructure.Data.Repositories
             var userInDb = await _dbcontext.Users
                 .Where(u => u.IsDeleted == false)
                 .FirstOrDefaultAsync(u => u.Id == user.Id)
-                ?? throw new NotFoundException("The user was not found");
+                ?? throw new NotFoundException("The user was not found",
+                $"User with id: {user.LastModifiedById} tried to delete user with id: {user.Id}, but user to delete was not found");
 
             userInDb.IsDeleted = true;
             userInDb.LastModificationDate = DateTime.UtcNow;

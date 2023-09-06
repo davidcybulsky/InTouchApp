@@ -22,7 +22,8 @@ namespace InTouchApi.Infrastructure.Data.Repositories
                 .Include(u => u.Address)
                 .Include(u => u.Posts.Where(c => c.IsDeleted == false))
                 .FirstOrDefaultAsync(u => u.Id == id)
-                ?? throw new NotFoundException("Your account was not found");
+                ?? throw new NotFoundException("Your account was not found",
+                    $"User with id: {id} tried to get its account, but it was not found");
             return user;
         }
 
@@ -32,7 +33,8 @@ namespace InTouchApi.Infrastructure.Data.Repositories
                 .Where(u => u.IsDeleted == false)
                 .Include(u => u.Address)
                 .FirstOrDefaultAsync(u => u.Id == account.Id)
-                ?? throw new NotFoundException("Your account was not found");
+                ?? throw new NotFoundException("Your account was not found",
+                 $"User with id: {account.Id} tried to update its account, but it was not found");
 
             user.FirstName = account.FirstName;
             user.LastName = account.LastName;
@@ -70,7 +72,8 @@ namespace InTouchApi.Infrastructure.Data.Repositories
                 .Where(u => u.IsDeleted == false)
                 .Include(u => u.Address)
                 .FirstOrDefaultAsync(u => u.Id == account.Id)
-                ?? throw new NotFoundException("Your account was not found");
+                ?? throw new NotFoundException("Your account was not found",
+                 $"User with id: {account.Id} tried to delete its account, but it was not found");
 
             user.IsDeleted = true;
 

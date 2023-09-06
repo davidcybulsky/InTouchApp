@@ -17,7 +17,7 @@ namespace InTouchApi.Infrastructure.Services
             _configuration = configuration;
         }
 
-        public async Task<TokenDto> CreateTokenAsync(User user)
+        public Task<TokenDto> CreateTokenAsync(User user)
         {
             var claims = new List<Claim>
             {
@@ -41,12 +41,12 @@ namespace InTouchApi.Infrastructure.Services
 
             var tokenHandler = new JwtSecurityTokenHandler();
 
-            return new TokenDto
+            return Task.FromResult(new TokenDto
             {
                 Token = $"bearer {tokenHandler.WriteToken(token)}",
                 Created = created,
                 Expires = expires
-            };
+            });
         }
     }
 }
