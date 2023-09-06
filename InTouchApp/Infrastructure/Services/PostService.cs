@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using InTouchApi.Application.Authorization;
 using InTouchApi.Application.Exceptions;
 using InTouchApi.Application.Interfaces;
 using InTouchApi.Application.Models;
 using InTouchApi.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace InTouchApi.Infrastructure.Services
 {
@@ -11,12 +13,17 @@ namespace InTouchApi.Infrastructure.Services
         private readonly IPostRepository _repository;
         private readonly IMapper _mapper;
         private readonly IUserHttpContextService _userHttpContextService;
+        private readonly IAuthorizationService _authorizationService;
 
-        public PostService(IPostRepository repository, IMapper mapper, IUserHttpContextService userHttpContextService)
+        public PostService(IPostRepository repository,
+                            IMapper mapper,
+                            IUserHttpContextService userHttpContextService,
+                            IAuthorizationService authorizationService)
         {
             _repository = repository;
             _mapper = mapper;
             _userHttpContextService = userHttpContextService;
+            _authorizationService = authorizationService;
         }
 
         public Task<int> CreatePostAsync(CreatePostDto createPostDto)
@@ -34,6 +41,16 @@ namespace InTouchApi.Infrastructure.Services
 
         public async Task DeletePostAsync(int id)
         {
+            var postToDelete = _repository.GetPostByIdAsync(id);
+
+            var authorizationResult = _authorizationService
+                .AuthorizeAsync(_userHttpContextService.User, postToDelete, new DeleteResourceRequirement()).Result;
+
+            if (!authorizationResult.Succeeded)
+            {
+                throw new ForbiddenException("");
+            }
+
             var userId = _userHttpContextService.Id ?? throw new UnauthorizedException("Unauthorized operation");
             var post = await _repository.GetPostByIdAsync(id);
 
@@ -66,7 +83,17 @@ namespace InTouchApi.Infrastructure.Services
 
         public async Task UpdatePostAsync(int id, UpdatePostDto updatePostDto)
         {
-            var userId = _userHttpContextService.Id ?? throw new UnauthorizedException("Unauthorized operation");
+            var postToEdit = await _repository.GetPostByIdAsync(id) ?? throw new NotFoundException("");
+
+            var authorizationResult = _authorizationService
+                .AuthorizeAsync(_userHttpContextService.User, postToEdit, new EditResourceRequirement()).Result;
+
+            if (!authorizationResult.Succeeded)
+            {
+                throw new ForbiddenException("");
+            }
+
+            var userId = _userHttpContextService.Id ?? throw new UnauthorizedException("Unauthorized");
             var post = _mapper.Map<Post>(updatePostDto);
 
             post.Id = id;

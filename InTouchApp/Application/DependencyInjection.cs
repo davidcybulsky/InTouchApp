@@ -7,7 +7,8 @@ namespace InTouchApi.Application
     {
         public static IServiceCollection AddAplication(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddScoped<IAuthorizationHandler, CanAcceptFriendRequestRequirementHandler>();
+            services.AddScoped<IAuthorizationHandler, AcceptFriendRequestRequirementHandler>();
+            services.AddScoped<IAuthorizationHandler, EditPostRequirementHandler>();
 
             return services;
         }

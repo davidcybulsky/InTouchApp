@@ -35,7 +35,7 @@ namespace InTouchApi.Infrastructure.Services
             var authorizationResult = _authorizationService
                 .AuthorizeAsync(_userHttpContextService.User,
                                 friendship,
-                                new CanAcceptFriendRequestRequirement()).Result;
+                                new AcceptFriendRequestRequirement()).Result;
 
             if (!authorizationResult.Succeeded)
             {

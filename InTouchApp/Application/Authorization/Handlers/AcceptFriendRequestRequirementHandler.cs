@@ -4,9 +4,9 @@ using System.Security.Claims;
 
 namespace InTouchApi.Application.Authorization
 {
-    public class CanAcceptFriendRequestRequirementHandler : AuthorizationHandler<CanAcceptFriendRequestRequirement, Friendship>
+    public class AcceptFriendRequestRequirementHandler : AuthorizationHandler<AcceptFriendRequestRequirement, Friendship>
     {
-        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, CanAcceptFriendRequestRequirement requirement, Friendship resource)
+        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, AcceptFriendRequestRequirement requirement, Friendship resource)
         {
             var user = context.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var userId = int.Parse(user);

@@ -2,9 +2,9 @@
 
 namespace InTouchApi.Application.Authorization
 {
-    public class CanAcceptFriendRequestRequirement : IAuthorizationRequirement
+    public class AcceptFriendRequestRequirement : IAuthorizationRequirement
     {
-        public CanAcceptFriendRequestRequirement()
+        public AcceptFriendRequestRequirement()
         {
 
         }
