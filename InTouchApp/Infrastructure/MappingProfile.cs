@@ -26,6 +26,8 @@ namespace InTouchApi.Infrastructure
             CreateMap<Comment, IncludeCommentDto>();
             CreateMap<Reaction, IncludeReactionDto>();
             CreateMap<UpdateCommentDto, PostComment>();
+            CreateMap<CreateReactionDto, PostReaction>();
+            CreateMap<CreateReactionDto, CommentReaction>();
         }
     }
 }

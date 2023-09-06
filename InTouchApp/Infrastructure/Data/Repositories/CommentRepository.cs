@@ -16,6 +16,16 @@ namespace InTouchApi.Infrastructure.Data.Repositories
 
         public async Task<int> CreatePostCommentAsync(PostComment comment)
         {
+            var doesPostExist = (await _apiContext.Posts
+                .Where(p => p.IsDeleted == false)
+                .FirstOrDefaultAsync(p => p.Id == comment.PostId)) != null;
+
+            if (!doesPostExist)
+            {
+                throw new NotFoundException("The post was not found",
+                    $"User with id: {comment.CreatedById} tried to create comment for post with id: {comment.PostId}, but post was not found");
+            }
+
             await _apiContext.AddAsync(comment);
             await _apiContext.SaveChangesAsync();
             return comment.Id;

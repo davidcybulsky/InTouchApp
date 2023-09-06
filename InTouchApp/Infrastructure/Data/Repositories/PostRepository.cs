@@ -47,6 +47,9 @@ namespace InTouchApi.Infrastructure.Data.Repositories
                 .ThenInclude(c => c.Author)
                 .Include(p => p.Comments.Where(c => c.IsDeleted == false))
                 .ThenInclude(c => c.CommentReactions.Where(c => c.IsDeleted == false))
+                .ThenInclude(cr => cr.Author)
+                .Include(p => p.Reactions.Where(r => r.IsDeleted == false))
+                .ThenInclude(r => r.Author)
                 .Where(p => p.IsDeleted == false)
                 .ToListAsync();
 
@@ -56,12 +59,14 @@ namespace InTouchApi.Infrastructure.Data.Repositories
         public async Task<Post> GetPostByIdAsync(int id)
         {
             var post = await _dbContext.Posts
-                .AsNoTracking()
+               .AsNoTracking()
                 .Include(p => p.Author)
                 .Include(p => p.Comments.Where(c => c.IsDeleted == false))
                 .ThenInclude(c => c.Author)
                 .Include(p => p.Comments.Where(c => c.IsDeleted == false))
                 .ThenInclude(c => c.CommentReactions.Where(c => c.IsDeleted == false))
+                .Include(p => p.Reactions.Where(r => r.IsDeleted == false))
+                .ThenInclude(r => r.Author)
                 .Where(p => p.IsDeleted == false)
                 .FirstOrDefaultAsync(p => p.Id == id)
                 ?? throw new NotFoundException("The post was not found",

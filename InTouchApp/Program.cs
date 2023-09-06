@@ -29,8 +29,8 @@ app.UseCors(opt => opt
         .AllowCredentials()
         .WithOrigins(configuration["Cors:Client"]));
 
-//if (!app.Environment.IsDevelopment())
-app.UseMiddleware<ExceptionHandlingMiddleware>();
+if (!app.Environment.IsDevelopment())
+    app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseHttpsRedirection();
 
