@@ -32,6 +32,7 @@ namespace InTouchApi.Infrastructure
             services.AddScoped<IFriendService, FriendService>();
             services.AddScoped<ICommentService, CommentService>();
             services.AddScoped<IReactionService, ReactionService>();
+            services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IUserHttpContextService, UserHttpContextService>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IPostRepository, PostRepository>();

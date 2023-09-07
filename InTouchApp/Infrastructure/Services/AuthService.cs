@@ -16,18 +16,21 @@ namespace InTouchApi.Infrastructure.Services
         private readonly IMapper _mapper;
         private readonly IPasswordHasher<User> _passwordHasher;
         private readonly IUserHttpContextService _userHttpContextService;
+        private readonly IEmailService _emailService;
 
         public AuthService(IAuthRepository repository,
             ITokenService tokenService,
             IMapper mapper,
             IPasswordHasher<User> passwordHasher,
-            IUserHttpContextService userHttpContextService)
+            IUserHttpContextService userHttpContextService,
+            IEmailService emailService)
         {
             _repository = repository;
             _tokenService = tokenService;
             _mapper = mapper;
             _passwordHasher = passwordHasher;
             _userHttpContextService = userHttpContextService;
+            _emailService = emailService;
         }
 
         public async Task<TokenDto> LoginAsync(LoginDto loginDto)
@@ -54,6 +57,8 @@ namespace InTouchApi.Infrastructure.Services
             user.Role = ROLES.USER;
             user.PasswordHash = _passwordHasher.HashPassword(user, signUpDto.Password);
             var id = _repository.SignUpUserAsync(user);
+
+            _emailService.SendEmailAsync(user.Email, "Account creation", "Congratulations! Your account was created.");
 
             Log.Logger.Information($"User with email {user.Email} signed up and received id: {id}");
 
