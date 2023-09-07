@@ -1,4 +1,5 @@
 ﻿using InTouchApi.Application.Authorization;
+using InTouchApi.Application.Authorization.Handlers;
 using Microsoft.AspNetCore.Authorization;
 
 namespace InTouchApi.Application
@@ -10,6 +11,9 @@ namespace InTouchApi.Application
             services.AddScoped<IAuthorizationHandler, AcceptFriendRequestRequirementHandler>();
             services.AddScoped<IAuthorizationHandler, EditPostRequirementHandler>();
             services.AddScoped<IAuthorizationHandler, DeletePostRequirementHandler>();
+
+            services.AddScoped<IAuthorizationHandler, EditPostCommentRequirementHandler>();
+            services.AddScoped<IAuthorizationHandler, DeletePostCommentRequirementHandler>();
 
             return services;
         }

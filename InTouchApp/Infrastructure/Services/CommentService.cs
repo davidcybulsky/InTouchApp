@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using InTouchApi.Application.Authorization;
 using InTouchApi.Application.Exceptions;
 using InTouchApi.Application.Interfaces;
 using InTouchApi.Application.Models;
 using InTouchApi.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Serilog;
 
 namespace InTouchApi.Infrastructure.Services
@@ -12,14 +14,17 @@ namespace InTouchApi.Infrastructure.Services
         private readonly ICommentRepository _repository;
         private readonly IMapper _mapper;
         private readonly IUserHttpContextService _userHttpContextService;
+        private readonly IAuthorizationService _authorizationService;
 
         public CommentService(ICommentRepository repository,
                               IMapper mapper,
-                              IUserHttpContextService userHttpContextService)
+                              IUserHttpContextService userHttpContextService,
+                              IAuthorizationService authorizationService)
         {
             _repository = repository;
             _mapper = mapper;
             _userHttpContextService = userHttpContextService;
+            _authorizationService = authorizationService;
         }
 
         public async Task DeletePostCommentAsync(int id)
@@ -27,7 +32,17 @@ namespace InTouchApi.Infrastructure.Services
             var userId = _userHttpContextService.Id ??
                 throw new UnauthorizedException("Unauthorized",
                 $"Unauthorized user tried to delete post comment with id: {id}");
+
             var postComment = await _repository.GetPostCommentByIdAsync(id);
+
+            var authorizationResult = _authorizationService
+                .AuthorizeAsync(_userHttpContextService.User, postComment, new DeleteResourceRequirement()).Result;
+
+            if (!authorizationResult.Succeeded)
+            {
+                throw new ForbiddenException("You can not delete the comment",
+                    $"User with id: {userId} tried to delete post comment with id: {postComment.PostId}, which is a forbidden operation");
+            }
 
             postComment.LastModifiedById = userId;
 
@@ -38,9 +53,21 @@ namespace InTouchApi.Infrastructure.Services
 
         public async Task UpdatePostCommentAsync(int id, UpdateCommentDto updateCommentDto)
         {
+            var postCommentToEdit = await _repository.GetPostCommentByIdAsync(id);
+
             var userId = _userHttpContextService.Id
                 ?? throw new UnauthorizedException("Unauthorized",
                 $"Unauthorized user tried to update post comment with id: {id}");
+
+            var authorizationResult = _authorizationService
+                .AuthorizeAsync(_userHttpContextService.User, postCommentToEdit, new EditResourceRequirement()).Result;
+
+            if (!authorizationResult.Succeeded)
+            {
+                throw new ForbiddenException("You can not update the comment",
+                    $"User with id: {userId} tried to update post comment with id: {postCommentToEdit.Id}, which is a forbidden operation");
+            }
+
             var postComment = _mapper.Map<PostComment>(updateCommentDto);
 
             postComment.Id = id;
