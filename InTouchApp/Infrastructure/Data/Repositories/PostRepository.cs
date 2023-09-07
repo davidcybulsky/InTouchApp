@@ -30,9 +30,23 @@ namespace InTouchApi.Infrastructure.Data.Repositories
                 $"User with id: {post.LastModifiedById} tried to delete post with id: {post.Id}, but it was not found");
 
             postInDb.IsDeleted = true;
-
             postInDb.LastModifiedById = post.LastModifiedById;
-            post.LastModificationDate = DateTime.UtcNow;
+            postInDb.LastModificationDate = DateTime.UtcNow;
+
+            var postComments = await _dbContext.PostComments
+                .Where(pc => pc.IsDeleted == false && pc.PostId == post.Id)
+                .ToListAsync();
+
+            foreach (var postComment in postComments)
+            {
+                postComment.IsDeleted = true;
+                postComment.LastModifiedById = post.LastModifiedById;
+                postComment.LastModificationDate = DateTime.UtcNow;
+            }
+
+            var postReactions = await _dbContext.PostReactions
+                .Where(pr => pr.IsDeleted == false && pr.PostId == post.Id)
+                .ToListAsync();
 
             await _dbContext.SaveChangesAsync();
 

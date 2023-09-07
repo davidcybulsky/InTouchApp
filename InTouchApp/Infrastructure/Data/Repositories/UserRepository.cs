@@ -101,6 +101,62 @@ namespace InTouchApi.Infrastructure.Data.Repositories
             userInDb.LastModificationDate = DateTime.UtcNow;
             userInDb.LastModifiedById = user.LastModifiedById;
 
+            var posts = await _dbcontext.Posts
+    .Where(u => u.IsDeleted == false && u.AuthorId == user.Id)
+    .ToListAsync();
+
+            foreach (var post in posts)
+            {
+                post.IsDeleted = true;
+                post.LastModifiedById = user.LastModifiedById;
+                post.LastModificationDate = DateTime.UtcNow;
+            }
+
+            var postComments = await _dbcontext.PostComments
+                .Where(u => u.IsDeleted == false && u.UserId == user.Id)
+                .ToListAsync();
+
+            foreach (var postComment in postComments)
+            {
+                postComment.IsDeleted = true;
+                postComment.LastModifiedById = user.LastModifiedById;
+                postComment.LastModificationDate = DateTime.UtcNow;
+            }
+
+            var friendships = _dbcontext.Friendships
+                .Where(f => f.IsDeleted == false
+                        && (f.FriendId == user.Id || f.UserId == user.Id)
+                        ).ToList();
+
+            foreach (var friendship in friendships)
+            {
+                friendship.IsDeleted = true;
+                friendship.LastModifiedById = user.LastModifiedById;
+                friendship.LastModificationDate = DateTime.UtcNow;
+            }
+
+            var postReactions = await _dbcontext.PostReactions
+                .Where(f => f.IsDeleted == false && f.UserId == user.Id)
+                .ToListAsync();
+
+            foreach (var postReaction in postReactions)
+            {
+                postReaction.IsDeleted = true;
+                postReaction.LastModifiedById = user.LastModifiedById;
+                postReaction.LastModificationDate = DateTime.UtcNow;
+            }
+
+            var commentReactions = await _dbcontext.CommentReactions
+                .Where(f => f.IsDeleted == false && f.UserId == user.Id)
+                .ToListAsync();
+
+            foreach (var commentReaction in commentReactions)
+            {
+                commentReaction.IsDeleted = true;
+                commentReaction.LastModifiedById = user.LastModifiedById;
+                commentReaction.LastModificationDate = DateTime.UtcNow;
+            }
+
             await _dbcontext.SaveChangesAsync();
         }
     }

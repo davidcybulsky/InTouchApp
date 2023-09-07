@@ -47,6 +47,17 @@ namespace InTouchApi.Infrastructure.Services
                     $"User with id: {userId}, tried accept friend request with friendId {friendId}, which is a forbidden operation");
             }
 
+            var authorizationResult2 = _authorizationService
+                    .AuthorizeAsync(_userHttpContextService.User,
+                    friendship2,
+                    new AcceptFriendRequestRequirement()).Result;
+
+            if (!authorizationResult2.Succeeded)
+            {
+                throw new ForbiddenException("You can not accept the request",
+                    $"User with id: {userId}, tried accept friend request with friendId {friendId}, which is a forbidden operation");
+            }
+
             friendship.IsAccepted = true;
             friendship.LastModifiedById = userId;
 

@@ -15,6 +15,9 @@ namespace InTouchApi.Application
             services.AddScoped<IAuthorizationHandler, EditPostCommentRequirementHandler>();
             services.AddScoped<IAuthorizationHandler, DeletePostCommentRequirementHandler>();
 
+            services.AddScoped<IAuthorizationHandler, EditOrDeletePostReactionRequirementHandler>();
+            services.AddScoped<IAuthorizationHandler, EditOrDeleteCommentReactionRequirementHandler>();
+
             return services;
         }
     }

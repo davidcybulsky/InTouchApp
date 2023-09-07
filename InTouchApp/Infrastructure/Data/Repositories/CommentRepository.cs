@@ -44,6 +44,17 @@ namespace InTouchApi.Infrastructure.Data.Repositories
             postComment.LastModifiedById = comment.LastModifiedById;
             postComment.LastModificationDate = DateTime.UtcNow;
 
+            var commentReactions = await _apiContext.CommentReactions
+                .Where(cr => cr.IsDeleted == false && cr.CommentId == comment.Id)
+                .ToListAsync();
+
+            foreach (var reaction in commentReactions)
+            {
+                reaction.IsDeleted = true;
+                reaction.LastModifiedById = comment.LastModifiedById;
+                reaction.LastModificationDate = DateTime.UtcNow;
+            }
+
             await _apiContext.SaveChangesAsync();
         }
 

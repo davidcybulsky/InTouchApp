@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
+using InTouchApi.Application.Authorization;
 using InTouchApi.Application.Exceptions;
 using InTouchApi.Application.Interfaces;
 using InTouchApi.Application.Interfaces.Reaction;
 using InTouchApi.Application.Models;
 using InTouchApi.Domain.Constants;
 using InTouchApi.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Serilog;
 
 namespace InTouchApi.Infrastructure.Services
@@ -14,14 +16,17 @@ namespace InTouchApi.Infrastructure.Services
         private readonly IReactionRepository _repository;
         private readonly IUserHttpContextService _userHttpContextService;
         private readonly IMapper _mapper;
+        private readonly IAuthorizationService _authorizationService;
 
         public ReactionService(IReactionRepository repository,
                                 IUserHttpContextService userHttpContextService,
-                                IMapper mapper)
+                                IMapper mapper,
+                                IAuthorizationService authorizationService)
         {
             _repository = repository;
             _userHttpContextService = userHttpContextService;
             _mapper = mapper;
+            _authorizationService = authorizationService;
         }
 
         public async Task<int> CreateCommentReactionAsync(int commentId, CreateReactionDto createReactionDto)
@@ -98,11 +103,20 @@ namespace InTouchApi.Infrastructure.Services
 
         public async Task DeleteCommentReactionAsync(int reactionId)
         {
+            var reaction = await _repository.GetCommentReactionAsync(reactionId);
+
             var userId = _userHttpContextService.Id
                 ?? throw new UnauthorizedException("Unauthorized",
                 $"Unauthorized user tried to delete comment reaction with reactionId: {reactionId}");
 
-            var reaction = await _repository.GetCommentReactionAsync(reactionId);
+            var authorizationResult = _authorizationService
+                .AuthorizeAsync(_userHttpContextService.User, reaction, new EditOrDeleteResourceRequirement()).Result;
+
+            if (!authorizationResult.Succeeded)
+            {
+                throw new ForbiddenException("You can not delete the reaction",
+                    $"User with id: {userId} tried to delete comment reaction with id: {reactionId}, which is a forbidden operation");
+            }
 
             reaction.LastModifiedById = userId;
 
@@ -119,6 +133,15 @@ namespace InTouchApi.Infrastructure.Services
 
             var reaction = await _repository.GetPostReactionAsync(reactionId);
 
+            var authorizationResult = _authorizationService
+                .AuthorizeAsync(_userHttpContextService.User, reaction, new EditOrDeleteResourceRequirement()).Result;
+
+            if (!authorizationResult.Succeeded)
+            {
+                throw new ForbiddenException("You can not delete the reaction",
+                    $"User with id: {userId} tried to delete post reaction with id: {reactionId}, which is a forbidden operation");
+            }
+
             reaction.LastModifiedById = userId;
 
             await _repository.DeletePostReactionAsync(reaction);
@@ -128,9 +151,20 @@ namespace InTouchApi.Infrastructure.Services
 
         public async Task UpdateCommentReactionAsync(int reactionId, UpdateReactionDto updateReactionDto)
         {
+            var reactionToUpdate = _repository.GetCommentReactionAsync(reactionId);
+
             var userId = _userHttpContextService.Id
                 ?? throw new UnauthorizedException("Unauthorized",
                 $"Unauthorized user tried to update comment reaction with reactionId: {reactionId}");
+
+            var authorizationResult = _authorizationService
+                .AuthorizeAsync(_userHttpContextService.User, reactionToUpdate, new EditOrDeleteResourceRequirement()).Result;
+
+            if (!authorizationResult.Succeeded)
+            {
+                throw new ForbiddenException("You can not update the reaction",
+                    $"User with id: {userId} tried to update comment reaction with id: {reactionId}, which is a forbidden operation");
+            }
 
             var reaction = _mapper.Map<CommentReaction>(updateReactionDto);
 
@@ -144,9 +178,20 @@ namespace InTouchApi.Infrastructure.Services
 
         public async Task UpdatePostReactionAsync(int reactionId, UpdateReactionDto updateReactionDto)
         {
+            var reactionToUpdate = _repository.GetPostReactionAsync(reactionId);
+
             var userId = _userHttpContextService.Id
                 ?? throw new UnauthorizedException("Unauthorized",
                 $"Unauthorized user tried to update post reaction with reactionId: {reactionId}");
+
+            var authorizationResult = _authorizationService
+                .AuthorizeAsync(_userHttpContextService.User, reactionToUpdate, new EditOrDeleteResourceRequirement()).Result;
+
+            if (!authorizationResult.Succeeded)
+            {
+                throw new ForbiddenException("You can not update the reaction",
+                    $"User with id: {userId} tried to update post reaction with id: {reactionId}, which is a forbidden operation");
+            }
 
             var reaction = _mapper.Map<PostReaction>(updateReactionDto);
 
