@@ -19,6 +19,8 @@ namespace InTouchApi.Infrastructure.Data
 
         public DbSet<Friendship> Friendships { get; set; }
 
+        public DbSet<Message> Messages { get; set; }
+
         public ApiContext(DbContextOptions<ApiContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -73,6 +75,17 @@ namespace InTouchApi.Infrastructure.Data
                 builder.HasMany(c => c.CommentReactions)
                 .WithOne()
                 .HasForeignKey(r => r.CommentId);
+            });
+
+            builder.Entity<Message>(builder =>
+            {
+                builder.HasOne(m => m.Sender)
+                .WithMany()
+                .HasForeignKey(m => m.SenderId);
+
+                builder.HasOne(m => m.Recipient)
+                .WithMany()
+                .HasForeignKey(m => m.RecipientId);
             });
         }
     }
