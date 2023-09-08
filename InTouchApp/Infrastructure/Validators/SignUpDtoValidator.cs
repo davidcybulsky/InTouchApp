@@ -20,8 +20,11 @@ namespace InTouchApi.Infrastructure.Validators
             RuleFor(x => x.Password)
                 .NotEmpty()
                 .MinimumLength(8)
-                .MaximumLength(32)
-                .Equal(x => x.ConfirmPassword);
+                .MaximumLength(32);
+
+            RuleFor(x => x.Password)
+                .Equal(x => x.ConfirmPassword)
+                .WithMessage("Password and confirm password have to be the same");
         }
     }
 }
