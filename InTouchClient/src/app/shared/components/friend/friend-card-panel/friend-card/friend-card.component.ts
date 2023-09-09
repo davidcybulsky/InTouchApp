@@ -14,5 +14,14 @@ import { RouterModule } from '@angular/router';
   styleUrls: ['./friend-card.component.css']
 })
 export class FriendCardComponent {
+  
   @Input() friend : FriendModel | null = null;
+
+  onOpenMessageWindow() {
+  
+  }
+
+  onCloseMessageWindow() {
+
+  }
 }

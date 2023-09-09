@@ -37,5 +37,4 @@ export class FriendService {
   sendFriendRequest(friendId: number): Observable<void> {
     return this.httpClient.post<void>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${FriendServiceEndpoints.SEND_FRIEND_REQUEST}/${friendId}`,null)
   }
-
 }

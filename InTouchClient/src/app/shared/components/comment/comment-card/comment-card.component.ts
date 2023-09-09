@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IncludeCommentModel } from 'src/app/core/models/include.comment.model';
 
@@ -12,5 +12,16 @@ import { IncludeCommentModel } from 'src/app/core/models/include.comment.model';
   styleUrls: ['./comment-card.component.css']
 })
 export class CommentCardComponent {
-  @Input() comment: IncludeCommentModel | null = null;
+  
+  @Input() comment: IncludeCommentModel | null = null
+  @Output() likeComment = new EventEmitter<number>()
+  @Output() dislikeComment = new EventEmitter<number>()
+
+  onLikeComment() {
+    this.dislikeComment.emit(this.comment?.id)
+  }
+
+  onDislikeComment() {
+    this.dislikeComment.emit(this.comment?.id)
+  }
 }

@@ -20,7 +20,6 @@ export class CreateQuickPostComponent implements OnInit {
 
   quickPostForm!: FormGroup;
   @Output() CreateQuickPost = new EventEmitter<CreatePostModel>();
-  @Output() CreateFullPost = new EventEmitter<void>();
 
   constructor(private formBuilder: FormBuilder) { }
   
@@ -33,10 +32,6 @@ export class CreateQuickPostComponent implements OnInit {
 
   onCreateQuickPost(){
     this.CreateQuickPost.emit(this.quickPostForm.value);
-  }
-
-  onCreateFullPost() {
-    this.CreateFullPost.emit();
   }
 
 }

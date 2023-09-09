@@ -1,2 +1,6 @@
-<p>{{comment?.author?.firstName}} {{comment?.author?.lastName}}</p>
-<p>{{comment?.content}}</p>
+<div class="comment">
+    <p>{{comment?.author?.firstName}} {{comment?.author?.lastName}}</p>
+    <p>{{comment?.content}}</p>
+    <button class="btn" (click)="onLikeComment()">Like</button>
+    <button class="btn" (click)="onDislikeComment()">Dislike</button>
+</div>

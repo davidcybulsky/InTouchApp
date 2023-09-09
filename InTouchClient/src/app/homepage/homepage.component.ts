@@ -11,6 +11,10 @@ import { FriendService } from '../core/services/friend.service';
 import { FriendCardPanelComponent } from '../shared/components/friend/friend-card-panel/friend-card-panel.component';
 import { FriendRequestsPanelComponent } from '../shared/components/friend/friend-requests-panel/friend-requests-panel.component';
 import { PostPageComponent } from '../shared/components/post/post-page/post-page.component';
+import { CommentService } from '../core/services/comment.service';
+import { CreateCommentModel } from '../core/services/create.comment.model';
+import { ReactionService } from '../core/services/reaction.service';
+import { CreateQuickPostModel } from '../core/models/create.quick.post.model';
 
 @Component({
   standalone: true,
@@ -35,7 +39,10 @@ export class HomepageComponent implements OnInit, OnDestroy {
   friends: FriendModel[] = []
   friendRequests: FriendModel[] = []
   
-  constructor(private postService: PostService, private friendService: FriendService) { }
+  constructor(private postService: PostService, 
+              private friendService: FriendService,
+              private commentService: CommentService,
+              private reactionService: ReactionService) { }
   
   ngOnInit(): void {
 
@@ -61,5 +68,25 @@ export class HomepageComponent implements OnInit, OnDestroy {
   ngOnDestroy() : void {
     this.destroyed$.next(true)
     this.destroyed$.complete()
+  }
+
+  onCreateQuickPost(model: CreateQuickPostModel) {
+    this.postService.createQuickPost(model).subscribe()
+  }
+
+  onCreateComment(id: number, model: CreateCommentModel) {
+    this.commentService.createPostComment(id, model).subscribe()
+  }
+
+  onLikePost(id: number) {
+    this.reactionService.addPostLike(id).subscribe()
+  }
+
+  onDislikePost(id: number) {
+    this.reactionService.addPostDisLike(id).subscribe()
+  }
+
+  onAcceptFriendRequest(id: number) {
+    this.friendService.acceptFriendRequest(id).subscribe()
   }
 }

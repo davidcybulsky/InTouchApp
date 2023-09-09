@@ -1,2 +1,5 @@
 <app-post-card *ngFor="let post of posts"
-[post]="post"></app-post-card>
+[post]="post"
+(createComment)="onCreateComment"
+(likePost)="onLikePost"
+(dislikePost)="onDislikePost"></app-post-card>
