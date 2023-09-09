@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 import { FormsModule, NgForm } from '@angular/forms';
 import { CommentService } from 'src/app/core/services/comment.service';
 import { ReactionService } from 'src/app/core/services/reaction.service';
-import { CommentCardComponent } from '../../comment/comment-card/comment-card.component';
+import { CommentCardComponent } from '../../../comment/comment-card/comment-card.component';
 
 @Component({
   selector: 'app-post-card',

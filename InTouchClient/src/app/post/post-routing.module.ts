@@ -4,8 +4,8 @@ import { RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: "",
-    loadComponent: () => import('src/app/post/postpage/postpage.component')
-      .then(c => c.PostpageComponent)
+    loadComponent: () => import('src/app/post/post-details/post-details.component')
+      .then(c => c.PostDetailsComponent)
   },
   {
     path: "create",

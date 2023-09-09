@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PostpageComponent } from './postpage.component';
+import { PostpageComponent } from './post-details.component';
 
 describe('PostpageComponent', () => {
   let component: PostpageComponent;
