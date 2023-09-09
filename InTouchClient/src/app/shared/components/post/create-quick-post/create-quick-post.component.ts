@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { PostService } from 'src/app/core/services/post.service';
 import { RouterModule } from '@angular/router';
+import { CreatePostModel } from 'src/app/core/models/create.post.model';
 
 @Component({
   selector: 'app-create-quick-post',
@@ -18,9 +19,10 @@ import { RouterModule } from '@angular/router';
 export class CreateQuickPostComponent implements OnInit {
 
   quickPostForm!: FormGroup;
+  @Output() CreateQuickPost = new EventEmitter<CreatePostModel>();
+  @Output() CreateFullPost = new EventEmitter<void>();
 
-  constructor(private postService: PostService,
-              private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder) { }
   
   ngOnInit(): void {
     this.quickPostForm = this.formBuilder.group({
@@ -30,7 +32,11 @@ export class CreateQuickPostComponent implements OnInit {
   }
 
   onCreateQuickPost(){
-    this.postService.createQuickPost(this.quickPostForm.value)
+    this.CreateQuickPost.emit(this.quickPostForm.value);
+  }
+
+  onCreateFullPost() {
+    this.CreateFullPost.emit();
   }
 
 }
