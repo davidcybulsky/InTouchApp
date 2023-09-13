@@ -2,7 +2,6 @@
 using InTouchApi.Application.Exceptions;
 using InTouchApi.Application.Interfaces;
 using InTouchApi.Application.Models;
-using InTouchApi.Domain.Constants;
 using InTouchApi.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Serilog;
@@ -38,20 +37,6 @@ namespace InTouchApi.Infrastructure.Services
             var hashedPassword = _passwordHasher.HashPassword(user, createUserDto.Password);
 
             user.PasswordHash = hashedPassword;
-
-            if (user.Role.ToUpper() == "ADMIN")
-            {
-                user.Role = ROLES.ADMIN;
-            }
-            else if (user.Role.ToUpper() == "USER")
-            {
-                user.Role = ROLES.USER;
-            }
-            else
-            {
-                throw new BadRequestException("Choose a valid role",
-                    $"User with id: {userId} tried to create user with invalid role: {user.Role}");
-            }
 
             user.CreationDate = DateTime.UtcNow;
             user.CreatedById = userId;
@@ -122,20 +107,6 @@ namespace InTouchApi.Infrastructure.Services
                 $"Unauthorized user tried to change role for user with id: {id}");
 
             var user = await _repository.GetUserByIdAsync(id);
-
-            if (updateRoleDto.Role.ToUpper() == "ADMIN")
-            {
-                user.Role = ROLES.ADMIN;
-            }
-            else if (updateRoleDto.Role.ToUpper() == "USER")
-            {
-                user.Role = ROLES.USER;
-            }
-            else
-            {
-                throw new BadRequestException("Choose a valid role",
-                    $"User with id: {userId} tried to change role for user with id: {user.Id}, but role was invalid: {updateRoleDto.Role}");
-            }
 
             user.LastModifiedById = userId;
 

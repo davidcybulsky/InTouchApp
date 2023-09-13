@@ -72,6 +72,7 @@ namespace InTouchApi.Infrastructure
             services.AddScoped<IValidator<CreateUserDto>, CreateUserDtoValidator>();
             services.AddScoped<IValidator<CreateReactionDto>, CreateReactionDtoValidator>();
             services.AddScoped<IValidator<UpdateReactionDto>, UpdateReactionDtoValidator>();
+            services.AddScoped<IValidator<UpdateUserDto>, UpdateUserDtoValidator>();
 
             services.AddSignalR();
 

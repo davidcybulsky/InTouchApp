@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using InTouchApi.Application.Models;
+using InTouchApi.Domain.Constants;
 using InTouchApi.Infrastructure.Data;
 
 namespace InTouchApi.Infrastructure.Validators
@@ -25,6 +26,14 @@ namespace InTouchApi.Infrastructure.Validators
             RuleFor(x => x.Password)
                 .Equal(x => x.ConfirmPassword)
                 .WithMessage("Password and confirm password have to be the same");
+
+            RuleFor(x => x.Role)
+                .NotEmpty()
+                .Must(value =>
+                {
+                    return (value == ROLES.ADMIN) || (value == ROLES.USER);
+                })
+                .WithMessage("Invalid role");
         }
     }
 }
