@@ -1,72 +1,71 @@
 /* You can add global styles to this file, and also import other style files */
 @font-face {
-    font-family: "Lato";
-    src: local("Lato"), url("./assets/fonts/Lato/Lato-Regular.ttf") format("truetype");
-  }
+  font-family: "Lato";
+  src: local("Lato"), url("./assets/fonts/Lato/Lato-Regular.ttf") format("truetype");
+}
 
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-size: 24px;
-    font-family: 'Lato', sans-serif;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-size: 24px;
+  font-family: 'Lato', sans-serif;
 }
 
 html, body {
-    height: 100%;
-    width: 100%;
+  height: 100%;
+  width: 100%;
 }
 
 header, footer, main {
-    width: 60%;
-    padding: 0 0.5rem;
+  width: 60%;
+  padding: 0 0.5rem;
 }
 
 aside {
-    vertical-align: top;
-    width: 20%;
-    padding: 0 0.2rem;
+  vertical-align: top;
+  width: 20%;
+  padding: 0 0.2rem;
 }
 
 main, aside {
-    display: inline-block;
+  display: inline-block;
 }
 
 header, footer {
-    margin: 0 auto;
+  margin: 0 auto;
 }
 
 input {
-    padding: 0.2rem 0.5rem;
-    border-radius: 0.5rem;
-    margin: 0.5rem 0;
-    border: 1px solid blue;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.5rem;
+  margin: 0.5rem 0;
+  border: 1px solid blue;
 }
 
 .form-wrapper {
-    width: min-content;
-    margin: 3rem auto;
-    border: 1px solid blue;
-    border-radius: 1rem;
-    padding: 1rem;
+  width: min-content;
+  margin: 3rem auto;
+  border: 1px solid blue;
+  border-radius: 1rem;
+  padding: 1rem;
 }
 
 .btn {
-    padding: 0.2rem 0.5rem;
-    border-radius: 0.5rem;
-    border: none;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.5rem;
+  border: none;
 }
 
 input.invalid {
-    background-color: ivory;
-    border: none;
-    outline: 2px solid red;
+  background-color: ivory;
+  border: none;
+  outline: 2px solid red;
 }
 
 .form-error {
-    display: block;
-    font-size: 0.5rem;
-    margin: 0 0 0.5rem 0;
-    color: red;
+  display: block;
+  font-size: 0.5rem;
+  margin: 0 0 0.5rem 0;
+  color: red;
 }
-  

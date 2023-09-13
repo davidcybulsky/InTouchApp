@@ -1,9 +1,9 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
+import {CommonModule} from '@angular/common';
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {Router, RouterModule} from '@angular/router';
 
-import { AuthService } from 'src/app/core/services/auth.service';
+import {AuthService} from 'src/app/core/services/auth.service';
 
 @Component({
   standalone: true,
@@ -21,15 +21,16 @@ export class LoginComponent implements OnInit {
   loginForm!: FormGroup
   isSubmitted: boolean | null = null;
 
-  constructor(private authService: AuthService, 
+  constructor(private authService: AuthService,
               private formBuilder: FormBuilder,
-              private router: Router) { }
+              private router: Router) {
+  }
 
   ngOnInit(): void {
     this.isSubmitted = false
     this.InitForm()
   }
-  
+
   InitForm() {
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],

@@ -70,6 +70,10 @@ namespace InTouchApi.Infrastructure
             services.AddScoped<IValidator<SignUpDto>, SignUpDtoValidator>();
             services.AddScoped<IValidator<UpdatePasswordDto>, UpdatePasswordDtoValidator>();
             services.AddScoped<IValidator<CreateUserDto>, CreateUserDtoValidator>();
+            services.AddScoped<IValidator<CreateReactionDto>, CreateReactionDtoValidator>();
+            services.AddScoped<IValidator<UpdateReactionDto>, UpdateReactionDtoValidator>();
+
+            services.AddSignalR();
 
             return services;
         }

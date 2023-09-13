@@ -4,7 +4,6 @@ using InTouchApi.Application.Exceptions;
 using InTouchApi.Application.Interfaces;
 using InTouchApi.Application.Interfaces.Reaction;
 using InTouchApi.Application.Models;
-using InTouchApi.Domain.Constants;
 using InTouchApi.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Serilog;
@@ -29,7 +28,7 @@ namespace InTouchApi.Infrastructure.Services
             _authorizationService = authorizationService;
         }
 
-        public async Task<int> CreateCommentReactionAsync(int commentId, CreateReactionDto createReactionDto)
+        public async Task CreateCommentReactionAsync(int commentId, CreateReactionDto createReactionDto)
         {
             var userId = _userHttpContextService.Id
                 ?? throw new UnauthorizedException("Unauthorized",
@@ -37,35 +36,18 @@ namespace InTouchApi.Infrastructure.Services
 
             var reaction = _mapper.Map<CommentReaction>(createReactionDto);
 
-            if (reaction.ReactionType.ToUpper() == REACTIONS.LIKE)
-            {
-                reaction.ReactionType = REACTIONS.LIKE;
-            }
-            else if (reaction.ReactionType.ToUpper() == REACTIONS.DISLIKE)
-            {
-                reaction.ReactionType = REACTIONS.DISLIKE;
-            }
-            else
-            {
-                throw new BadRequestException("Bad request. Invalid reaction type.",
-                    $"User with id: {userId} tried to react on comment with id: {commentId}, but reaction type: {reaction.ReactionType} is in correct.");
-            }
-
             reaction.CommentId = commentId;
             reaction.UserId = userId;
 
             reaction.CreatedById = userId;
             reaction.CreationDate = DateTime.UtcNow;
 
-            var reactionId = await _repository.CreateCommentReactionAsync(reaction);
+            await _repository.CreateCommentReactionAsync(reaction);
 
-            Log.Logger.Information($"User with id: {userId} created reaction with id: {reactionId} to comment with id: {commentId}");
-
-            return reactionId;
-
+            Log.Logger.Information($"User with id: {userId} created reaction with id: {reaction.Id} to comment with id: {commentId}");
         }
 
-        public async Task<int> CreatePostReactionAsync(int postId, CreateReactionDto createReactionDto)
+        public async Task CreatePostReactionAsync(int postId, CreateReactionDto createReactionDto)
         {
             var userId = _userHttpContextService.Id
                 ?? throw new UnauthorizedException("Unauthorized",
@@ -73,32 +55,16 @@ namespace InTouchApi.Infrastructure.Services
 
             var reaction = _mapper.Map<PostReaction>(createReactionDto);
 
-            if (reaction.ReactionType.ToUpper() == REACTIONS.LIKE)
-            {
-                reaction.ReactionType = REACTIONS.LIKE;
-            }
-            else if (reaction.ReactionType.ToUpper() == REACTIONS.DISLIKE)
-            {
-                reaction.ReactionType = REACTIONS.DISLIKE;
-            }
-            else
-            {
-                throw new BadRequestException("Bad request. Invalid reaction type.",
-                    $"User with id: {userId} tried to react on post with id: {postId}, but reaction type: {reaction.ReactionType} is in correct.");
-            }
-
             reaction.PostId = postId;
             reaction.UserId = userId;
 
             reaction.CreatedById = userId;
             reaction.CreationDate = DateTime.UtcNow;
 
-            var reactionId = await _repository.CreatePostReactionAsync(reaction);
+            await _repository.CreatePostReactionAsync(reaction);
 
-            Log.Logger.Information($"User with id: {userId} created reaction with id: {reactionId} to post with id: {postId}");
+            Log.Logger.Information($"User with id: {userId} created reaction with id: {reaction.Id} to post with id: {postId}");
 
-
-            return reactionId;
         }
 
         public async Task DeleteCommentReactionAsync(int reactionId)
@@ -151,7 +117,7 @@ namespace InTouchApi.Infrastructure.Services
 
         public async Task UpdateCommentReactionAsync(int reactionId, UpdateReactionDto updateReactionDto)
         {
-            var reactionToUpdate = _repository.GetCommentReactionAsync(reactionId);
+            var reactionToUpdate = await _repository.GetCommentReactionAsync(reactionId);
 
             var userId = _userHttpContextService.Id
                 ?? throw new UnauthorizedException("Unauthorized",
@@ -178,7 +144,7 @@ namespace InTouchApi.Infrastructure.Services
 
         public async Task UpdatePostReactionAsync(int reactionId, UpdateReactionDto updateReactionDto)
         {
-            var reactionToUpdate = _repository.GetPostReactionAsync(reactionId);
+            var reactionToUpdate = await _repository.GetPostReactionAsync(reactionId);
 
             var userId = _userHttpContextService.Id
                 ?? throw new UnauthorizedException("Unauthorized",

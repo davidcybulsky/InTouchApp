@@ -1,3 +1,3 @@
 export interface CreateReactionModel {
-    reactionType: string
+  reactionType: string
 }

@@ -1,3 +1,3 @@
-<app-friend-request-card *ngFor="let friendRequest of friendRequests"
-[friendRequest]="friendRequest"
-(acceptFriendRequest)="onAcceptFriendRequest"></app-friend-request-card>
+<app-friend-request-card (acceptFriendRequest)="onAcceptFriendRequest"
+                         *ngFor="let friendRequest of friendRequests"
+                         [friendRequest]="friendRequest"></app-friend-request-card>

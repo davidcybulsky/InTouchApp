@@ -1,23 +1,25 @@
 .account-panel-container {
-    padding: 1rem;
-    margin: 1rem 0;
-    border: 1px solid black;
+  padding: 1rem;
+  margin: 1rem 0;
+  border: 1px solid black;
 }
+
 .account-panel-container-icon > img {
-    width: 200px;
-    height: 200px;
+  width: 200px;
+  height: 200px;
 }
 
 .account-panel-container-icon,
 .account-panel-container-data {
-    display: inline-block;
+  display: inline-block;
 }
 
 .account-panel-container-data {
-    margin: 1rem;
-    padding: 0.5rem 0;
-    vertical-align: top;
+  margin: 1rem;
+  padding: 0.5rem 0;
+  vertical-align: top;
 }
+
 #accountpanel__options {
-    float: right;
+  float: right;
 }

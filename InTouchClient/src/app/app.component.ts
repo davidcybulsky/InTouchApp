@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { AuthService } from './core/services/auth.service';
+import {Component, OnInit} from '@angular/core';
+import {AuthService} from './core/services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +10,8 @@ export class AppComponent implements OnInit {
 
   title = 'InTouchClient';
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService) {
+  }
 
   ngOnInit(): void {
     console.log("INIT")

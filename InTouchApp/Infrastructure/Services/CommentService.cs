@@ -78,7 +78,7 @@ namespace InTouchApi.Infrastructure.Services
             Log.Logger.Information($"Post comment with id: {id} was updated by user with id: {userId}");
         }
 
-        public async Task<int> CreatePostCommentAsync(int postId, CreateCommentDto createCommentDto)
+        public async Task<IncludeCommentDto> CreatePostCommentAsync(int postId, CreateCommentDto createCommentDto)
         {
             var userId = _userHttpContextService.Id
                 ?? throw new UnauthorizedException("Unauthorized",
@@ -92,11 +92,13 @@ namespace InTouchApi.Infrastructure.Services
             postComment.CreationDate = DateTime.UtcNow;
             postComment.CreatedById = userId;
 
-            var postCommentId = await _repository.CreatePostCommentAsync(postComment);
+            var savedPostComment = await _repository.CreatePostCommentAsync(postComment);
 
-            Log.Logger.Information($"User with id: {userId} created post comment with id: {postCommentId}");
+            var postCommentDto = _mapper.Map<IncludeCommentDto>(savedPostComment);
 
-            return postCommentId;
+            Log.Logger.Information($"User with id: {userId} created post comment with id: {savedPostComment.Id}");
+
+            return postCommentDto;
         }
     }
 }

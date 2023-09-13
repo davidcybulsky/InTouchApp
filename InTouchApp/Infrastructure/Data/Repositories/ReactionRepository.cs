@@ -14,7 +14,7 @@ namespace InTouchApi.Infrastructure.Data.Repositories
             _apiContext = apiContext;
         }
 
-        public async Task<int> CreateCommentReactionAsync(CommentReaction reaction)
+        public async Task CreateCommentReactionAsync(CommentReaction reaction)
         {
             var doesReactionExist = await _apiContext.CommentReactions
                 .Where(cr => cr.IsDeleted == false)
@@ -38,10 +38,9 @@ namespace InTouchApi.Infrastructure.Data.Repositories
 
             await _apiContext.AddAsync(reaction);
             await _apiContext.SaveChangesAsync();
-            return reaction.Id;
         }
 
-        public async Task<int> CreatePostReactionAsync(PostReaction reaction)
+        public async Task CreatePostReactionAsync(PostReaction reaction)
         {
             var doesReactionExist = await _apiContext.PostReactions
                 .Where(pr => pr.IsDeleted == false)
@@ -65,7 +64,6 @@ namespace InTouchApi.Infrastructure.Data.Repositories
 
             await _apiContext.AddAsync(reaction);
             await _apiContext.SaveChangesAsync();
-            return reaction.Id;
         }
 
         public async Task DeleteCommentReactionAsync(CommentReaction reaction)

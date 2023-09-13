@@ -12,7 +12,9 @@ namespace InTouchApi.Infrastructure.Services
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public int? Id => int.Parse(_httpContextAccessor?.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier));
+        public int? Id => User.FindFirstValue(ClaimTypes.NameIdentifier) is null ?
+            null :
+            int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
         public ClaimsPrincipal? User => _httpContextAccessor?.HttpContext?.User;
     }

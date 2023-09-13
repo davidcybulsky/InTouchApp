@@ -1,5 +1,6 @@
 using InTouchApi.Application;
 using InTouchApi.Infrastructure;
+using InTouchApi.Infrastructure.Hubs;
 using InTouchApi.Presentation;
 using InTouchApi.Presentation.Middlewares;
 
@@ -39,5 +40,9 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHub<ConnectionHub>("hubs/connection");
+
+app.MapHub<MessageHub>("hubs/message");
 
 app.Run();

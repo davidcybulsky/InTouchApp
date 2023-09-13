@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { EditAccountComponent } from './edit-account.component';
+import {EditAccountComponent} from './edit-account.component';
 
 describe('EditAccountComponent', () => {
   let component: EditAccountComponent;
@@ -8,9 +8,9 @@ describe('EditAccountComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EditAccountComponent ]
+      declarations: [EditAccountComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(EditAccountComponent);
     component = fixture.componentInstance;

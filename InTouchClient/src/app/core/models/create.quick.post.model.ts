@@ -1,4 +1,4 @@
 export interface CreateQuickPostModel {
-  title : string
-  content : string  
+  title: string
+  content: string
 }

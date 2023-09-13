@@ -3,6 +3,7 @@ using InTouchApi.Application.Authorization;
 using InTouchApi.Application.Exceptions;
 using InTouchApi.Application.Interfaces;
 using InTouchApi.Application.Models;
+using InTouchApi.Domain.Constants;
 using InTouchApi.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Serilog;
@@ -27,7 +28,7 @@ namespace InTouchApi.Infrastructure.Services
             _authorizationService = authorizationService;
         }
 
-        public async Task<int> CreatePostAsync(CreatePostDto createPostDto)
+        public async Task<PostDto> CreatePostAsync(CreatePostDto createPostDto)
         {
             var userId = _userHttpContextService.Id
                 ?? throw new UnauthorizedException("Unauthorized",
@@ -39,11 +40,13 @@ namespace InTouchApi.Infrastructure.Services
             post.CreatedById = userId;
             post.CreationDate = DateTime.UtcNow;
 
-            var id = await _repository.CreatePostAsync(post);
+            var newPost = await _repository.CreatePostAsync(post);
 
-            Log.Logger.Information($"User with id: {userId} created post with id: {id}");
+            var newPostDto = _mapper.Map<PostDto>(newPost);
 
-            return id;
+            Log.Logger.Information($"User with id: {userId} created post with id: {newPost.Id}");
+
+            return newPostDto;
         }
 
         public async Task DeletePostAsync(int id)
@@ -77,15 +80,67 @@ namespace InTouchApi.Infrastructure.Services
             var posts = await _repository.GetAllPostsAsync();
             var postDtos = _mapper.Map<IEnumerable<PostDto>>(posts);
 
+            foreach (var post in posts)
+            {
+                var postDto = postDtos.FirstOrDefault(x => x.Id == post.Id);
+                CountPostReactions(postDto, post);
+                CheckedMyPostReaction(postDto, post);
+            }
+
             Log.Logger.Information($"List of posts was returned. Count: {postDtos.Count()}");
 
             return postDtos;
+        }
+
+        private void CheckedMyPostReaction(PostDto postDto, Post post)
+        {
+            var reaction = post.Reactions.FirstOrDefault(r => r.UserId == _userHttpContextService.Id);
+
+            if (reaction != null)
+            {
+                postDto.ReactionsData.DidIReacted = true;
+                postDto.ReactionsData.ReactionType = reaction.ReactionType;
+            }
+
+        }
+
+        private void CountPostReactions(PostDto postDto, Post post)
+        {
+            postDto.ReactionsData.AmountOfDislikes = post.Reactions.Count(r => r.ReactionType == REACTIONS.DISLIKE);
+            postDto.ReactionsData.AmountOfLikes = post.Reactions.Count(r => r.ReactionType == REACTIONS.LIKE);
+
+            foreach (var comment in post.Comments)
+            {
+                var commentDto = postDto.Comments.FirstOrDefault(x => x.Id == comment.Id);
+                CountCommentReactions(commentDto, comment);
+                CheckMyCommentReaction(commentDto, comment);
+            }
+        }
+
+        private void CheckMyCommentReaction(IncludeCommentDto commentDto, PostComment comment)
+        {
+            var reaction = comment.CommentReactions.FirstOrDefault(r => r.UserId == _userHttpContextService.Id);
+
+            if (reaction != null)
+            {
+                commentDto.ReactionsData.DidIReacted = true;
+                commentDto.ReactionsData.ReactionType = reaction.ReactionType;
+            }
+        }
+
+        private void CountCommentReactions(IncludeCommentDto commentDto, Comment comment)
+        {
+            commentDto.ReactionsData.AmountOfDislikes = comment.CommentReactions.Count(r => r.ReactionType == REACTIONS.DISLIKE);
+            commentDto.ReactionsData.AmountOfLikes = comment.CommentReactions.Count(r => r.ReactionType == REACTIONS.LIKE);
         }
 
         public async Task<PostDto> GetPostByIdAsync(int id)
         {
             var post = await _repository.GetPostByIdAsync(id);
             var postDto = _mapper.Map<PostDto>(post);
+
+            CountPostReactions(postDto, post);
+            CheckedMyPostReaction(postDto, post);
 
             Log.Logger.Information($"Post with id: {id} was returned");
 
@@ -95,8 +150,15 @@ namespace InTouchApi.Infrastructure.Services
         public async Task<IEnumerable<PostDto>> GetUserPostsAsync(int id)
         {
             var posts = await _repository.GetAllPostsAsync();
-            var userPosts = posts.Where(p => p.AuthorId == id).ToList();
+            var userPosts = posts.Where(p => p.AuthorId == id);
             var postDtos = _mapper.Map<IEnumerable<PostDto>>(userPosts);
+
+            foreach (var post in userPosts)
+            {
+                var postDto = postDtos.FirstOrDefault(x => x.Id == post.Id);
+                CountPostReactions(postDto, post);
+                CheckedMyPostReaction(postDto, post);
+            }
 
             Log.Logger.Information($"List of user with id: {id} posts was returned");
 

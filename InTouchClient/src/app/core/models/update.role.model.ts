@@ -1,3 +1,3 @@
 export interface UpdateRoleModel {
-    role: string
+  role: string
 }

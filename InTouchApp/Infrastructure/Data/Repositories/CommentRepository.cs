@@ -14,7 +14,7 @@ namespace InTouchApi.Infrastructure.Data.Repositories
             _apiContext = apiContext;
         }
 
-        public async Task<int> CreatePostCommentAsync(PostComment comment)
+        public async Task<PostComment> CreatePostCommentAsync(PostComment comment)
         {
             var doesPostExist = (await _apiContext.Posts
                 .Where(p => p.IsDeleted == false)
@@ -28,7 +28,7 @@ namespace InTouchApi.Infrastructure.Data.Repositories
 
             await _apiContext.AddAsync(comment);
             await _apiContext.SaveChangesAsync();
-            return comment.Id;
+            return comment;
         }
 
         public async Task DeletePostCommentAsync(PostComment comment)

@@ -14,11 +14,11 @@ namespace InTouchApi.Infrastructure.Data.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<int> CreatePostAsync(Post post)
+        public async Task<Post> CreatePostAsync(Post post)
         {
             await _dbContext.AddAsync(post);
             await _dbContext.SaveChangesAsync();
-            return post.Id;
+            return post;
         }
 
         public async Task DeletePostAsync(Post post)

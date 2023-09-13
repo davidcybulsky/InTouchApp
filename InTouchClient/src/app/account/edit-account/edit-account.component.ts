@@ -1,8 +1,8 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
-import { AccountService } from 'src/app/core/services/account.service';
+import {CommonModule} from '@angular/common';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {Router, RouterModule} from '@angular/router';
+import {AccountService} from 'src/app/core/services/account.service';
 
 @Component({
   standalone: true,
@@ -18,11 +18,12 @@ import { AccountService } from 'src/app/core/services/account.service';
 })
 export class EditAccountComponent implements OnInit, OnDestroy {
 
-  editAccountForm! : FormGroup
+  editAccountForm!: FormGroup
 
   constructor(private accountService: AccountService,
               private formBuilder: FormBuilder,
-              private router: Router) { }
+              private router: Router) {
+  }
 
   ngOnInit(): void {
     this.InitForm()
@@ -48,7 +49,8 @@ export class EditAccountComponent implements OnInit, OnDestroy {
             city: account.address.city,
             region: account.address.region,
             country: account.address.country
-        }})
+          }
+        })
       })
   }
 
@@ -76,7 +78,8 @@ export class EditAccountComponent implements OnInit, OnDestroy {
         city: ['', [Validators.required]],
         region: ['', [Validators.required]],
         country: ['', [Validators.required]]
-    })})
+      })
+    })
   }
 
   onEditAccount() {
@@ -89,7 +92,7 @@ export class EditAccountComponent implements OnInit, OnDestroy {
 
   onDelete() {
     let decision = confirm("Do you want to delete your account?")
-    if(decision) {
+    if (decision) {
       this.accountService.deleteAccount()
     }
   }

@@ -1,4 +1,4 @@
 export interface TokenModel {
-    token : string
-    expires: string
+  token: string
+  expires: string
 }

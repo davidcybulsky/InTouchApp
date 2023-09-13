@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { CreateQuickPostComponent } from './create-quick-post.component';
+import {CreateQuickPostComponent} from './create-quick-post.component';
 
 describe('CreateQuickPostComponent', () => {
   let component: CreateQuickPostComponent;
@@ -8,9 +8,9 @@ describe('CreateQuickPostComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ CreateQuickPostComponent ]
+      imports: [CreateQuickPostComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(CreateQuickPostComponent);
     component = fixture.componentInstance;

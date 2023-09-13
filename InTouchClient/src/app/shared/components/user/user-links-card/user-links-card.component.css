@@ -1,8 +1,9 @@
 .links {
-    margin: 1rem;
+  margin: 1rem;
 }
+
 .links > a {
-    display: block;
-    padding: 1rem;
-    margin: 0 auto;
+  display: block;
+  padding: 1rem;
+  margin: 0 auto;
 }

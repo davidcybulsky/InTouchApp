@@ -18,18 +18,18 @@ namespace InTouchApi.Presentation.Controllers
 
         [HttpPost("post/{postId}")]
         [Authorize]
-        public async Task<ActionResult<int>> CreatePostReactionAsync([FromRoute] int postId, [FromBody] CreateReactionDto createReactionDto)
+        public async Task<ActionResult> CreatePostReactionAsync([FromRoute] int postId, [FromBody] CreateReactionDto createReactionDto)
         {
-            var reactionId = await _service.CreatePostReactionAsync(postId, createReactionDto);
-            return StatusCode(StatusCodes.Status201Created, reactionId);
+            await _service.CreatePostReactionAsync(postId, createReactionDto);
+            return StatusCode(StatusCodes.Status201Created);
         }
 
         [HttpPost("comment/{commentId}")]
         [Authorize]
-        public async Task<ActionResult<int>> CreateCommentReactionAsync([FromRoute] int commentId, [FromBody] CreateReactionDto createReactionDto)
+        public async Task<ActionResult> CreateCommentReactionAsync([FromRoute] int commentId, [FromBody] CreateReactionDto createReactionDto)
         {
-            var reactionId = await _service.CreateCommentReactionAsync(commentId, createReactionDto);
-            return StatusCode(StatusCodes.Status201Created, reactionId);
+            await _service.CreateCommentReactionAsync(commentId, createReactionDto);
+            return StatusCode(StatusCodes.Status201Created);
         }
 
         [HttpPut("post/{reactionId}")]

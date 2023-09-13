@@ -1,5 +1,5 @@
-import { IEnvoronment } from "./environment.interface";
+import {IEnvoronment} from "./environment.interface";
 
 export class EnvironmentDev implements IEnvoronment {
-    serverEndpoint: string = "https://localhost:7211";
+  serverEndpoint: string = "https://localhost:7211";
 }

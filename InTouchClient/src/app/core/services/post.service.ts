@@ -1,14 +1,13 @@
-import { HttpClient } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Inject, Injectable} from '@angular/core';
+import {IEnvoronment} from 'src/environment/environment.interface';
+import {PostServiceEndpoints} from '../enums/post.service.endpoints';
+import {PostModel} from '../models/post.model';
+import {CreateQuickPostModel} from '../models/create.quick.post.model';
+import {CreatePostModel} from '../models/create.post.model';
+import {Observable} from 'rxjs';
+import {UpdatePostModel} from '../models/update.post.model';
 import { ENVIRONMENT_TOKEN } from '../tokens/environment.token';
-import { IEnvoronment } from 'src/environment/environment.interface';
-import { PostServiceEndpoints } from '../enums/post.service.endpoints';
-import { PostModel } from '../models/post.model';
-import { CreateQuickPostModel } from '../models/create.quick.post.model';
-import { CreatePostModel } from '../models/create.post.model';
-import { Observable } from 'rxjs';
-import { UserModel } from '../models/user.model';
-import { UpdatePostModel } from '../models/update.post.model';
 
 @Injectable({
   providedIn: 'root'
@@ -16,10 +15,11 @@ import { UpdatePostModel } from '../models/update.post.model';
 export class PostService {
 
   constructor(@Inject(ENVIRONMENT_TOKEN) private ENVIRONMENT_TOKEN: IEnvoronment,
-              private http: HttpClient) { }
+              private http: HttpClient) {
+  }
 
   getPosts(): Observable<PostModel[]> {
-    return this.http.get<PostModel[]>(`${ this.ENVIRONMENT_TOKEN.serverEndpoint }${ PostServiceEndpoints.GET_POSTS}` )
+    return this.http.get<PostModel[]>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${PostServiceEndpoints.GET_POSTS}`)
   }
 
   getUserPosts(userId: number): Observable<PostModel[]> {
@@ -27,15 +27,15 @@ export class PostService {
   }
 
   createPost(model: CreatePostModel): Observable<number> {
-    return this.http.post<number>(`${ this.ENVIRONMENT_TOKEN.serverEndpoint }${ PostServiceEndpoints.CREATE_POST}`, model)
+    return this.http.post<number>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${PostServiceEndpoints.CREATE_POST}`, model)
   }
 
   createQuickPost(model: CreateQuickPostModel): Observable<number> {
-    return this.http.post<number>(`${ this.ENVIRONMENT_TOKEN.serverEndpoint }${ PostServiceEndpoints.CREATE_POST}`, model)
+    return this.http.post<number>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${PostServiceEndpoints.CREATE_POST}`, model)
   }
 
   updatePost(postId: number, model: UpdatePostModel): Observable<void> {
-    return this.http.put<void>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${PostServiceEndpoints.UPDATE_POST}/${postId}`,model)
+    return this.http.put<void>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${PostServiceEndpoints.UPDATE_POST}/${postId}`, model)
   }
 
   deletePost(postId: number) {

@@ -1,10 +1,10 @@
-import { Inject, Injectable } from '@angular/core';
+import {Inject, Injectable} from '@angular/core';
+import {IEnvoronment} from 'src/environment/environment.interface';
+import {HttpClient} from '@angular/common/http';
+import {CreateReactionModel} from '../models/create.reaction.model';
+import {ReactionConstants} from '../enums/reaction.constants';
+import {Observable} from 'rxjs';
 import { ENVIRONMENT_TOKEN } from '../tokens/environment.token';
-import { IEnvoronment } from 'src/environment/environment.interface';
-import { HttpClient } from '@angular/common/http';
-import { CreateReactionModel } from '../models/create.reaction.model';
-import { ReactionConstants } from '../enums/reaction.constants';
-import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,9 +12,10 @@ import { Observable } from 'rxjs';
 export class ReactionService {
 
   constructor(@Inject(ENVIRONMENT_TOKEN) private ENVIRONMENT_TOKEN: IEnvoronment,
-              private httpClient: HttpClient) { }
-              
-  addPostLike(postId: number) : Observable<void> {
+              private httpClient: HttpClient) {
+  }
+
+  addPostLike(postId: number): Observable<void> {
     const reactionModel: CreateReactionModel = {
       reactionType: ReactionConstants.LIKE
     }
@@ -25,6 +26,6 @@ export class ReactionService {
     const reactionModel: CreateReactionModel = {
       reactionType: ReactionConstants.DISLIKE
     }
-    return this.httpClient.post<void>(`${ this.ENVIRONMENT_TOKEN.serverEndpoint}`, null)
+    return this.httpClient.post<void>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}`, null)
   }
 }

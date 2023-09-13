@@ -1,6 +1,6 @@
-import { Component} from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { PostCardComponent } from 'src/app/shared/components/post/post-page/post-card/post-card.component';
+import {Component} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {PostCardComponent} from 'src/app/shared/components/post/post-page/post-card/post-card.component';
 
 @Component({
   selector: 'app-post-details',

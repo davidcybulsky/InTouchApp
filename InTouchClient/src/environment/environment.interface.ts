@@ -1,3 +1,3 @@
 export interface IEnvoronment {
-    serverEndpoint: string
+  serverEndpoint: string
 }

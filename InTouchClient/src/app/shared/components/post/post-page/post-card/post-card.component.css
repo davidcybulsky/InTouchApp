@@ -1,38 +1,44 @@
 .postcard {
-    padding: 1rem;
-    border-radius: 1rem;
-    border: 1px solid;
-    margin: 2rem auto;
+  padding: 1rem;
+  border-radius: 1rem;
+  border: 1px solid;
+  margin: 2rem auto;
 }
 
 .postcard__header {
-    margin: 0.2rem;
+  margin: 0.2rem;
 }
 
 .postcard__user-icon,
 .postcard__user-data {
-    display: inline-block;
-    vertical-align: middle;
-    padding: 0.2rem;
+  display: inline-block;
+  vertical-align: middle;
+  padding: 0.2rem;
 }
 
 .postcard__content {
-    margin: 0.5rem;
+  margin: 0.5rem;
 }
 
 .postcard__content__title,
 .postcard__content__content {
-    margin: 0.5rem 0;
+  margin: 0.5rem 0;
 }
 
 .postcard__user-icon > img {
-    width: 50px;
+  width: 50px;
 }
 
 .postcard__user__link {
-    color: #000;
+  color: #000;
 }
 
 #postcard__options {
-    float: right;
+  float: right;
+}
+
+.postcard__panel__data__item {
+  display: inline-block;
+  padding: 0 0.5rem;
+  margin: 0 0.2rem;
 }

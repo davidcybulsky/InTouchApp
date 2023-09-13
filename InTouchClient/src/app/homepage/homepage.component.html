@@ -1,20 +1,20 @@
 <app-header></app-header>
 <aside>
-    <app-friend-card-panel
+  <app-friend-card-panel
     [friends]="friends"></app-friend-card-panel>
 </aside>
 <main>
-    <app-create-quick-post
+  <app-create-quick-post
     (CreateQuickPost)="onCreateQuickPost"></app-create-quick-post>
-    <app-post-page
-    [posts]="posts"
+  <app-post-page
     (createComment)="onCreateComment"
+    (dislikePost)="onDislikePost"
     (likePost)="onLikePost"
-    (dislikePost)="onDislikePost"></app-post-page>
+    [posts]="posts"></app-post-page>
 </main>
 <aside>
-    <app-friend-requests-panel
-    [friendRequests]="friendRequests"
-    (acceptFriendRequest)="onAcceptFriendRequest"></app-friend-requests-panel>
+  <app-friend-requests-panel
+    (acceptFriendRequest)="onAcceptFriendRequest"
+    [friendRequests]="friendRequests"></app-friend-requests-panel>
 </aside>
 <app-footer></app-footer>

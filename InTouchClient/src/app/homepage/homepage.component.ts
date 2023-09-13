@@ -1,20 +1,22 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { HeaderComponent } from '../shared/components/header/header.component';
-import { FooterComponent } from '../shared/components/footer/footer.component';
-import { PostService } from '../core/services/post.service';
-import { ReplaySubject, takeUntil } from 'rxjs';
-import { PostModel } from '../core/models/post.model';
-import { CommonModule } from '@angular/common';
-import { CreateQuickPostComponent } from '../shared/components/post/create-quick-post/create-quick-post.component';
-import { FriendModel } from '../core/models/friend.model';
-import { FriendService } from '../core/services/friend.service';
-import { FriendCardPanelComponent } from '../shared/components/friend/friend-card-panel/friend-card-panel.component';
-import { FriendRequestsPanelComponent } from '../shared/components/friend/friend-requests-panel/friend-requests-panel.component';
-import { PostPageComponent } from '../shared/components/post/post-page/post-page.component';
-import { CommentService } from '../core/services/comment.service';
-import { CreateCommentModel } from '../core/services/create.comment.model';
-import { ReactionService } from '../core/services/reaction.service';
-import { CreateQuickPostModel } from '../core/models/create.quick.post.model';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {HeaderComponent} from '../shared/components/header/header.component';
+import {FooterComponent} from '../shared/components/footer/footer.component';
+import {PostService} from '../core/services/post.service';
+import {ReplaySubject, takeUntil} from 'rxjs';
+import {PostModel} from '../core/models/post.model';
+import {CommonModule} from '@angular/common';
+import {CreateQuickPostComponent} from '../shared/components/post/create-quick-post/create-quick-post.component';
+import {FriendModel} from '../core/models/friend.model';
+import {FriendService} from '../core/services/friend.service';
+import {FriendCardPanelComponent} from '../shared/components/friend/friend-card-panel/friend-card-panel.component';
+import {
+  FriendRequestsPanelComponent
+} from '../shared/components/friend/friend-requests-panel/friend-requests-panel.component';
+import {PostPageComponent} from '../shared/components/post/post-page/post-page.component';
+import {CommentService} from '../core/services/comment.service';
+import {CreateCommentModel} from '../core/services/create.comment.model';
+import {ReactionService} from '../core/services/reaction.service';
+import {CreateQuickPostModel} from '../core/models/create.quick.post.model';
 
 @Component({
   standalone: true,
@@ -33,17 +35,17 @@ import { CreateQuickPostModel } from '../core/models/create.quick.post.model';
 })
 export class HomepageComponent implements OnInit, OnDestroy {
 
-  private destroyed$: ReplaySubject<boolean> = new ReplaySubject(1)
-
   posts: PostModel[] = []
   friends: FriendModel[] = []
   friendRequests: FriendModel[] = []
-  
-  constructor(private postService: PostService, 
+  private destroyed$: ReplaySubject<boolean> = new ReplaySubject(1)
+
+  constructor(private postService: PostService,
               private friendService: FriendService,
               private commentService: CommentService,
-              private reactionService: ReactionService) { }
-  
+              private reactionService: ReactionService) {
+  }
+
   ngOnInit(): void {
 
     this.postService.getPosts()
@@ -65,7 +67,7 @@ export class HomepageComponent implements OnInit, OnDestroy {
       })
   }
 
-  ngOnDestroy() : void {
+  ngOnDestroy(): void {
     this.destroyed$.next(true)
     this.destroyed$.complete()
   }

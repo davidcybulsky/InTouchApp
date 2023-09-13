@@ -6,6 +6,6 @@
         public int UserId { get; set; }
         public IncludeUserDto Author { get; set; }
         public string Content { get; set; }
-        public IEnumerable<IncludeReactionDto> CommentReactions { get; set; }
+        public IncludeReactionDto ReactionsData { get; set; } = new();
     }
 }

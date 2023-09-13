@@ -1,19 +1,21 @@
-import { AsyncPipe, CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ReplaySubject, takeUntil } from 'rxjs';
-import { AccountModel } from 'src/app/core/models/account.model';
-import { FriendModel } from 'src/app/core/models/friend.model';
-import { AccountService } from 'src/app/core/services/account.service';
-import { FriendService } from 'src/app/core/services/friend.service';
-import { FooterComponent } from 'src/app/shared/components/footer/footer.component';
-import { HeaderComponent } from 'src/app/shared/components/header/header.component';
-import { CreateQuickPostComponent } from 'src/app/shared/components/post/create-quick-post/create-quick-post.component';
-import { UserLinksCardComponent } from 'src/app/shared/components/user/user-links-card/user-links-card.component';
-import { AccountPanelComponent } from './account-panel/account-panel.component';
-import { Router } from '@angular/router';
-import { PostPageComponent } from 'src/app/shared/components/post/post-page/post-page.component';
-import { FriendCardPanelComponent } from 'src/app/shared/components/friend/friend-card-panel/friend-card-panel.component';
-import { FriendRequestsPanelComponent } from 'src/app/shared/components/friend/friend-requests-panel/friend-requests-panel.component';
+import {CommonModule} from '@angular/common';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ReplaySubject, takeUntil} from 'rxjs';
+import {AccountModel} from 'src/app/core/models/account.model';
+import {FriendModel} from 'src/app/core/models/friend.model';
+import {AccountService} from 'src/app/core/services/account.service';
+import {FriendService} from 'src/app/core/services/friend.service';
+import {FooterComponent} from 'src/app/shared/components/footer/footer.component';
+import {HeaderComponent} from 'src/app/shared/components/header/header.component';
+import {CreateQuickPostComponent} from 'src/app/shared/components/post/create-quick-post/create-quick-post.component';
+import {UserLinksCardComponent} from 'src/app/shared/components/user/user-links-card/user-links-card.component';
+import {AccountPanelComponent} from './account-panel/account-panel.component';
+import {Router} from '@angular/router';
+import {PostPageComponent} from 'src/app/shared/components/post/post-page/post-page.component';
+import {FriendCardPanelComponent} from 'src/app/shared/components/friend/friend-card-panel/friend-card-panel.component';
+import {
+  FriendRequestsPanelComponent
+} from 'src/app/shared/components/friend/friend-requests-panel/friend-requests-panel.component';
 
 @Component({
   standalone: true,
@@ -32,7 +34,7 @@ import { FriendRequestsPanelComponent } from 'src/app/shared/components/friend/f
   templateUrl: './accountpage.component.html',
   styleUrls: ['./accountpage.component.css']
 })
-export class AccountpageComponent implements OnInit, OnDestroy{  
+export class AccountpageComponent implements OnInit, OnDestroy {
 
   destroy$: ReplaySubject<boolean> = new ReplaySubject(1);
 
@@ -42,7 +44,8 @@ export class AccountpageComponent implements OnInit, OnDestroy{
 
   constructor(private accountService: AccountService,
               private friendService: FriendService,
-              private router: Router) { }
+              private router: Router) {
+  }
 
   ngOnInit(): void {
     this.accountService.getAccount()
@@ -61,13 +64,13 @@ export class AccountpageComponent implements OnInit, OnDestroy{
         this.friendRequests = friendRequests
       })
   }
-  
+
   ngOnDestroy(): void {
     this.destroy$.next(true);
     this.destroy$.complete();
   }
 
   onEditAccount() {
-    this.router.navigate(['account','edit']);
+    this.router.navigate(['account', 'edit']);
   }
 }

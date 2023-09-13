@@ -1,3 +1,3 @@
 export interface CreateCommentModel {
-    content: string
+  content: string
 }

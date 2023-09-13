@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { AccountModel } from 'src/app/core/models/account.model';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {AccountModel} from 'src/app/core/models/account.model';
 
 @Component({
   selector: 'app-account-panel',
@@ -15,7 +15,7 @@ export class AccountPanelComponent {
 
   onEditAccount() {
     console.log("emitted");
-    
+
     this.editAccount.emit();
   }
 }

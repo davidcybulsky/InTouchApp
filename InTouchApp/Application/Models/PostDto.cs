@@ -8,6 +8,6 @@
         public int AuthorId { get; set; }
         public IncludeUserDto Author { get; set; }
         public IEnumerable<IncludeCommentDto> Comments { get; set; }
-        public IEnumerable<IncludeReactionDto> Reactions { get; set; }
+        public IncludeReactionDto ReactionsData { get; set; } = new();
     }
 }

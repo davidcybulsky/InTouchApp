@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { TermsOfUseComponent } from './terms-of-use.component';
+import {TermsOfUseComponent} from './terms-of-use.component';
 
 describe('TermsOfUseComponent', () => {
   let component: TermsOfUseComponent;
@@ -8,9 +8,9 @@ describe('TermsOfUseComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ TermsOfUseComponent ]
+      imports: [TermsOfUseComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(TermsOfUseComponent);
     component = fixture.componentInstance;

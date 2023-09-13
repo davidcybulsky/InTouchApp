@@ -1,4 +1,4 @@
 export interface CreatePostModel {
-    title: string
-    content: string
+  title: string
+  content: string
 }

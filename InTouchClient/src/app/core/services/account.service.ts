@@ -1,10 +1,10 @@
-import { HttpClient } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
-import { AccountModel } from '../models/account.model';
+import {HttpClient} from '@angular/common/http';
+import {Inject, Injectable} from '@angular/core';
+import {map, Observable} from 'rxjs';
+import {AccountModel} from '../models/account.model';
+import {IEnvoronment} from 'src/environment/environment.interface';
+import {AccountServiceEndpoint} from '../enums/account.service.endpoints';
 import { ENVIRONMENT_TOKEN } from '../tokens/environment.token';
-import { IEnvoronment } from 'src/environment/environment.interface';
-import { AccountServiceEndpoint } from '../enums/account.service.endpoints';
 
 @Injectable({
   providedIn: 'root'
@@ -12,13 +12,15 @@ import { AccountServiceEndpoint } from '../enums/account.service.endpoints';
 export class AccountService {
 
   constructor(@Inject(ENVIRONMENT_TOKEN) private ENVIRONMENT_TOKEN: IEnvoronment,
-              private httpClient: HttpClient) { }
+              private httpClient: HttpClient) {
+  }
 
   getAccount(): Observable<AccountModel> {
     return this.httpClient.get<AccountModel>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${AccountServiceEndpoint.GET_ACCOUNT}`)
-    .pipe(map(response => {
-      console.log(response)
-      return response}));
+      .pipe(map(response => {
+        console.log(response)
+        return response
+      }));
   }
 
   updateAccount(model: any): Observable<void> {

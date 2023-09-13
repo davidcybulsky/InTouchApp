@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { PostService } from 'src/app/core/services/post.service';
-import { Router, RouterModule } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import {PostService} from 'src/app/core/services/post.service';
+import {Router, RouterModule} from '@angular/router';
 
 @Component({
   selector: 'app-create-post',
@@ -20,7 +20,8 @@ export class CreatePostComponent implements OnInit {
 
   constructor(private postService: PostService,
               private formBuilder: FormBuilder,
-              private router: Router) { }
+              private router: Router) {
+  }
 
   ngOnInit(): void {
     this.InitForm()

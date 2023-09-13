@@ -2,9 +2,9 @@
 {
     public class IncludeReactionDto
     {
-        public int Id { get; set; }
+        public bool DidIReacted { get; set; }
         public string ReactionType { get; set; }
-        public int UserId { get; set; }
-        public IncludeUserDto Author { get; set; }
+        public int AmountOfLikes { get; set; }
+        public int AmountOfDislikes { get; set; }
     }
 }
