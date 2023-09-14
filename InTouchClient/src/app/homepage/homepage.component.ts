@@ -17,6 +17,7 @@ import {CommentService} from '../core/services/comment.service';
 import {CreateCommentModel} from '../core/services/create.comment.model';
 import {ReactionService} from '../core/services/reaction.service';
 import {CreateQuickPostModel} from '../core/models/create.quick.post.model';
+import {ReactionConstants} from "../core/enums/reaction.constants";
 
 @Component({
   standalone: true,
@@ -74,18 +75,6 @@ export class HomepageComponent implements OnInit, OnDestroy {
 
   onCreateQuickPost(model: CreateQuickPostModel) {
     this.postService.createQuickPost(model).subscribe()
-  }
-
-  onCreateComment(id: number, model: CreateCommentModel) {
-    this.commentService.createPostComment(id, model).subscribe()
-  }
-
-  onLikePost(id: number) {
-    this.reactionService.addPostLike(id).subscribe()
-  }
-
-  onDislikePost(id: number) {
-    this.reactionService.addPostDisLike(id).subscribe()
   }
 
   onAcceptFriendRequest(id: number) {

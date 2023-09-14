@@ -6,6 +6,8 @@ import {FormsModule, NgForm} from '@angular/forms';
 import {CommentCardComponent} from '../../../comment/comment-card/comment-card.component';
 import {CommentService} from "../../../../../core/services/comment.service";
 import {ReactionService} from "../../../../../core/services/reaction.service";
+import {ReactionConstants} from "../../../../../core/enums/reaction.constants";
+import {interval} from "rxjs";
 
 @Component({
   selector: 'app-post-card',
@@ -30,20 +32,70 @@ export class PostCardComponent {
   onCreateComment() {
     if (this.post) {
       this.commentService.createPostComment(this.post.id,this.commentForm.value)
-        .subscribe(success => {
+        .subscribe(response => {
+          this.post?.comments.unshift(response)
+          this.commentForm.resetForm()
         })
     }
   }
 
   onLikePost() {
-    if (this.post) {
-      this.reactionService.addPostLike(this.post.id)
+    if (this.post?.reactionsData.didIReacted == false) {
+      this.reactionService.addPostReaction(this.post.id, ReactionConstants.LIKE).subscribe(success => {
+        if(this.post?.reactionsData) {
+          this.post.reactionsData.didIReacted = true
+          this.post.reactionsData.reactionType = ReactionConstants.LIKE
+          this.post.reactionsData.amountOfLikes++
+        }
+      })
+    }
+    else if(this.post?.reactionsData.reactionType == ReactionConstants.DISLIKE) {
+      this.reactionService.updatePostReaction(this.post.id, ReactionConstants.LIKE).subscribe(success => {
+        if(this.post?.reactionsData) {
+          this.post.reactionsData.reactionType = ReactionConstants.LIKE
+          this.post.reactionsData.amountOfLikes++
+          this.post.reactionsData.amountOfDislikes--
+        }
+      })
+    }
+    else if(this.post?.reactionsData.reactionType == ReactionConstants.LIKE) {
+      this.reactionService.deletePostReaction(this.post.id).subscribe(success => {
+        if(this.post?.reactionsData) {
+          this.post.reactionsData.reactionType = ""
+          this.post.reactionsData.didIReacted = false
+          this.post.reactionsData.amountOfLikes--
+        }
+      })
     }
   }
 
   onDislikePost() {
-    if (this.post) {
-      this.reactionService.addPostDisLike(this.post.id)
+    if (this.post?.reactionsData.didIReacted == false) {
+      this.reactionService.addPostReaction(this.post.id, ReactionConstants.DISLIKE).subscribe(success => {
+        if(this.post?.reactionsData) {
+          this.post.reactionsData.didIReacted = true
+          this.post.reactionsData.reactionType = ReactionConstants.DISLIKE
+          this.post.reactionsData.amountOfDislikes++
+        }
+      })
+    }
+    else if(this.post?.reactionsData.reactionType == ReactionConstants.LIKE) {
+      this.reactionService.updatePostReaction(this.post.id, ReactionConstants.DISLIKE).subscribe(success => {
+        if(this.post?.reactionsData) {
+          this.post.reactionsData.reactionType = ReactionConstants.DISLIKE
+          this.post.reactionsData.amountOfDislikes++
+          this.post.reactionsData.amountOfLikes--
+        }
+      })
+    }
+    else if(this.post?.reactionsData.reactionType == ReactionConstants.DISLIKE) {
+      this.reactionService.deletePostReaction(this.post.id).subscribe(success => {
+        if(this.post?.reactionsData) {
+          this.post.reactionsData.reactionType = ""
+          this.post.reactionsData.didIReacted = false
+          this.post.reactionsData.amountOfDislikes--
+        }
+      })
     }
   }
 }

@@ -98,26 +98,26 @@ namespace InTouchApi.Infrastructure.Data.Repositories
             await _apiContext.SaveChangesAsync();
         }
 
-        public async Task<CommentReaction> GetCommentReactionAsync(int reactionId)
+        public async Task<CommentReaction> GetCommentReactionAsync(int commentId, int userId)
         {
             var reaction = await _apiContext.CommentReactions
                 .AsNoTracking()
                 .Where(r => r.IsDeleted == false)
-                .FirstOrDefaultAsync(r => r.Id == reactionId)
+                .FirstOrDefaultAsync(r => r.CommentId == commentId && r.UserId == userId)
                 ?? throw new NotFoundException("The reaction was not found",
-                $"Comment reaction with id: {reactionId} was not found");
+                $"Comment reaction with commentId: {commentId} was not found");
 
             return reaction;
         }
 
-        public async Task<PostReaction> GetPostReactionAsync(int reactionId)
+        public async Task<PostReaction> GetPostReactionAsync(int postId, int userId)
         {
             var reaction = await _apiContext.PostReactions
                 .AsNoTracking()
                 .Where(r => r.IsDeleted == false)
-                .FirstOrDefaultAsync(r => r.Id == reactionId)
+                .FirstOrDefaultAsync(r => r.PostId == postId && r.UserId == userId)
                 ?? throw new NotFoundException("The reaction was not found",
-                $"Post reaction with id: {reactionId} was not found");
+                $"Post reaction with postId: {postId} was not found");
 
             return reaction;
         }

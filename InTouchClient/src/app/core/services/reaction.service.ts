@@ -5,6 +5,9 @@ import {CreateReactionModel} from '../models/create.reaction.model';
 import {ReactionConstants} from '../enums/reaction.constants';
 import {Observable} from 'rxjs';
 import { ENVIRONMENT_TOKEN } from '../tokens/environment.token';
+import {IncludeReactionModel} from "../models/include.reaction.model";
+import {ReactionServiceEndpoints} from "../enums/reaction.service.endpoints";
+import {UpdateReactionModel} from "../models/update.reaction.model";
 
 @Injectable({
   providedIn: 'root'
@@ -15,17 +18,40 @@ export class ReactionService {
               private httpClient: HttpClient) {
   }
 
-  addPostLike(postId: number): Observable<void> {
+  addPostReaction(postId: number, reactionType: string) : Observable<void> {
     const reactionModel: CreateReactionModel = {
-      reactionType: ReactionConstants.LIKE
+      reactionType: reactionType
     }
-    return this.httpClient.post<void>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}`, null)
+    return this.httpClient.post<void>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${ReactionServiceEndpoints.CREATE_POST_REACTION}${postId}`, reactionModel)
   }
 
-  addPostDisLike(postId: number) {
+  addCommentReaction(commentId: number, reactionType: string) : Observable<void> {
     const reactionModel: CreateReactionModel = {
-      reactionType: ReactionConstants.DISLIKE
+      reactionType: reactionType
     }
-    return this.httpClient.post<void>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}`, null)
+    return this.httpClient.post<void>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${ReactionServiceEndpoints.CREATE_COMMENT_REACTION}${commentId}`, reactionModel)
   }
+
+  updatePostReaction(postId: number, reactionType: string) : Observable<void> {
+    const reactionModel: UpdateReactionModel = {
+      reactionType: reactionType
+    }
+    return this.httpClient.put<void>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${ReactionServiceEndpoints.UPDATE_POST_REACTION}${postId}`, reactionModel)
+  }
+
+  updateCommentReaction(commentId: number, reactionType: string) : Observable<void> {
+    const reactionModel: UpdateReactionModel = {
+      reactionType: reactionType
+    }
+    return this.httpClient.put<void>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${ReactionServiceEndpoints.UPDATE_COMMENT_REACTION}${commentId}`,reactionModel)
+  }
+
+  deletePostReaction(postId: number) : Observable<void> {
+    return this.httpClient.delete<void>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${ReactionServiceEndpoints.DELETE_POST_REACTION}${postId}`)
+  }
+
+  deleteCommentReaction(commentId: number) : Observable<void> {
+    return this.httpClient.delete<void>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${ReactionServiceEndpoints.DELETE_COMMENT_REACTION}${commentId}`)
+  }
+
 }

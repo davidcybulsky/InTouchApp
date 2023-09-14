@@ -32,35 +32,35 @@ namespace InTouchApi.Presentation.Controllers
             return StatusCode(StatusCodes.Status201Created);
         }
 
-        [HttpPut("post/{reactionId}")]
+        [HttpPut("post/{postId}")]
         [Authorize]
-        public async Task<ActionResult> UpdatePostReactionAsync([FromRoute] int reactionId, [FromBody] UpdateReactionDto updateReactionDto)
+        public async Task<ActionResult> UpdatePostReactionAsync([FromRoute] int postId, [FromBody] UpdateReactionDto updateReactionDto)
         {
-            await _service.UpdatePostReactionAsync(reactionId, updateReactionDto);
+            await _service.UpdatePostReactionAsync(postId, updateReactionDto);
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
-        [HttpPut("comment/{reactionId}")]
+        [HttpPut("comment/{commentId}")]
         [Authorize]
-        public async Task<ActionResult> UpdateCommentReactionAsync([FromRoute] int reactionId, [FromBody] UpdateReactionDto updateReactionDto)
+        public async Task<ActionResult> UpdateCommentReactionAsync([FromRoute] int commentId, [FromBody] UpdateReactionDto updateReactionDto)
         {
-            await _service.UpdateCommentReactionAsync(reactionId, updateReactionDto);
+            await _service.UpdateCommentReactionAsync(commentId, updateReactionDto);
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
-        [HttpDelete("post/{reactionId}")]
+        [HttpDelete("post/{postId}")]
         [Authorize]
-        public async Task<ActionResult> DeletePostReactionAsync([FromRoute] int reactionId)
+        public async Task<ActionResult> DeletePostReactionAsync([FromRoute] int postId)
         {
-            await _service.DeletePostReactionAsync(reactionId);
+            await _service.DeletePostReactionAsync(postId);
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
-        [HttpDelete("comment/{reactionId}")]
+        [HttpDelete("comment/{commentId}")]
         [Authorize]
-        public async Task<ActionResult> DeleteCommentReactionAsync([FromRoute] int reactionId)
+        public async Task<ActionResult> DeleteCommentReactionAsync([FromRoute] int commentId)
         {
-            await _service.DeleteCommentReactionAsync(reactionId);
+            await _service.DeleteCommentReactionAsync(commentId);
             return StatusCode(StatusCodes.Status204NoContent);
         }
     }
