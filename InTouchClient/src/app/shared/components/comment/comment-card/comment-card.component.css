@@ -15,7 +15,7 @@
   margin: 0 0.2rem;
 }
 
-#comment-card__options {
+.comment-card__options {
   float: right;
   position: relative;
 }

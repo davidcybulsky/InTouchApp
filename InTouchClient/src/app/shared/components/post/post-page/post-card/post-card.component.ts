@@ -7,6 +7,8 @@ import {CommentCardComponent} from '../../../comment/comment-card/comment-card.c
 import {CommentService} from "../../../../../core/services/comment.service";
 import {ReactionService} from "../../../../../core/services/reaction.service";
 import {ReactionConstants} from "../../../../../core/enums/reaction.constants";
+import {faThumbsUp, faThumbsDown, faBars} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 
 @Component({
   selector: 'app-post-card',
@@ -15,16 +17,25 @@ import {ReactionConstants} from "../../../../../core/enums/reaction.constants";
     CommonModule,
     RouterModule,
     FormsModule,
-    CommentCardComponent
+    CommentCardComponent,
+    FontAwesomeModule
   ],
   templateUrl: './post-card.component.html',
   styleUrls: ['./post-card.component.css']
 })
 export class PostCardComponent implements OnInit{
+
   @Input() post: PostModel | null = null
   @ViewChild('CommentForm') commentForm!: NgForm
+
+  thumbsUp = faThumbsUp
+  thumbsDown = faThumbsDown
+  bar = faBars
+
   numberOfComments: number = 3;
   canDisplayMoreComments: boolean = false;
+
+
   constructor(private commentService: CommentService,
               private reactionService: ReactionService) {
   }
@@ -116,4 +127,6 @@ export class PostCardComponent implements OnInit{
     if(this.post?.comments)
       this.canDisplayMoreComments = this.numberOfComments <= this.post?.comments?.length
   }
+
+  protected readonly ReactionConstants = ReactionConstants;
 }

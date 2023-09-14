@@ -3,12 +3,15 @@ import {CommonModule} from '@angular/common';
 import {IncludeCommentModel} from 'src/app/core/models/include.comment.model';
 import {ReactionService} from "../../../../core/services/reaction.service";
 import {ReactionConstants} from "../../../../core/enums/reaction.constants";
+import {faThumbsUp, faThumbsDown, faBars} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 
 @Component({
   selector: 'app-comment-card',
   standalone: true,
   imports: [
-    CommonModule
+    CommonModule,
+    FontAwesomeModule
   ],
   templateUrl: './comment-card.component.html',
   styleUrls: ['./comment-card.component.css']
@@ -16,6 +19,10 @@ import {ReactionConstants} from "../../../../core/enums/reaction.constants";
 export class CommentCardComponent {
 
   @Input() comment: IncludeCommentModel | null = null
+
+  thumbsUp = faThumbsUp
+  thumbsDown = faThumbsDown
+  bar = faBars
 
   constructor(private reactionService: ReactionService) {
   }
@@ -80,4 +87,6 @@ export class CommentCardComponent {
       })
     }
   }
+
+  protected readonly ReactionConstants = ReactionConstants;
 }

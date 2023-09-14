@@ -39,11 +39,17 @@
 
 .postcard__panel__data__item {
   display: inline-block;
-  padding: 0 0.5rem;
-  margin: 0 0.2rem;
+  margin: 0 0.5rem;
+  padding: 0.5rem;
+  border-radius: 1rem;
 }
 
-#post-card__options {
+.post-card__options {
   float: right;
   position: relative;
+}
+
+.postcard__comments--display-more {
+  text-align: right;
+  cursor: pointer;
 }
