@@ -18,7 +18,7 @@ export class UserService {
   }
 
   getUserById(userId: number): Observable<UserModel> {
-    return this.httpClient.get<UserModel>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${UserServiceEndpoints.GET_USER_BY_ID}/${userId}`)
+    return this.httpClient.get<UserModel>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${UserServiceEndpoints.GET_USER_BY_ID}${userId}`)
   }
 
   getUsers(): Observable<UserModel[]> {
@@ -34,6 +34,6 @@ export class UserService {
   }
 
   deleteUser(userId: number): Observable<void> {
-    return this.httpClient.delete<void>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${UserServiceEndpoints.DELETE_USER}/${userId}`)
+    return this.httpClient.delete<void>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${UserServiceEndpoints.DELETE_USER}${userId}`)
   }
 }

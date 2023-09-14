@@ -23,7 +23,7 @@ export class PostService {
   }
 
   getUserPosts(userId: number): Observable<PostModel[]> {
-    return this.http.get<PostModel[]>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${PostServiceEndpoints.GET_USER_POSTS}/${userId}`);
+    return this.http.get<PostModel[]>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${PostServiceEndpoints.GET_USER_POSTS}${userId}`);
   }
 
   createPost(model: CreatePostModel): Observable<number> {
@@ -35,10 +35,10 @@ export class PostService {
   }
 
   updatePost(postId: number, model: UpdatePostModel): Observable<void> {
-    return this.http.put<void>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${PostServiceEndpoints.UPDATE_POST}/${postId}`, model)
+    return this.http.put<void>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${PostServiceEndpoints.UPDATE_POST}${postId}`, model)
   }
 
   deletePost(postId: number) {
-    return this.http.delete<void>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${PostServiceEndpoints.DELETE_POST}/${postId}`)
+    return this.http.delete<void>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${PostServiceEndpoints.DELETE_POST}${postId}`)
   }
 }

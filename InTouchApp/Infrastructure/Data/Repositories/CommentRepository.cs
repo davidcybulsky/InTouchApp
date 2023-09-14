@@ -28,6 +28,10 @@ namespace InTouchApi.Infrastructure.Data.Repositories
 
             await _apiContext.AddAsync(comment);
             await _apiContext.SaveChangesAsync();
+            comment = await _apiContext.PostComments
+                .Include(p => p.Author)
+                .FirstOrDefaultAsync(p => p.Id == comment.Id)
+                ?? throw new NotFoundException("", "Weird exception in the comment repository(Create post comment async)");
             return comment;
         }
 

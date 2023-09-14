@@ -42,3 +42,8 @@
   padding: 0 0.5rem;
   margin: 0 0.2rem;
 }
+
+#post-card__options {
+  float: right;
+  position: relative;
+}

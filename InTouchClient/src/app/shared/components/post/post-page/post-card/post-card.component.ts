@@ -1,4 +1,4 @@
-import {Component, Input, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {PostModel} from 'src/app/core/models/post.model';
 import {RouterModule} from '@angular/router';
@@ -7,7 +7,6 @@ import {CommentCardComponent} from '../../../comment/comment-card/comment-card.c
 import {CommentService} from "../../../../../core/services/comment.service";
 import {ReactionService} from "../../../../../core/services/reaction.service";
 import {ReactionConstants} from "../../../../../core/enums/reaction.constants";
-import {interval} from "rxjs";
 
 @Component({
   selector: 'app-post-card',
@@ -21,20 +20,28 @@ import {interval} from "rxjs";
   templateUrl: './post-card.component.html',
   styleUrls: ['./post-card.component.css']
 })
-export class PostCardComponent {
+export class PostCardComponent implements OnInit{
   @Input() post: PostModel | null = null
   @ViewChild('CommentForm') commentForm!: NgForm
-
+  numberOfComments: number = 3;
+  canDisplayMoreComments: boolean = false;
   constructor(private commentService: CommentService,
               private reactionService: ReactionService) {
   }
 
+  ngOnInit(): void {
+    if(this.post?.comments)
+        this.canDisplayMoreComments = this.numberOfComments <= this.post?.comments?.length
+    }
+
   onCreateComment() {
     if (this.post) {
-      this.commentService.createPostComment(this.post.id,this.commentForm.value)
+      const form = this.commentForm.value
+      this.commentForm.resetForm()
+      this.commentService.createPostComment(this.post.id, form)
         .subscribe(response => {
+          console.log(response)
           this.post?.comments.unshift(response)
-          this.commentForm.resetForm()
         })
     }
   }
@@ -97,5 +104,16 @@ export class PostCardComponent {
         }
       })
     }
+  }
+
+  onClearForm() {
+    if(confirm("Do you want to reset the form?"))
+      this.commentForm.resetForm()
+  }
+
+  onShowMoreComments() {
+    this.numberOfComments += 5
+    if(this.post?.comments)
+      this.canDisplayMoreComments = this.numberOfComments <= this.post?.comments?.length
   }
 }
