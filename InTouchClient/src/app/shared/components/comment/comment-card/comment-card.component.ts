@@ -3,15 +3,18 @@ import {CommonModule} from '@angular/common';
 import {IncludeCommentModel} from 'src/app/core/models/include.comment.model';
 import {ReactionService} from "../../../../core/services/reaction.service";
 import {ReactionConstants} from "../../../../core/enums/reaction.constants";
-import {faThumbsUp, faThumbsDown, faBars} from "@fortawesome/free-solid-svg-icons";
+import {faBars, faThumbsDown, faThumbsUp} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
+import {RouterLink} from "@angular/router";
+import {AuthService} from "../../../../core/services/auth.service";
 
 @Component({
   selector: 'app-comment-card',
   standalone: true,
   imports: [
     CommonModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    RouterLink
   ],
   templateUrl: './comment-card.component.html',
   styleUrls: ['./comment-card.component.css']
@@ -23,32 +26,32 @@ export class CommentCardComponent {
   thumbsUp = faThumbsUp
   thumbsDown = faThumbsDown
   bar = faBars
+  protected readonly ReactionConstants = ReactionConstants;
 
-  constructor(private reactionService: ReactionService) {
+  constructor(private reactionService: ReactionService,
+              public authService: AuthService) {
   }
 
   onLikeComment() {
-    if(this.comment?.reactionsData.didIReacted == false) {
+    if (this.comment?.reactionsData.didIReacted == false) {
       this.reactionService.addCommentReaction(this.comment.id, ReactionConstants.LIKE).subscribe(success => {
-        if(this.comment?.reactionsData) {
+        if (this.comment?.reactionsData) {
           this.comment.reactionsData.reactionType = ReactionConstants.LIKE
           this.comment.reactionsData.didIReacted = true
           this.comment.reactionsData.amountOfLikes++
         }
       })
-    }
-    else if(this.comment?.reactionsData.reactionType == ReactionConstants.DISLIKE) {
-      this.reactionService.updateCommentReaction(this.comment.id, ReactionConstants.LIKE).subscribe(success =>{
-        if(this.comment?.reactionsData) {
+    } else if (this.comment?.reactionsData.reactionType == ReactionConstants.DISLIKE) {
+      this.reactionService.updateCommentReaction(this.comment.id, ReactionConstants.LIKE).subscribe(success => {
+        if (this.comment?.reactionsData) {
           this.comment.reactionsData.reactionType = ReactionConstants.LIKE
           this.comment.reactionsData.amountOfLikes++
           this.comment.reactionsData.amountOfDislikes--
         }
       })
-    }
-    else if(this.comment?.reactionsData.reactionType == ReactionConstants.LIKE) {
+    } else if (this.comment?.reactionsData.reactionType == ReactionConstants.LIKE) {
       this.reactionService.deleteCommentReaction(this.comment.id).subscribe(success => {
-        if(this.comment?.reactionsData) {
+        if (this.comment?.reactionsData) {
           this.comment.reactionsData.reactionType = ""
           this.comment.reactionsData.didIReacted = false
           this.comment.reactionsData.amountOfLikes--
@@ -58,28 +61,26 @@ export class CommentCardComponent {
   }
 
   onDislikeComment() {
-    if(this.comment?.reactionsData.didIReacted == false) {
+    if (this.comment?.reactionsData.didIReacted == false) {
       this.reactionService.addCommentReaction(this.comment.id, ReactionConstants.DISLIKE).subscribe(success => {
-        if(this.comment?.reactionsData) {
+        if (this.comment?.reactionsData) {
           this.comment.reactionsData.reactionType = ReactionConstants.DISLIKE
           this.comment.reactionsData.didIReacted = true
           this.comment.reactionsData.amountOfDislikes++
         }
       })
-    }
-    else if(this.comment?.reactionsData.reactionType == ReactionConstants.LIKE) {
+    } else if (this.comment?.reactionsData.reactionType == ReactionConstants.LIKE) {
       this.reactionService.updateCommentReaction(this.comment.id, ReactionConstants.DISLIKE).subscribe(success => {
-        if(this.comment?.reactionsData) {
+        if (this.comment?.reactionsData) {
           this.comment.reactionsData.reactionType = ReactionConstants.DISLIKE
           this.comment.reactionsData.didIReacted = true
           this.comment.reactionsData.amountOfDislikes++
           this.comment.reactionsData.amountOfLikes--
         }
       })
-    }
-    else if(this.comment?.reactionsData.reactionType == ReactionConstants.DISLIKE) {
+    } else if (this.comment?.reactionsData.reactionType == ReactionConstants.DISLIKE) {
       this.reactionService.deleteCommentReaction(this.comment.id).subscribe(success => {
-        if(this.comment?.reactionsData) {
+        if (this.comment?.reactionsData) {
           this.comment.reactionsData.reactionType = ""
           this.comment.reactionsData.didIReacted = false
           this.comment.reactionsData.amountOfDislikes--
@@ -87,6 +88,4 @@ export class CommentCardComponent {
       })
     }
   }
-
-  protected readonly ReactionConstants = ReactionConstants;
 }

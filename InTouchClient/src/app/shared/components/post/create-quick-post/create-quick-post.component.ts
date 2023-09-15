@@ -1,6 +1,6 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {RouterModule} from '@angular/router';
 import {CreatePostModel} from 'src/app/core/models/create.post.model';
 
@@ -25,8 +25,8 @@ export class CreateQuickPostComponent implements OnInit {
 
   ngOnInit(): void {
     this.quickPostForm = this.formBuilder.group({
-      title: [''],
-      content: ['']
+      title: ['', [Validators.required]],
+      content: ['', [Validators.required]]
     })
   }
 

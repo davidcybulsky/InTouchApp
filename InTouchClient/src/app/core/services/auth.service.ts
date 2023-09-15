@@ -16,7 +16,7 @@ import { ENVIRONMENT_TOKEN } from '../tokens/environment.token';
 
 export class AuthService {
 
-  private JWTTokenData$: Observable<TokenModel | null> = of(null);
+  private TokenData: TokenModel | null = null;
 
   constructor(@Inject(ENVIRONMENT_TOKEN) private ENVIRONMENT_TOKEN: IEnvoronment,
               private http: HttpClient,
@@ -27,13 +27,12 @@ export class AuthService {
     let token = this.storageService.getValue(StorageConstants.TOKEN_KEY)
     console.log(token)
     if (token !== null) {
-      this.JWTTokenData$ = of(JSON.parse(token))
-      console.log(token)
+      this.TokenData = JSON.parse(token)
     }
   }
 
   getJWTTokenData() {
-    return this.JWTTokenData$
+    return this.TokenData
   }
 
   login(loginRequestModel: LoginModel): Observable<TokenModel> {
@@ -41,7 +40,7 @@ export class AuthService {
       .pipe(
         map(response => {
           if (response.token) {
-            this.JWTTokenData$ = of(response)
+            this.TokenData = response
             this.storageService.setItem(StorageConstants.TOKEN_KEY, JSON.stringify(response))
           }
           return response

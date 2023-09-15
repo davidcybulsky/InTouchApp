@@ -8,7 +8,8 @@
 <main>
   <app-account-panel
     [account]="account"></app-account-panel>
-  <app-create-quick-post></app-create-quick-post>
+  <app-create-quick-post
+    (CreateQuickPost)="onCreateQuickPost($event)"></app-create-quick-post>
   <app-post-page
     [posts]="account?.posts"></app-post-page>
 </main>

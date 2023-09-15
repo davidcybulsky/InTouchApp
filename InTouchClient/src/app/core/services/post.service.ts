@@ -26,12 +26,12 @@ export class PostService {
     return this.http.get<PostModel[]>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${PostServiceEndpoints.GET_USER_POSTS}${userId}`);
   }
 
-  createPost(model: CreatePostModel): Observable<number> {
-    return this.http.post<number>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${PostServiceEndpoints.CREATE_POST}`, model)
+  createPost(model: CreatePostModel): Observable<PostModel> {
+    return this.http.post<PostModel>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${PostServiceEndpoints.CREATE_POST}`, model)
   }
 
-  createQuickPost(model: CreateQuickPostModel): Observable<number> {
-    return this.http.post<number>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${PostServiceEndpoints.CREATE_POST}`, model)
+  createQuickPost(model: CreateQuickPostModel): Observable<PostModel> {
+    return this.http.post<PostModel>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${PostServiceEndpoints.CREATE_POST}`, model)
   }
 
   updatePost(postId: number, model: UpdatePostModel): Observable<void> {

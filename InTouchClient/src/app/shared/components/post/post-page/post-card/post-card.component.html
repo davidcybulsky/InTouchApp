@@ -8,10 +8,15 @@
         {{post?.author?.firstName}} {{post?.author?.lastName}} {{post?.author?.role}}
       </div>
     </a>
-    <fa-icon
-      class="options post-card__options"
-      [icon]="bar">
-    </fa-icon>
+    <div class="options comment-card__options">
+      <fa-icon
+        [icon]="bar"
+        class="dropdown-menu__icon">
+      </fa-icon>
+      <div class="dropdown-menu block">
+        <a *ngIf="post?.author?.id==authService.getJWTTokenData()?.userId" class="item"><span>Edit</span></a>
+      </div>
+    </div>
   </div>
   <div class="postcard__content">
     <h3 class="postcard__content__title">
@@ -47,13 +52,16 @@
         id="content"
         name="content"
         ngModel
-        placeholder="Create a comment">
+        placeholder="Create a comment"
+        required>
       <button
+        [disabled]="CommentForm.invalid"
         class="btn"
         type="submit">
         Create
       </button>
       <button
+        [disabled]="CommentForm.invalid"
         (click)="onClearForm()"
         class="btn"
         type="button">

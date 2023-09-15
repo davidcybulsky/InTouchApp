@@ -53,3 +53,22 @@
   text-align: right;
   cursor: pointer;
 }
+
+.comment-card__options {
+  float: right;
+  position: relative;
+}
+
+.dropdown-menu {
+  position: relative;
+  text-align: right;
+}
+
+.dropdown-menu__icon {
+  display: block;
+  text-align: right;
+}
+
+.item {
+  display: block;
+}

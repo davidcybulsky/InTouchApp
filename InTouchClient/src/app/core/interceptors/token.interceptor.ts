@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
-import {Observable, take} from 'rxjs';
+import {Observable} from 'rxjs';
 import {AuthService} from '../services/auth.service';
 
 @Injectable()
@@ -10,17 +10,14 @@ export class TokenInterceptor implements HttpInterceptor {
   }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    this.authService.getJWTTokenData().pipe(take(1)).subscribe({
-      next: tokenData => {
-        if (tokenData) {
-          request = request.clone({
-            setHeaders: {
-              Authorization: tokenData.token
-            }
-          })
+    const tokenData = this.authService.getJWTTokenData()
+    if (tokenData) {
+      request = request.clone({
+        setHeaders: {
+          Authorization: tokenData.token
         }
-      }
-    })
+      })
+    }
     return next.handle(request);
   }
 }

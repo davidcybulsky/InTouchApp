@@ -1,10 +1,12 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
+import {CanActivateAuthenticatedGuard} from "./core/guards/can-activate-authenticated.guard";
 
 const routes: Routes = [
   {
     path: "",
-    loadComponent: () => import('src/app/homepage/homepage.component').then(c => c.HomepageComponent)
+    loadComponent: () => import('src/app/homepage/homepage.component').then(c => c.HomepageComponent),
+    canActivate: [CanActivateAuthenticatedGuard]
   },
   {
     path: "auth",
@@ -16,7 +18,8 @@ const routes: Routes = [
   },
   {
     path: "account",
-    loadChildren: () => import('src/app/account/account.module').then(m => m.AccountModule)
+    loadChildren: () => import('src/app/account/account.module').then(m => m.AccountModule),
+    canActivate: [CanActivateAuthenticatedGuard]
   },
   {
     path: "post",

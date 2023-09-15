@@ -11,11 +11,25 @@
 
 .comment-card__panel__data__item {
   display: inline-block;
-  padding: 0 0.5rem ;
+  padding: 0 0.5rem;
   margin: 0 0.2rem;
 }
 
 .comment-card__options {
   float: right;
   position: relative;
+}
+
+.dropdown-menu {
+  position: relative;
+  text-align: right;
+}
+
+.dropdown-menu__icon {
+  display: block;
+  text-align: right;
+}
+
+.item {
+  display: block;
 }

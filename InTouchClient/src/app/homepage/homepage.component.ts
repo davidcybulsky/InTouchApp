@@ -14,7 +14,7 @@ import {
 } from '../shared/components/friend/friend-requests-panel/friend-requests-panel.component';
 import {PostPageComponent} from '../shared/components/post/post-page/post-page.component';
 import {CommentService} from '../core/services/comment.service';
-import {CreateCommentModel} from '../core/services/create.comment.model';
+import {CreateCommentModel} from '../core/models/create.comment.model';
 import {ReactionService} from '../core/services/reaction.service';
 import {CreateQuickPostModel} from '../core/models/create.quick.post.model';
 import {ReactionConstants} from "../core/enums/reaction.constants";

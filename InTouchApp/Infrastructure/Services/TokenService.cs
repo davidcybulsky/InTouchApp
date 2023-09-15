@@ -43,6 +43,7 @@ namespace InTouchApi.Infrastructure.Services
 
             return Task.FromResult(new TokenDto
             {
+                UserId = user.Id,
                 Token = $"bearer {tokenHandler.WriteToken(token)}",
                 Created = created,
                 Expires = expires

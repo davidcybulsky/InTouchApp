@@ -2,7 +2,7 @@ import {Inject, Injectable} from '@angular/core';
 import {IEnvoronment} from 'src/environment/environment.interface';
 import {HttpClient} from '@angular/common/http';
 import {UpdateCommentModel} from '../models/update.comment.model';
-import {CreateCommentModel} from './create.comment.model';
+import {CreateCommentModel} from '../models/create.comment.model';
 import {Observable} from 'rxjs';
 import {CommentServiceEndpoints} from '../enums/comment.service.endpoints';
 import { ENVIRONMENT_TOKEN } from '../tokens/environment.token';

@@ -1,23 +1,29 @@
 <div class="comment-card">
-  <p>{{comment?.author?.firstName}} {{comment?.author?.lastName}}</p>
-  <fa-icon
-    class="options comment-card__options"
-    [icon]="bar">
-  </fa-icon>
+  <a routerLink="/user/{{comment?.author?.id}}">{{comment?.author?.firstName}} {{comment?.author?.lastName}}</a>
+  <div class="options comment-card__options">
+    <fa-icon
+      [icon]="bar"
+      class="dropdown-menu__icon">
+    </fa-icon>
+    <div class="dropdown-menu block">
+      <a *ngIf="comment?.author?.id==authService.getJWTTokenData()?.userId" class="item"><span>Edit</span></a>
+    </div>
+  </div>
+
   <p class="comment-card__content">{{comment?.content}}</p>
   <div class="comment-card__panel__data">
     <fa-icon
-      class="options comment-card__panel__data__item"
       (click)="onLikeComment()"
       [icon]="thumbsUp"
-      [ngStyle]="{'color': comment?.reactionsData?.reactionType === ReactionConstants.LIKE ? 'green' : 'black'}">
+      [ngStyle]="{'color': comment?.reactionsData?.reactionType === ReactionConstants.LIKE ? 'green' : 'black'}"
+      class="options comment-card__panel__data__item">
     </fa-icon>
     <p class="comment-card__panel__data__item">{{comment?.reactionsData?.amountOfLikes}}</p>
     <fa-icon
-      class="options comment-card__panel__data__item"
       (click)="onDislikeComment()"
       [icon]="thumbsDown"
-      [ngStyle]="{'color': comment?.reactionsData?.reactionType === ReactionConstants.DISLIKE ? 'red' : 'black'}">
+      [ngStyle]="{'color': comment?.reactionsData?.reactionType === ReactionConstants.DISLIKE ? 'red' : 'black'}"
+      class="options comment-card__panel__data__item">
     </fa-icon>
     <p class="comment-card__panel__data__item">{{comment?.reactionsData?.amountOfDislikes}}</p>
   </div>

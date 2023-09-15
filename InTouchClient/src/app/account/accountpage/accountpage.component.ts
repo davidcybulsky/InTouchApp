@@ -16,6 +16,8 @@ import {FriendCardPanelComponent} from 'src/app/shared/components/friend/friend-
 import {
   FriendRequestsPanelComponent
 } from 'src/app/shared/components/friend/friend-requests-panel/friend-requests-panel.component';
+import {PostService} from "../../core/services/post.service";
+import {CreateQuickPostModel} from "../../core/models/create.quick.post.model";
 
 @Component({
   standalone: true,
@@ -44,7 +46,7 @@ export class AccountpageComponent implements OnInit, OnDestroy {
 
   constructor(private accountService: AccountService,
               private friendService: FriendService,
-              private router: Router) {
+              private postService: PostService) {
   }
 
   ngOnInit(): void {
@@ -70,7 +72,10 @@ export class AccountpageComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  onEditAccount() {
-    this.router.navigate(['account', 'edit']);
+  onCreateQuickPost(model : CreateQuickPostModel) {
+    this.postService.createQuickPost(model).subscribe(response => {
+      this.account?.posts.unshift(response)
+    })
   }
+
 }

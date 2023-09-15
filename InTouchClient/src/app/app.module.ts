@@ -8,6 +8,7 @@ import {EnvironmentDev} from 'src/environment/environment.dev';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {TokenInterceptor} from './core/interceptors/token.interceptor';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
+import {ActivatedRouteSnapshot} from "@angular/router";
 
 @NgModule({
   declarations: [
@@ -28,7 +29,7 @@ import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
       multi: true
-    }
+    },
   ],
   bootstrap: [AppComponent]
 })

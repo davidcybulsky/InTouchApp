@@ -9,6 +9,7 @@ import {ReactionService} from "../../../../../core/services/reaction.service";
 import {ReactionConstants} from "../../../../../core/enums/reaction.constants";
 import {faThumbsUp, faThumbsDown, faBars} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
+import {AuthService} from "../../../../../core/services/auth.service";
 
 @Component({
   selector: 'app-post-card',
@@ -37,7 +38,8 @@ export class PostCardComponent implements OnInit{
 
 
   constructor(private commentService: CommentService,
-              private reactionService: ReactionService) {
+              private reactionService: ReactionService,
+              public authService: AuthService) {
   }
 
   ngOnInit(): void {

@@ -9,27 +9,32 @@
     <input
       class="quick-post__form__input"
       formControlName="title"
-      placeholder="Title">
+      placeholder="Title"
+      required>
     <input
       class="quick-post__form__input"
       formControlName="content"
-      placeholder="Content">
+      placeholder="Content"
+      required>
     <button
       class="btn"
-      type="submit">
+      type="submit"
+      [disabled]="QuickPostForm.invalid">
       Create
     </button>
     <button
       class="btn"
-      type="reset">
-      Clear
+      type="reset"
+      [disabled]="QuickPostForm.invalid">
+      Cancel
     </button>
     <p>
       Do you want to share more?
+      Create a full post
     </p>
     <button
       class="btn"
-      routerLink="post/create"
+      routerLink="/post/create"
       type="button">
       Full post
     </button>
