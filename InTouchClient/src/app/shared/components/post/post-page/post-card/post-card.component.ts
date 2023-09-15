@@ -35,6 +35,7 @@ export class PostCardComponent implements OnInit{
 
   numberOfComments: number = 3;
   canDisplayMoreComments: boolean = false;
+  displayOptions: boolean = false;
 
 
   constructor(private commentService: CommentService,
@@ -131,4 +132,9 @@ export class PostCardComponent implements OnInit{
   }
 
   protected readonly ReactionConstants = ReactionConstants;
+
+  onDeleteComment(commentId: number) {
+    if(this.post)
+      this.post!.comments = this.post?.comments.filter(c => c.id != commentId)
+  }
 }

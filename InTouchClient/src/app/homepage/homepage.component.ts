@@ -74,7 +74,9 @@ export class HomepageComponent implements OnInit, OnDestroy {
   }
 
   onCreateQuickPost(model: CreateQuickPostModel) {
-    this.postService.createQuickPost(model).subscribe()
+    this.postService.createQuickPost(model).subscribe(response => {
+      this.posts.unshift(response)
+    })
   }
 
   onAcceptFriendRequest(id: number) {

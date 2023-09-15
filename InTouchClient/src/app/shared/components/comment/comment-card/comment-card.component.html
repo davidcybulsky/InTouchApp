@@ -2,15 +2,42 @@
   <a routerLink="/user/{{comment?.author?.id}}">{{comment?.author?.firstName}} {{comment?.author?.lastName}}</a>
   <div class="options comment-card__options">
     <fa-icon
+      (click)="displayOptions = !displayOptions"
       [icon]="bar"
       class="dropdown-menu__icon">
     </fa-icon>
-    <div class="dropdown-menu block">
-      <a *ngIf="comment?.author?.id==authService.getJWTTokenData()?.userId" class="item"><span>Edit</span></a>
+    <div class="dropdown-menu block"
+         [ngStyle]="{'display': displayOptions ? 'block' : 'none' }">
+      <a
+        (click)="onEdit()"
+        *ngIf="comment?.author?.id==authService.getJWTTokenData()?.userId"
+        class="item">
+        <span>Edit</span>
+      </a>
+      <a
+        (click)="onDelete()"
+        *ngIf="comment?.author?.id==authService.getJWTTokenData()?.userId"
+        class="item">
+        <span>Delete</span>
+      </a>
     </div>
   </div>
 
-  <p class="comment-card__content">{{comment?.content}}</p>
+  <p *ngIf="!editMode" class="comment-card__content">{{comment?.content}}</p>
+  <form *ngIf="editMode" [formGroup]="editCommentForm" (ngSubmit)="onConfirmEdit()">
+    <input
+      formControlName="content"
+      placeholder="content"
+      required>
+    <button
+      type="submit">
+      Confirm
+    </button>
+    <button
+      (click)=onCancelEdit()>
+      Cancel
+    </button>
+  </form>
   <div class="comment-card__panel__data">
     <fa-icon
       (click)="onLikeComment()"
