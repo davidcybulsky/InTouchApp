@@ -2,6 +2,7 @@
   padding: 1rem;
   margin: 1rem 0;
   border: 1px solid black;
+  border-radius: 1rem;
 }
 
 .account-panel-container-icon > img {
@@ -20,7 +21,9 @@
   vertical-align: top;
 }
 
-#account-panel__options {
+.account-panel__options {
   float: right;
   position: relative;
+  text-align: right;
 }
+

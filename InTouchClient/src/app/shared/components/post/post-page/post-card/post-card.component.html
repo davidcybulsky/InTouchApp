@@ -1,6 +1,6 @@
 <div class="postcard">
   <div class="postcard__header">
-    <a class="postcard__user__link" routerLink="/user/{{post?.authorId}}">
+    <a class="postcard__user__link user-name-anchor" routerLink="/user/{{post?.authorId}}">
       <div class="postcard__user-icon">
         <img alt="default-avatar" src="../../../../../assets/images/default-avatar.webp">
       </div>
@@ -16,11 +16,24 @@
       </fa-icon>
       <div class="dropdown-menu block"
         [ngStyle]="{'display': displayOptions ? 'block' : 'none' }">
-        <a *ngIf="post?.author?.id==authService.getJWTTokenData()?.userId" class="item"><span>Edit</span></a>
+        <a
+          (click)="onEditPost()"
+          *ngIf="post?.author?.id==authService.getJWTTokenData()?.userId"
+          class="item">
+          <span>Edit</span>
+        </a>
+        <a
+          (click)="onDeletePost()"
+          *ngIf="post?.author?.id==authService.getJWTTokenData()?.userId"
+          class="item">
+          <span>Delete</span>
+        </a>
       </div>
     </div>
   </div>
-  <div class="postcard__content">
+  <div
+    *ngIf="!editMode"
+    class="postcard__content">
     <h3 class="postcard__content__title">
       {{post?.title}}
     </h3>
@@ -28,6 +41,25 @@
       {{post?.content}}
     </p>
   </div>
+  <form *ngIf="editMode" [formGroup]="editPostForm" (ngSubmit)="onConfirmEditPost()">
+    <input
+      formControlName="title"
+      placeholder="Title"
+      required>
+    <input
+      formControlName="content"
+      placeholder="Content"
+      required>
+    <button
+      type="submit">
+      Confirm
+    </button>
+    <button
+      type="button"
+      (click)="onCancelEditPost()">
+      Cancel
+    </button>
+  </form>
   <div class="postcard__panel">
     <div class="postcard__panel__data">
       <fa-icon

@@ -73,3 +73,13 @@ input.invalid {
 .options {
   cursor: pointer;
 }
+
+.user-name-anchor {
+  color: black;
+  text-decoration: none;
+}
+
+.dropdown-menu > a {
+  color: black;
+  text-decoration: none;
+}

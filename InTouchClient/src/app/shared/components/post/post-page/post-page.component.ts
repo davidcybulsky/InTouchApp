@@ -17,13 +17,8 @@ import {CreateCommentModel} from 'src/app/core/models/create.comment.model';
 export class PostPageComponent {
 
   @Input() posts: PostModel[] | undefined = [];
-  onCreateComment(id: number, model: CreateCommentModel) {
-  }
 
-  onLikePost(id: number) {
-  }
-
-  onDislikePost(id: number) {
-  }
-
+    onDeletePost(postId: number) {
+        this.posts = this.posts?.filter(p => p.id != postId)
+    }
 }

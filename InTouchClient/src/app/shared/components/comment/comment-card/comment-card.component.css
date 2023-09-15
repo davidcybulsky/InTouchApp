@@ -33,3 +33,13 @@
 .item {
   display: block;
 }
+
+.comment-card__user-icon,
+.comment-card__user-data {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.comment-card__user-icon > img {
+  width: 50px;
+}

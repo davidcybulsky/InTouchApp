@@ -126,10 +126,12 @@ export class CommentCardComponent {
 
   onDelete() {
     if(this.comment) {
-      this.commentService.deletePostComment(this.comment?.id).subscribe(success => {
-        if(this.comment)
-        this.deleteComment.emit(this.comment.id)
-      })
+      if(confirm("Do you want to delete the comment?")) {
+        this.commentService.deletePostComment(this.comment?.id).subscribe(success => {
+          if (this.comment)
+            this.deleteComment.emit(this.comment.id)
+        })
+      }
     }
   }
 }

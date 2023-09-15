@@ -1,8 +1,8 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {PostModel} from 'src/app/core/models/post.model';
 import {RouterModule} from '@angular/router';
-import {FormsModule, NgForm} from '@angular/forms';
+import {FormBuilder, FormGroup, FormsModule, NgForm, ReactiveFormsModule, Validators} from '@angular/forms';
 import {CommentCardComponent} from '../../../comment/comment-card/comment-card.component';
 import {CommentService} from "../../../../../core/services/comment.service";
 import {ReactionService} from "../../../../../core/services/reaction.service";
@@ -10,6 +10,7 @@ import {ReactionConstants} from "../../../../../core/enums/reaction.constants";
 import {faThumbsUp, faThumbsDown, faBars} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {AuthService} from "../../../../../core/services/auth.service";
+import {PostService} from "../../../../../core/services/post.service";
 
 @Component({
   selector: 'app-post-card',
@@ -19,7 +20,8 @@ import {AuthService} from "../../../../../core/services/auth.service";
     RouterModule,
     FormsModule,
     CommentCardComponent,
-    FontAwesomeModule
+    FontAwesomeModule,
+    ReactiveFormsModule
   ],
   templateUrl: './post-card.component.html',
   styleUrls: ['./post-card.component.css']
@@ -28,19 +30,24 @@ export class PostCardComponent implements OnInit{
 
   @Input() post: PostModel | null = null
   @ViewChild('CommentForm') commentForm!: NgForm
+  @Output() deletePost = new EventEmitter<number>()
+  editPostForm!: FormGroup
 
   thumbsUp = faThumbsUp
   thumbsDown = faThumbsDown
   bar = faBars
 
-  numberOfComments: number = 3;
-  canDisplayMoreComments: boolean = false;
-  displayOptions: boolean = false;
+  numberOfComments: number = 3
+  canDisplayMoreComments: boolean = false
+  displayOptions: boolean = false
+  editMode: boolean = false
 
 
-  constructor(private commentService: CommentService,
+  constructor(private postService: PostService,
+              private commentService: CommentService,
               private reactionService: ReactionService,
-              public authService: AuthService) {
+              public authService: AuthService,
+              private formBuilder: FormBuilder) {
   }
 
   ngOnInit(): void {
@@ -136,5 +143,41 @@ export class PostCardComponent implements OnInit{
   onDeleteComment(commentId: number) {
     if(this.post)
       this.post!.comments = this.post?.comments.filter(c => c.id != commentId)
+  }
+
+  onEditPost() {
+    this.editPostForm = this.formBuilder.group({
+      title: [this.post?.title, [Validators.required]],
+      content: [this.post?.content, [Validators.required]]
+    })
+    this.editMode = true
+  }
+
+  onConfirmEditPost() {
+    if(this.post)
+      this.postService.updatePost(this.post?.id, this.editPostForm.value).subscribe(success => {
+        if(this.post) {
+          this.post.title = this.editPostForm.get("title")?.value
+          this.post.content = this.editPostForm.get("content")?.value
+          this.editMode = false
+        }
+      })
+  }
+
+  onCancelEditPost() {
+    if(this.editPostForm.touched)
+      if(confirm("Do you want to cancel edition?")) {
+        this.editMode = false
+      }
+  }
+
+  onDeletePost() {
+    if(this.post)
+      if(confirm("Do you want to delete the post?")) {
+        this.postService.deletePost(this.post?.id).subscribe(success => {
+            this.deletePost.emit(this.post?.id)
+          }
+        )
+      }
   }
 }
