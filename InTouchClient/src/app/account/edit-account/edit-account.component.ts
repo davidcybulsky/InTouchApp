@@ -3,6 +3,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Router, RouterModule} from '@angular/router';
 import {AccountService} from 'src/app/core/services/account.service';
+import {AuthService} from "../../core/services/auth.service";
 
 @Component({
   standalone: true,
@@ -22,7 +23,8 @@ export class EditAccountComponent implements OnInit, OnDestroy {
 
   constructor(private accountService: AccountService,
               private formBuilder: FormBuilder,
-              private router: Router) {
+              private router: Router,
+              private authService: AuthService) {
   }
 
   ngOnInit(): void {
@@ -83,17 +85,28 @@ export class EditAccountComponent implements OnInit, OnDestroy {
   }
 
   onEditAccount() {
-    this.accountService.updateAccount(this.editAccountForm.value).subscribe()
+    this.accountService.updateAccount(this.editAccountForm.value).subscribe(success => {
+      this.router.navigate(["/account"])
+    })
   }
 
   onCancel() {
-    this.router.navigate(['/account'])
+    if(this.editAccountForm.touched) {
+      if(confirm("Do you want to cancel?")) {
+        this.router.navigate(['/account'])
+      }
+    }
+    else {
+      this.router.navigate(['/account'])
+    }
   }
 
   onDelete() {
     let decision = confirm("Do you want to delete your account?")
     if (decision) {
-      this.accountService.deleteAccount()
+      this.accountService.deleteAccount().subscribe(success => {
+        this.authService.logout()
+      })
     }
   }
 }

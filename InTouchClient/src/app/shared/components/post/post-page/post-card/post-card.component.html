@@ -5,7 +5,11 @@
         <img alt="default-avatar" src="../../../../../assets/images/default-avatar.webp">
       </div>
       <div class="postcard__user-data">
-        {{post?.author?.firstName}} {{post?.author?.lastName}} {{post?.author?.role}}
+        {{post?.author?.firstName}} {{post?.author?.lastName}}
+        <fa-icon
+          *ngIf="post?.author?.role == RoleConstants.ADMIN"
+          [icon]="admin">
+        </fa-icon>
       </div>
     </a>
     <div class="options comment-card__options">

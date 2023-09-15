@@ -35,11 +35,19 @@ export class CreatePostComponent implements OnInit {
   }
 
   onCreatePost(): void {
-    this.postService.createPost(this.createPostForm.value)
+      this.postService.createPost(this.createPostForm.value).subscribe(success => {
+        this.router.navigate([""])
+      })
   }
 
   onCancel() {
-    this.router.navigate(['']);
+    if(this.createPostForm.touched) {
+      if(confirm("Do you want to cancel?"))
+        this.router.navigate([''])
+    }
+    else {
+      this.router.navigate([''])
+    }
   }
 
 }

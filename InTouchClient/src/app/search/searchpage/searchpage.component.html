@@ -1,0 +1,28 @@
+<app-header></app-header>
+<aside></aside>
+<main>
+  <form [formGroup]="searchForm">
+    <input
+      formControlName="request"
+      required
+      placeholder="Write something">
+    <button>
+      Search
+    </button>
+  </form>
+  <nav>
+    <ul>
+      <li>
+        <a routerLink="/search/user">Users</a>
+      </li>
+      <li>
+        <a routerLink="/search/friend">Friends</a>
+      </li>
+      <li>
+        <a routerLink="/search/post">Posts</a>
+      </li>
+    </ul>
+  </nav>
+  <router-outlet></router-outlet>
+</main>
+<aside></aside>

@@ -32,6 +32,7 @@ namespace InTouchApi.Infrastructure.Data.Repositories
         {
             var user = await _dbContext.Users
                 .AsNoTracking()
+                .Where(u => u.IsDeleted == false)
                 .FirstOrDefaultAsync(u => u.Email == email) ??
                 throw new BadRequestException("Bad email or password",
                 $"User with email ${email} was not found while loging in");
@@ -43,6 +44,7 @@ namespace InTouchApi.Infrastructure.Data.Repositories
         {
             var user = await _dbContext.Users
                 .AsNoTracking()
+                .Where(u => u.IsDeleted == false)
                 .FirstOrDefaultAsync(u => u.Id == userId) ??
                 throw new NotFoundException("The user was not found",
                 $"The user with id: {userId} was not found. Executed in auth repository");

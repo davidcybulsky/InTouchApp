@@ -7,10 +7,11 @@ import {CommentCardComponent} from '../../../comment/comment-card/comment-card.c
 import {CommentService} from "../../../../../core/services/comment.service";
 import {ReactionService} from "../../../../../core/services/reaction.service";
 import {ReactionConstants} from "../../../../../core/enums/reaction.constants";
-import {faThumbsUp, faThumbsDown, faBars} from "@fortawesome/free-solid-svg-icons";
+import {faThumbsUp, faThumbsDown, faBars, faStar} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {AuthService} from "../../../../../core/services/auth.service";
 import {PostService} from "../../../../../core/services/post.service";
+import {RoleConstants} from "../../../../../core/enums/role.constants";
 
 @Component({
   selector: 'app-post-card',
@@ -36,6 +37,7 @@ export class PostCardComponent implements OnInit{
   thumbsUp = faThumbsUp
   thumbsDown = faThumbsDown
   bar = faBars
+  admin = faStar
 
   numberOfComments: number = 3
   canDisplayMoreComments: boolean = false
@@ -180,4 +182,6 @@ export class PostCardComponent implements OnInit{
         )
       }
   }
+
+  protected readonly RoleConstants = RoleConstants;
 }

@@ -46,6 +46,10 @@ const routes: Routes = [
     loadComponent: () => import('src/app/footer-sites/questions/questions.component').then(c => c.QuestionsComponent)
   },
   {
+    path: "search",
+    loadChildren: () => import('src/app/search/search.module').then(m => m.SearchModule)
+  },
+  {
     path: "**",
     redirectTo: "",
     pathMatch: "full"

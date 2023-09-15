@@ -3,12 +3,13 @@ import {CommonModule} from '@angular/common';
 import {IncludeCommentModel} from 'src/app/core/models/include.comment.model';
 import {ReactionService} from "../../../../core/services/reaction.service";
 import {ReactionConstants} from "../../../../core/enums/reaction.constants";
-import {faBars, faThumbsDown, faThumbsUp} from "@fortawesome/free-solid-svg-icons";
+import {faBars, faStar, faThumbsDown, faThumbsUp} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {RouterLink} from "@angular/router";
 import {AuthService} from "../../../../core/services/auth.service";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {CommentService} from "../../../../core/services/comment.service";
+import {RoleConstants} from "../../../../core/enums/role.constants";
 
 @Component({
   selector: 'app-comment-card',
@@ -30,6 +31,7 @@ export class CommentCardComponent {
   thumbsUp = faThumbsUp
   thumbsDown = faThumbsDown
   bar = faBars
+  admin = faStar
   protected readonly ReactionConstants = ReactionConstants
   displayOptions: boolean = false
   editMode: boolean = false
@@ -134,4 +136,7 @@ export class CommentCardComponent {
       }
     }
   }
+
+    protected readonly RoleConstants = RoleConstants;
+    protected readonly faStar = faStar;
 }

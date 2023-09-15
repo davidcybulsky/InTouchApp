@@ -7,6 +7,10 @@
     </div>
     <div class="comment-card__user-data">
       {{comment?.author?.firstName}} {{comment?.author?.lastName}}
+      <fa-icon
+        *ngIf="comment?.author?.role == RoleConstants.ADMIN"
+        [icon]="admin">
+      </fa-icon>
     </div>
   </a>
   <div class="options comment-card__options">

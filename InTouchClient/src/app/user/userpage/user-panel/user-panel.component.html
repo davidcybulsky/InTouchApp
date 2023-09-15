@@ -4,6 +4,10 @@
   </div>
   <div class="user-panel-container-data">
     <p>{{user?.firstName}} {{user?.lastName}}</p>
+    <fa-icon
+      *ngIf="user?.role == RoleConstants.ADMIN"
+      [icon]="admin">
+    </fa-icon>
     {{user?.description}}
   </div>
 </div>

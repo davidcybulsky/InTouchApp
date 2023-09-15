@@ -9,6 +9,7 @@ import {StorageConstants} from '../enums/storage.constants';
 import {SignupModel} from '../models/signup.model';
 import {LoginModel} from '../models/login.model';
 import { ENVIRONMENT_TOKEN } from '../tokens/environment.token';
+import {Router} from "@angular/router";
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,8 @@ export class AuthService {
 
   constructor(@Inject(ENVIRONMENT_TOKEN) private ENVIRONMENT_TOKEN: IEnvoronment,
               private http: HttpClient,
-              private storageService: StorageService) {
+              private storageService: StorageService,
+              private router: Router) {
   }
 
   setTokenFromStorage(): void {
@@ -49,5 +51,10 @@ export class AuthService {
 
   signup(signupRequestModel: SignupModel): Observable<number> {
     return this.http.post<number>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${AuthServiceEndpoints.SIGNUP}`, signupRequestModel)
+  }
+
+  logout() {
+    this.storageService.removeItem(StorageConstants.TOKEN_KEY)
+    this.router.navigate(["/auth", "login"])
   }
 }

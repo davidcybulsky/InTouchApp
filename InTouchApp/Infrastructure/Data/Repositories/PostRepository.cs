@@ -65,6 +65,7 @@ namespace InTouchApi.Infrastructure.Data.Repositories
                 .Include(p => p.Reactions.Where(r => r.IsDeleted == false))
                 .ThenInclude(r => r.Author)
                 .Where(p => p.IsDeleted == false)
+                .OrderByDescending(p => p.CreationDate)
                 .ToListAsync();
 
             return posts;
