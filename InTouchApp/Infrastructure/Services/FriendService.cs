@@ -142,6 +142,12 @@ namespace InTouchApi.Infrastructure.Services
                 ?? throw new UnauthorizedException("Unauthorized",
                 $"Unauthorized user tried to send friend request. FriendId: {friendId}");
 
+            if (friendId == userId)
+            {
+                throw new BadRequestException("You can not send a friend request to yourself",
+                    $"User with id: {userId} send a frend request to itself");
+            }
+
             var friendshipInDb = await _repository.DoesFriendshipExist(userId, friendId);
             var friendshipInDb2 = await _repository.DoesFriendshipExist(friendId, userId);
 
@@ -174,7 +180,7 @@ namespace InTouchApi.Infrastructure.Services
                 await _repository.CreateFriendshipAsync(friendship);
             }
 
-            if (friendshipInDb2 == true)
+            if (friendshipInDb2 == false)
             {
                 var recursiceFriendship = new Friendship
                 {
@@ -186,7 +192,7 @@ namespace InTouchApi.Infrastructure.Services
                     IsAccepted = false,
                 };
 
-                await _repository.RecreateFriendshipAsync(recursiceFriendship);
+                await _repository.CreateFriendshipAsync(recursiceFriendship);
             }
             else
             {
@@ -201,7 +207,7 @@ namespace InTouchApi.Infrastructure.Services
                     IsAccepted = false,
                 };
 
-                await _repository.CreateFriendshipAsync(recursiceFriendship);
+                await _repository.RecreateFriendshipAsync(recursiceFriendship);
             }
 
             Log.Logger.Information($"User with id: {userId} sent friend request to user with id: {friendId}");

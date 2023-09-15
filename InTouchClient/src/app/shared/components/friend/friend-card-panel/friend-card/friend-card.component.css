@@ -21,7 +21,7 @@
   width: 40px;
   margin: 0.2rem;
 }
-
-#message-icon {
-  vertical-align: middle;
+.friend-card__message-icon {
+  text-align: right;
+  vertical-align: center;
 }
