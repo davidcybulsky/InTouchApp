@@ -6,6 +6,7 @@ using InTouchApi.Application.Models;
 using InTouchApi.Domain.Entities;
 using InTouchApi.Infrastructure.Data;
 using InTouchApi.Infrastructure.Data.Repositories;
+using InTouchApi.Infrastructure.Hubs;
 using InTouchApi.Infrastructure.Services;
 using InTouchApi.Infrastructure.Validators;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -44,6 +45,7 @@ namespace InTouchApi.Infrastructure
             services.AddScoped<IReactionRepository, ReactionRepository>();
             services.AddScoped<ISearchRepository, SearchRepository>();
             services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+            services.AddSingleton<IConnectionTracker, ConnectionTracker>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddHttpContextAccessor();
 

@@ -1,4 +1,5 @@
 ﻿using InTouchApi.Application.Exceptions;
+using InTouchApi.Application.Interfaces;
 using InTouchApi.Infrastructure.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
@@ -11,10 +12,13 @@ namespace InTouchApi.Infrastructure.Hubs
     public sealed class ConnectionHub : Hub
     {
         private readonly ApiContext _apiContext;
+        private readonly IConnectionTracker _tracker;
 
-        public ConnectionHub(ApiContext apiContext)
+        public ConnectionHub(ApiContext apiContext,
+                             IConnectionTracker tracker)
         {
             _apiContext = apiContext;
+            _tracker = tracker;
         }
 
         public async override Task OnConnectedAsync()
@@ -26,11 +30,23 @@ namespace InTouchApi.Infrastructure.Hubs
                 .FirstOrDefaultAsync(u => u.Id == int.Parse(Context.User.FindFirstValue(ClaimTypes.NameIdentifier)))
                 ?? throw new UnauthorizedException("Unauthorized access", $"Unauthorized user tried to connect to the connection hub");
 
+            await _tracker.UserConnectedAsync(user.Id, Context.ConnectionId);
+
             await Groups.AddToGroupAsync(Context.ConnectionId, user.FriendGroupId);
 
-            var groups = user.Friends.Select(f => f.Friend.FriendGroupId);
+            var friendGroups = user.Friends.Select(f => f.Friend.FriendGroupId);
 
-            await Clients.Groups(groups).SendAsync("FriendIsOnline", $"{Context.User.FindFirstValue(ClaimTypes.Name)} has joined");
+            var connectedUsers = await _tracker.GetConnectedUsersAsync();
+
+            foreach (var connectedUser in connectedUsers)
+            {
+                if (user.Friends.Any(f => f.FriendId == connectedUser))
+                {
+                    await Clients.Group(user.FriendGroupId).SendAsync("FriendIsOnline", $"{connectedUser} is connected");
+                }
+            }
+
+            await Clients.Groups(friendGroups).SendAsync("FriendIsOnline", $"{Context.User.FindFirstValue(ClaimTypes.NameIdentifier)} has joined");
         }
 
         public override async Task OnDisconnectedAsync(Exception? exception)
@@ -38,15 +54,18 @@ namespace InTouchApi.Infrastructure.Hubs
             var user = await _apiContext.Users
                 .Where(u => u.IsDeleted == false)
                 .Include(u => u.Friends.Where(u => u.IsDeleted == false))
-                .ThenInclude(f => f.Friend.IsDeleted == false)
+                .ThenInclude(f => f.Friend)
                 .FirstOrDefaultAsync(u => u.Id == int.Parse(Context.User.FindFirstValue(ClaimTypes.NameIdentifier)))
                 ?? throw new UnauthorizedException("Unauthorized access", $"Unauthorized user tried to connect to the connection hub");
 
-            await Groups.RemoveFromGroupAsync(Context.ConnectionId, user.FriendGroupId);
+            await _tracker.UserDisconnectedAsync(user.Id, Context.ConnectionId);
 
             var groups = user.Friends.Select(f => f.Friend.FriendGroupId);
 
-            await Clients.Groups(groups).SendAsync("FriendIsOffline", $"{Context.User.FindFirstValue(ClaimTypes.Name)} has disconnected");
+            await Clients.Groups(groups).SendAsync("FriendIsOffline", $"{Context.User.FindFirstValue(ClaimTypes.NameIdentifier)} has disconnected");
+
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, user.FriendGroupId);
+
             await base.OnDisconnectedAsync(exception);
         }
     }
