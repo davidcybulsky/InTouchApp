@@ -18,6 +18,7 @@ import {CreateCommentModel} from '../core/models/create.comment.model';
 import {ReactionService} from '../core/services/reaction.service';
 import {CreateQuickPostModel} from '../core/models/create.quick.post.model';
 import {ReactionConstants} from "../core/enums/reaction.constants";
+import {ConnectionService} from "../core/services/connection.service";
 
 @Component({
   standalone: true,
@@ -43,8 +44,7 @@ export class HomepageComponent implements OnInit, OnDestroy {
 
   constructor(private postService: PostService,
               private friendService: FriendService,
-              private commentService: CommentService,
-              private reactionService: ReactionService) {
+              private connectionService: ConnectionService) {
   }
 
   ngOnInit(): void {

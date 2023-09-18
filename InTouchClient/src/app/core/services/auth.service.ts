@@ -10,6 +10,7 @@ import {SignupModel} from '../models/signup.model';
 import {LoginModel} from '../models/login.model';
 import { ENVIRONMENT_TOKEN } from '../tokens/environment.token';
 import {Router} from "@angular/router";
+import {ConnectionService} from "./connection.service";
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +23,8 @@ export class AuthService {
   constructor(@Inject(ENVIRONMENT_TOKEN) private ENVIRONMENT_TOKEN: IEnvoronment,
               private http: HttpClient,
               private storageService: StorageService,
-              private router: Router) {
+              private router: Router,
+              private connectionService: ConnectionService) {
   }
 
   setTokenFromStorage(): void {
@@ -30,6 +32,10 @@ export class AuthService {
     console.log(token)
     if (token !== null) {
       this.TokenData = JSON.parse(token)
+      {
+        if(this.TokenData)
+          this.connectionService.createHubConnection(this.TokenData)
+      }
     }
   }
 
@@ -44,6 +50,9 @@ export class AuthService {
           if (response.token) {
             this.TokenData = response
             this.storageService.setItem(StorageConstants.TOKEN_KEY, JSON.stringify(response))
+            if(this.TokenData) {
+              this.connectionService.createHubConnection(this.TokenData)
+            }
           }
           return response
         }));
@@ -56,5 +65,6 @@ export class AuthService {
   logout() {
     this.storageService.removeItem(StorageConstants.TOKEN_KEY)
     this.router.navigate(["/auth", "login"])
+    this.connectionService.stopHubConnection()
   }
 }

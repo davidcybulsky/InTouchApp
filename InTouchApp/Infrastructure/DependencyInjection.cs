@@ -56,7 +56,32 @@ namespace InTouchApi.Infrastructure
                     ValidAudience = configuration["Jwt:Audience"],
                     ValidateAudience = true,
                     ValidateIssuer = true,
-                    ValidateIssuerSigningKey = true
+                    ValidateIssuerSigningKey = true,
+                };
+
+                var logger = services.BuildServiceProvider().GetRequiredService<ILogger<JwtBearerHandler>>();
+
+                opt.Events = new JwtBearerEvents
+                {
+                    OnAuthenticationFailed = context =>
+                    {
+                        logger.LogWarning(context.Exception, "Unauthorized request.");
+                        return Task.CompletedTask;
+                    },
+
+                    OnMessageReceived = context =>
+                    {
+                        var accessToken = context.Request.Query["access_token"];
+
+                        var path = context.HttpContext.Request.Path;
+                        if (!string.IsNullOrWhiteSpace(accessToken) &&
+                            path.StartsWithSegments("/hub"))
+                        {
+                            context.Token = accessToken;
+                        }
+
+                        return Task.CompletedTask;
+                    }
                 };
             });
 
