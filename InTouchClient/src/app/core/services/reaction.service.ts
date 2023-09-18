@@ -22,36 +22,36 @@ export class ReactionService {
     const reactionModel: CreateReactionModel = {
       reactionType: reactionType
     }
-    return this.httpClient.post<void>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${ReactionServiceEndpoints.CREATE_POST_REACTION}${postId}`, reactionModel)
+    return this.httpClient.post<void>(`${this.ENVIRONMENT_TOKEN.apiUrl}${ReactionServiceEndpoints.CREATE_POST_REACTION}${postId}`, reactionModel)
   }
 
   addCommentReaction(commentId: number, reactionType: string) : Observable<void> {
     const reactionModel: CreateReactionModel = {
       reactionType: reactionType
     }
-    return this.httpClient.post<void>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${ReactionServiceEndpoints.CREATE_COMMENT_REACTION}${commentId}`, reactionModel)
+    return this.httpClient.post<void>(`${this.ENVIRONMENT_TOKEN.apiUrl}${ReactionServiceEndpoints.CREATE_COMMENT_REACTION}${commentId}`, reactionModel)
   }
 
   updatePostReaction(postId: number, reactionType: string) : Observable<void> {
     const reactionModel: UpdateReactionModel = {
       reactionType: reactionType
     }
-    return this.httpClient.put<void>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${ReactionServiceEndpoints.UPDATE_POST_REACTION}${postId}`, reactionModel)
+    return this.httpClient.put<void>(`${this.ENVIRONMENT_TOKEN.apiUrl}${ReactionServiceEndpoints.UPDATE_POST_REACTION}${postId}`, reactionModel)
   }
 
   updateCommentReaction(commentId: number, reactionType: string) : Observable<void> {
     const reactionModel: UpdateReactionModel = {
       reactionType: reactionType
     }
-    return this.httpClient.put<void>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${ReactionServiceEndpoints.UPDATE_COMMENT_REACTION}${commentId}`,reactionModel)
+    return this.httpClient.put<void>(`${this.ENVIRONMENT_TOKEN.apiUrl}${ReactionServiceEndpoints.UPDATE_COMMENT_REACTION}${commentId}`,reactionModel)
   }
 
   deletePostReaction(postId: number) : Observable<void> {
-    return this.httpClient.delete<void>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${ReactionServiceEndpoints.DELETE_POST_REACTION}${postId}`)
+    return this.httpClient.delete<void>(`${this.ENVIRONMENT_TOKEN.apiUrl}${ReactionServiceEndpoints.DELETE_POST_REACTION}${postId}`)
   }
 
   deleteCommentReaction(commentId: number) : Observable<void> {
-    return this.httpClient.delete<void>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${ReactionServiceEndpoints.DELETE_COMMENT_REACTION}${commentId}`)
+    return this.httpClient.delete<void>(`${this.ENVIRONMENT_TOKEN.apiUrl}${ReactionServiceEndpoints.DELETE_COMMENT_REACTION}${commentId}`)
   }
 
 }

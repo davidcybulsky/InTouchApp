@@ -1,3 +1,4 @@
 export interface IEnvoronment {
-  serverEndpoint: string
+  apiUrl: string
+  hubUrl: string
 }

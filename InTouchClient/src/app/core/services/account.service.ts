@@ -16,7 +16,7 @@ export class AccountService {
   }
 
   getAccount(): Observable<AccountModel> {
-    return this.httpClient.get<AccountModel>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${AccountServiceEndpoint.GET_ACCOUNT}`)
+    return this.httpClient.get<AccountModel>(`${this.ENVIRONMENT_TOKEN.apiUrl}${AccountServiceEndpoint.GET_ACCOUNT}`)
       .pipe(map(response => {
         console.log(response)
         return response
@@ -24,10 +24,10 @@ export class AccountService {
   }
 
   updateAccount(model: any): Observable<void> {
-    return this.httpClient.put<void>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${AccountServiceEndpoint.UPDATE_ACCOUNT}`, model);
+    return this.httpClient.put<void>(`${this.ENVIRONMENT_TOKEN.apiUrl}${AccountServiceEndpoint.UPDATE_ACCOUNT}`, model);
   }
 
   deleteAccount(): Observable<void> {
-    return this.httpClient.delete<void>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${AccountServiceEndpoint.DELETE_ACCOUNT}`);
+    return this.httpClient.delete<void>(`${this.ENVIRONMENT_TOKEN.apiUrl}${AccountServiceEndpoint.DELETE_ACCOUNT}`);
   }
 }

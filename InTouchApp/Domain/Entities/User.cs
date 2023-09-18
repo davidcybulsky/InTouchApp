@@ -27,5 +27,25 @@ namespace InTouchApi.Domain.Entities
         public virtual IEnumerable<PostComment> Comments { get; set; } = new List<PostComment>();
         public virtual IEnumerable<PostReaction> PostReactions { get; set; } = new List<PostReaction>();
         public virtual IEnumerable<CommentReaction> CommentReactions { get; set; } = new List<CommentReaction>();
+
+        public override int GetHashCode()
+        {
+            return this.Id.GetHashCode() * 13 +
+                   this.FirstName.GetHashCode() * 17 +
+                   this.LastName.GetHashCode() * 19 +
+                   this.PasswordHash.GetHashCode() * 23 +
+                   this.Role.GetHashCode() * 71;
+        }
+
+
+        public override bool Equals(object? obj)
+        {
+            if (obj is not User || obj is null)
+            {
+                return false;
+            }
+            var o = obj as User;
+            return o.Id == this.Id;
+        }
     }
 }

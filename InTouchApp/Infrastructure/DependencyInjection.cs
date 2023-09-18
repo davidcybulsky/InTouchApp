@@ -33,6 +33,7 @@ namespace InTouchApi.Infrastructure
             services.AddScoped<ICommentService, CommentService>();
             services.AddScoped<IReactionService, ReactionService>();
             services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<ISearchService, SearchService>();
             services.AddScoped<IUserHttpContextService, UserHttpContextService>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IPostRepository, PostRepository>();
@@ -41,6 +42,7 @@ namespace InTouchApi.Infrastructure
             services.AddScoped<IFriendRepository, FriendRepository>();
             services.AddScoped<ICommentRepository, CommentRepository>();
             services.AddScoped<IReactionRepository, ReactionRepository>();
+            services.AddScoped<ISearchRepository, SearchRepository>();
             services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddHttpContextAccessor();

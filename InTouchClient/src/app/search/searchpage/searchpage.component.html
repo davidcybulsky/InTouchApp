@@ -1,25 +1,29 @@
 <app-header></app-header>
 <aside></aside>
 <main>
-  <form [formGroup]="searchForm">
+  <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
     <input
       formControlName="request"
       required
       placeholder="Write something">
-    <button>
+    <button
+      type="submit">
       Search
     </button>
   </form>
   <nav>
     <ul>
       <li>
-        <a routerLink="/search/user">Users</a>
+        <a routerLink="/search/user"
+        queryParamsHandling="merge">Users</a>
       </li>
       <li>
-        <a routerLink="/search/friend">Friends</a>
+        <a routerLink="/search/friend"
+           queryParamsHandling="merge">Friends</a>
       </li>
       <li>
-        <a routerLink="/search/post">Posts</a>
+        <a routerLink="/search/post"
+           queryParamsHandling="merge">Posts</a>
       </li>
     </ul>
   </nav>

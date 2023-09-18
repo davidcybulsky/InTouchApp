@@ -19,26 +19,26 @@ export class PostService {
   }
 
   getPosts(): Observable<PostModel[]> {
-    return this.http.get<PostModel[]>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${PostServiceEndpoints.GET_POSTS}`)
+    return this.http.get<PostModel[]>(`${this.ENVIRONMENT_TOKEN.apiUrl}${PostServiceEndpoints.GET_POSTS}`)
   }
 
   getUserPosts(userId: number): Observable<PostModel[]> {
-    return this.http.get<PostModel[]>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${PostServiceEndpoints.GET_USER_POSTS}${userId}`);
+    return this.http.get<PostModel[]>(`${this.ENVIRONMENT_TOKEN.apiUrl}${PostServiceEndpoints.GET_USER_POSTS}${userId}`);
   }
 
   createPost(model: CreatePostModel): Observable<PostModel> {
-    return this.http.post<PostModel>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${PostServiceEndpoints.CREATE_POST}`, model)
+    return this.http.post<PostModel>(`${this.ENVIRONMENT_TOKEN.apiUrl}${PostServiceEndpoints.CREATE_POST}`, model)
   }
 
   createQuickPost(model: CreateQuickPostModel): Observable<PostModel> {
-    return this.http.post<PostModel>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${PostServiceEndpoints.CREATE_POST}`, model)
+    return this.http.post<PostModel>(`${this.ENVIRONMENT_TOKEN.apiUrl}${PostServiceEndpoints.CREATE_POST}`, model)
   }
 
   updatePost(postId: number, model: UpdatePostModel): Observable<void> {
-    return this.http.put<void>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${PostServiceEndpoints.UPDATE_POST}${postId}`, model)
+    return this.http.put<void>(`${this.ENVIRONMENT_TOKEN.apiUrl}${PostServiceEndpoints.UPDATE_POST}${postId}`, model)
   }
 
   deletePost(postId: number) {
-    return this.http.delete<void>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${PostServiceEndpoints.DELETE_POST}${postId}`)
+    return this.http.delete<void>(`${this.ENVIRONMENT_TOKEN.apiUrl}${PostServiceEndpoints.DELETE_POST}${postId}`)
   }
 }

@@ -16,11 +16,11 @@ export class FriendService {
   }
 
   getFriendRequests(): Observable<FriendModel[]> {
-    return this.httpClient.get<FriendModel[]>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${FriendServiceEndpoints.GET_FRIEND_REQUESTS}`)
+    return this.httpClient.get<FriendModel[]>(`${this.ENVIRONMENT_TOKEN.apiUrl}${FriendServiceEndpoints.GET_FRIEND_REQUESTS}`)
   }
 
   getFriends(): Observable<FriendModel[]> {
-    return this.httpClient.get<FriendModel[]>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${FriendServiceEndpoints.GET_FRIENDS}`)
+    return this.httpClient.get<FriendModel[]>(`${this.ENVIRONMENT_TOKEN.apiUrl}${FriendServiceEndpoints.GET_FRIENDS}`)
   }
 
   getUserFriendRequests(userId: number): Observable<FriendModel[]> {
@@ -28,14 +28,14 @@ export class FriendService {
   }
 
   getUserFriends(userId: number): Observable<FriendModel[]> {
-    return this.httpClient.get<FriendModel[]>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${FriendServiceEndpoints.GET_USER_FRIENDS}${userId}`)
+    return this.httpClient.get<FriendModel[]>(`${this.ENVIRONMENT_TOKEN.apiUrl}${FriendServiceEndpoints.GET_USER_FRIENDS}${userId}`)
   }
 
   acceptFriendRequest(friendId: number): Observable<void> {
-    return this.httpClient.put<void>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${FriendServiceEndpoints.ACCEPT_FRIEND_REQUEST}${friendId}`, null)
+    return this.httpClient.put<void>(`${this.ENVIRONMENT_TOKEN.apiUrl}${FriendServiceEndpoints.ACCEPT_FRIEND_REQUEST}${friendId}`, null)
   }
 
   sendFriendRequest(friendId: number): Observable<void> {
-    return this.httpClient.post<void>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${FriendServiceEndpoints.SEND_FRIEND_REQUEST}${friendId}`, null)
+    return this.httpClient.post<void>(`${this.ENVIRONMENT_TOKEN.apiUrl}${FriendServiceEndpoints.SEND_FRIEND_REQUEST}${friendId}`, null)
   }
 }

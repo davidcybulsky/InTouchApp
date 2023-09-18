@@ -18,14 +18,14 @@ export class CommentService {
   }
 
   createPostComment(postId: number, model: CreateCommentModel): Observable<IncludeCommentModel> {
-    return this.httpClient.post<IncludeCommentModel>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${CommentServiceEndpoints.CREATE_POST_COMMENT}/${postId}`, model)
+    return this.httpClient.post<IncludeCommentModel>(`${this.ENVIRONMENT_TOKEN.apiUrl}${CommentServiceEndpoints.CREATE_POST_COMMENT}/${postId}`, model)
   }
 
   updatePostComment(commentId: number, model: UpdateCommentModel): Observable<void> {
-    return this.httpClient.put<void>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${CommentServiceEndpoints.UPDATE_POST_COMMENT}/${commentId}`, model)
+    return this.httpClient.put<void>(`${this.ENVIRONMENT_TOKEN.apiUrl}${CommentServiceEndpoints.UPDATE_POST_COMMENT}/${commentId}`, model)
   }
 
   deletePostComment(commentId: number): Observable<void> {
-    return this.httpClient.delete<void>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${CommentServiceEndpoints.DELETE_POST_COMMENT}/${commentId}`)
+    return this.httpClient.delete<void>(`${this.ENVIRONMENT_TOKEN.apiUrl}${CommentServiceEndpoints.DELETE_POST_COMMENT}/${commentId}`)
   }
 }

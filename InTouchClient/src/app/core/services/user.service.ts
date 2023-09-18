@@ -18,22 +18,22 @@ export class UserService {
   }
 
   getUserById(userId: number): Observable<UserModel> {
-    return this.httpClient.get<UserModel>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${UserServiceEndpoints.GET_USER_BY_ID}${userId}`)
+    return this.httpClient.get<UserModel>(`${this.ENVIRONMENT_TOKEN.apiUrl}${UserServiceEndpoints.GET_USER_BY_ID}${userId}`)
   }
 
   getUsers(): Observable<UserModel[]> {
-    return this.httpClient.get<UserModel[]>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${UserServiceEndpoints.GET_USERS}`)
+    return this.httpClient.get<UserModel[]>(`${this.ENVIRONMENT_TOKEN.apiUrl}${UserServiceEndpoints.GET_USERS}`)
   }
 
   createUser(model: CreateUserModel): Observable<number> {
-    return this.httpClient.post<number>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${UserServiceEndpoints.CREATE_USER}`, model)
+    return this.httpClient.post<number>(`${this.ENVIRONMENT_TOKEN.apiUrl}${UserServiceEndpoints.CREATE_USER}`, model)
   }
 
   updateUser(userId: number, model: UpdateUserModel): Observable<void> {
-    return this.httpClient.put<void>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${UserServiceEndpoints.UPDATE_USER}${userId}`, model)
+    return this.httpClient.put<void>(`${this.ENVIRONMENT_TOKEN.apiUrl}${UserServiceEndpoints.UPDATE_USER}${userId}`, model)
   }
 
   deleteUser(userId: number): Observable<void> {
-    return this.httpClient.delete<void>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${UserServiceEndpoints.DELETE_USER}${userId}`)
+    return this.httpClient.delete<void>(`${this.ENVIRONMENT_TOKEN.apiUrl}${UserServiceEndpoints.DELETE_USER}${userId}`)
   }
 }

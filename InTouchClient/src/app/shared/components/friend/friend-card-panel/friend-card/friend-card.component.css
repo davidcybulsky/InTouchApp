@@ -25,3 +25,17 @@
   text-align: right;
   vertical-align: center;
 }
+
+.message-window {
+  width: 100%;
+}
+
+.message-input {
+  font-size: 0.7rem;
+  width: 95%;
+  margin: auto;
+}
+
+.message-content {
+  font-size: 0.7rem;
+}

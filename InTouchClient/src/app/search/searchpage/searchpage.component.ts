@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-searchpage',
@@ -9,7 +10,8 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 export class SearchpageComponent implements OnInit{
   searchForm!: FormGroup
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder,
+              private router: Router) {
   }
 
   ngOnInit(): void {
@@ -18,4 +20,8 @@ export class SearchpageComponent implements OnInit{
     })
   }
 
+  onSearch() {
+    const request = this.searchForm.get("request")?.value
+    this.router.navigate([],{ queryParams: {request: request}})
+  }
 }

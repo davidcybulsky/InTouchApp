@@ -41,8 +41,8 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.MapHub<ConnectionHub>("hubs/connection");
+app.MapHub<ConnectionHub>("hub/connection");
 
-app.MapHub<MessageHub>("hubs/message");
+app.MapHub<MessageHub>("hub/message");
 
 app.Run();

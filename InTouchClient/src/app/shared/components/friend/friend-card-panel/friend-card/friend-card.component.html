@@ -4,10 +4,20 @@
     <img alt="default-avatar" class="friend-card__image" src="../../../../../assets/images/default-avatar.webp">
     <p class="friend-card__data">{{friend?.firstName}} {{friend?.lastName}}</p>
   </a>
-  <a class="friend-card__message-icon" (click)="openMessageWindow = true">
+  <a class="friend-card__message-icon">
     <fa-icon
+      (click)="openMessageWindow = !openMessageWindow"
       [icon]="message">
     </fa-icon>
+    <div class="message-window"
+          [ngStyle]="{'display': openMessageWindow ? 'block': 'none' }">
+      <input
+        class="message-input"
+        placeholder="message">
+      <button>
+        Send
+      </button>
+    </div>
   </a>
   </div>
 </div>

@@ -38,7 +38,7 @@ export class AuthService {
   }
 
   login(loginRequestModel: LoginModel): Observable<TokenModel> {
-    return this.http.post<TokenModel>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${AuthServiceEndpoints.LOGIN}`, loginRequestModel)
+    return this.http.post<TokenModel>(`${this.ENVIRONMENT_TOKEN.apiUrl}${AuthServiceEndpoints.LOGIN}`, loginRequestModel)
       .pipe(
         map(response => {
           if (response.token) {
@@ -50,7 +50,7 @@ export class AuthService {
   }
 
   signup(signupRequestModel: SignupModel): Observable<number> {
-    return this.http.post<number>(`${this.ENVIRONMENT_TOKEN.serverEndpoint}${AuthServiceEndpoints.SIGNUP}`, signupRequestModel)
+    return this.http.post<number>(`${this.ENVIRONMENT_TOKEN.apiUrl}${AuthServiceEndpoints.SIGNUP}`, signupRequestModel)
   }
 
   logout() {
