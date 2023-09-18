@@ -23,9 +23,4 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Application\Interfaces\Hubs\" />
-    <Folder Include="Application\Interfaces\Trackers\" />
-  </ItemGroup>
-
 </Project>

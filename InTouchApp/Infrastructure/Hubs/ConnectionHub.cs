@@ -9,7 +9,7 @@ using System.Security.Claims;
 namespace InTouchApi.Infrastructure.Hubs
 {
     [Authorize]
-    public sealed class ConnectionHub : Hub
+    public sealed class ConnectionHub : Hub<IFriendPresence>
     {
         private readonly ApiContext _apiContext;
         private readonly IConnectionTracker _tracker;
@@ -42,11 +42,11 @@ namespace InTouchApi.Infrastructure.Hubs
             {
                 if (user.Friends.Any(f => f.FriendId == connectedUser))
                 {
-                    await Clients.Group(user.FriendGroupId).SendAsync("FriendIsOnline", $"{connectedUser} is connected");
+                    await Clients.Group(user.FriendGroupId).FriendIsOnline($"{connectedUser} is connected");
                 }
             }
 
-            await Clients.Groups(friendGroups).SendAsync("FriendIsOnline", $"{Context.User.FindFirstValue(ClaimTypes.NameIdentifier)} has joined");
+            await Clients.Groups(friendGroups).FriendIsOffline($"{Context.User.FindFirstValue(ClaimTypes.NameIdentifier)} has joined");
         }
 
         public override async Task OnDisconnectedAsync(Exception? exception)
@@ -62,7 +62,7 @@ namespace InTouchApi.Infrastructure.Hubs
 
             var groups = user.Friends.Select(f => f.Friend.FriendGroupId);
 
-            await Clients.Groups(groups).SendAsync("FriendIsOffline", $"{Context.User.FindFirstValue(ClaimTypes.NameIdentifier)} has disconnected");
+            await Clients.Groups(groups).FriendIsOffline($"{Context.User.FindFirstValue(ClaimTypes.NameIdentifier)} has disconnected");
 
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, user.FriendGroupId);
 
