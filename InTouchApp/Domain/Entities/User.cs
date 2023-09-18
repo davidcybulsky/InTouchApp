@@ -12,6 +12,8 @@ namespace InTouchApi.Domain.Entities
         public string PhoneNumber { get; set; }
         public string? Description { get; set; }
 
+        public string FriendGroupId { get; set; } = Guid.NewGuid().ToString();
+
         public string Role { get; set; } = ROLES.USER;
 
         public string? FacebookURL { get; set; }

@@ -63,6 +63,7 @@ namespace InTouchApi.Infrastructure.Data.Repositories
             userInDb.BirthDate = user.BirthDate;
             userInDb.PhoneNumber = user.PhoneNumber;
             userInDb.Description = user.Description;
+
             userInDb.Role = user.Role;
 
             userInDb.FacebookURL = user.FacebookURL;

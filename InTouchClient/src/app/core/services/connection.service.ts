@@ -26,11 +26,11 @@ export class ConnectionService {
 
     this.hubConnection.start().catch(error => console.log(error))
 
-    this.hubConnection.on(ConnectionHubMethods.USER_IS_ONLINE, message => {
+    this.hubConnection.on(ConnectionHubMethods.FRIEND_IS_ONLINE, message => {
       console.log(message)
     })
 
-    this.hubConnection.on(ConnectionHubMethods.USER_IS_OFFLINE, message => {
+    this.hubConnection.on(ConnectionHubMethods.FRIEND_IS_OFFLINE, message => {
       console.log(message)
     })
   }
