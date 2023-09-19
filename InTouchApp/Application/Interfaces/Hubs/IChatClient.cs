@@ -1,7 +1,10 @@
-﻿namespace InTouchApi.Application.Interfaces
+﻿using InTouchApi.Application.Models;
+
+namespace InTouchApi.Application.Interfaces
 {
     public interface IChatClient
     {
-        Task SendMessage(string message);
+        Task NewMessage(MessageDto message);
+        Task GetMessageThread(IEnumerable<MessageDto> thread);
     }
 }

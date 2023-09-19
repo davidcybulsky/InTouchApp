@@ -2,22 +2,12 @@
   <div class="friend-card__main">
   <a routerLink="/user/{{friend?.id}}">
     <img alt="default-avatar" class="friend-card__image" src="../../../../../assets/images/default-avatar.webp">
-    <p class="friend-card__data">{{friend?.firstName}} {{friend?.lastName}}</p>
-  </a>
-  <a class="friend-card__message-icon">
-    <fa-icon
-      (click)="openMessageWindow = !openMessageWindow"
-      [icon]="message">
-    </fa-icon>
-    <div class="message-window"
-          [ngStyle]="{'display': openMessageWindow ? 'block': 'none' }">
-      <input
-        class="message-input"
-        placeholder="message">
-      <button>
-        Send
-      </button>
-    </div>
+    <p class="friend-card__data">
+      {{friend?.firstName}} {{friend?.lastName}}
+      <fa-icon
+      class="is-offline"
+      [class.is-online]="(connectionService.connectedUserIds$ | async)?.includes(String(friend?.id).toString())"
+      [icon]="faDotCircle"></fa-icon></p>
   </a>
   </div>
 </div>

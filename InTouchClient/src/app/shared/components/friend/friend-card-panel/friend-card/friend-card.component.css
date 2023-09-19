@@ -9,6 +9,7 @@
   padding: 0.2rem 0.5rem;
   justify-content: space-between;
   align-items: center;
+  border-radius: 1rem;
 }
 
 .friend-card__image,
@@ -38,4 +39,23 @@
 
 .message-content {
   font-size: 0.7rem;
+}
+
+.animate {
+  transition: all 0.5s ease-in-out;
+}
+
+@keyframes fa-blink {
+  0% {opacity: 1;}
+  100% {opacity: 0.3;}
+}
+
+.is-offline {
+  display: none;
+}
+
+.is-online {
+  display: inline-block;
+  animation: fa-blink 1.5s linear infinite;
+  color: green;
 }

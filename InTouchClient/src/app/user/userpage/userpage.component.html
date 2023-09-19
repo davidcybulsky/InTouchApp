@@ -2,6 +2,8 @@
 <aside>
   <app-user-links-card
     [user]="user"></app-user-links-card>
+  <app-friend-card-panel
+    [friends]="friends"></app-friend-card-panel>
 </aside>
 <main>
   <app-user-panel
@@ -10,7 +12,8 @@
     [posts]="posts"></app-post-page>
 </main>
 <aside>
-  <app-friend-card-panel
-    [friends]="friends"></app-friend-card-panel>
+  <app-message-panel
+  [messages$]="messages$"
+  (SendMessage)="onSendMessage($event)"></app-message-panel>
 </aside>
 <app-footer></app-footer>

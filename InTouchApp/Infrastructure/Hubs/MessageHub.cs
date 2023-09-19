@@ -1,10 +1,91 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using InTouchApi.Application.Interfaces;
+using InTouchApi.Application.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
+using System.Security.Claims;
 
 namespace InTouchApi.Infrastructure.Hubs
 {
     [Authorize]
-    public sealed class MessageHub : Hub
+    public sealed class MessageHub : Hub<IChatClient>
     {
+        private readonly IMessageService _service;
+
+        public MessageHub(IMessageService service)
+        {
+            _service = service;
+        }
+
+        public override async Task OnConnectedAsync()
+        {
+            var otherUser = int.Parse(Context.GetHttpContext().Request.Query["user"]);
+            var user = int.Parse(Context.User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            if (user == otherUser)
+                throw new HubException();
+
+            var group = await _service.GetMessageGroupName(user, otherUser);
+
+            await Groups.AddToGroupAsync(Context.ConnectionId, group);
+
+            var messages = await _service.GetMessageThreadAsync(user, otherUser);
+
+            await Clients.Group(group).GetMessageThread(messages);
+        }
+
+        public override async Task OnDisconnectedAsync(Exception? exception)
+        {
+            var otherUser = int.Parse(Context.GetHttpContext().Request.Query["user"]);
+            var user = int.Parse(Context.User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            if (user == otherUser)
+            {
+                throw new HubException();
+            }
+
+            var group = await _service.GetMessageGroupName(user, otherUser);
+
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, group);
+
+            await base.OnDisconnectedAsync(exception);
+        }
+
+        public async Task SendMessageAsync(SendMessageDto sendMessageDto)
+        {
+            var user = int.Parse(Context.User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            if (!(await _service.DoesRecipientExist(sendMessageDto.RecipientId)))
+            {
+                throw new HubException();
+            }
+
+            if (user == sendMessageDto.RecipientId)
+            {
+                throw new HubException();
+            }
+
+            var message = await _service.SendMessageAsync(user, sendMessageDto);
+            var group = await _service.GetMessageGroupName(user, sendMessageDto.RecipientId);
+
+            if (group is null || message is null)
+            {
+                throw new Exception();
+            }
+
+            await Clients.Group(group).NewMessage(message);
+        }
+
+        //TODO
+        public async Task EditMessageAsync(int messageId, string content)
+        {
+            var user = int.Parse(Context.User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            var messageToUpdate = new UpdateMessageDto
+            {
+                Id = messageId,
+                Content = content,
+                SenderId = user
+            };
+        }
     }
 }

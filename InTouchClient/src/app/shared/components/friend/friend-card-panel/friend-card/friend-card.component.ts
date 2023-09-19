@@ -1,9 +1,12 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FriendModel} from 'src/app/core/models/friend.model';
 import {RouterModule} from '@angular/router';
-import {faMessage} from "@fortawesome/free-solid-svg-icons";
+import {faDotCircle, faMessage} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
+import {AuthService} from "../../../../../core/services/auth.service";
+import {MessageService} from "../../../../../core/services/message.service";
+import {ConnectionService} from "../../../../../core/services/connection.service";
 
 @Component({
   selector: 'app-friend-card',
@@ -16,13 +19,18 @@ import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
   templateUrl: './friend-card.component.html',
   styleUrls: ['./friend-card.component.css']
 })
-export class FriendCardComponent {
+export class FriendCardComponent implements OnInit{
 
-  @Input() friend: FriendModel | null = null
+  @Input() friend?: FriendModel
   message = faMessage
   openMessageWindow: boolean = false
 
-  onCloseMessageWindow() {
-
+  constructor(protected connectionService: ConnectionService) {
   }
+
+  ngOnInit(): void {
+  }
+
+  protected readonly String = String;
+  protected readonly faDotCircle = faDotCircle;
 }

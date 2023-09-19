@@ -10,7 +10,17 @@ namespace InTouchApi.Infrastructure.Data.Repositories
             throw new NotImplementedException();
         }
 
+        public Task<bool> DoesRecipientExist(int recipientId)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task EditMessageAsync(Message message)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Message> EditMessageContentAsync(Message message)
         {
             throw new NotImplementedException();
         }
@@ -26,6 +36,11 @@ namespace InTouchApi.Infrastructure.Data.Repositories
         }
 
         public Task SendMessageAsync(Message message)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<Message> IMessageRepository.SendMessageAsync(Message message)
         {
             throw new NotImplementedException();
         }

@@ -42,11 +42,11 @@ namespace InTouchApi.Infrastructure.Hubs
             {
                 if (user.Friends.Any(f => f.FriendId == connectedUser))
                 {
-                    await Clients.Group(user.FriendGroupId).FriendIsOnline($"{connectedUser} is connected");
+                    await Clients.Group(user.FriendGroupId).FriendIsOnline($"{connectedUser}");
                 }
             }
 
-            await Clients.Groups(friendGroups).FriendIsOffline($"{Context.User.FindFirstValue(ClaimTypes.NameIdentifier)} has joined");
+            await Clients.Groups(friendGroups).FriendIsOnline(Context.User.FindFirstValue(ClaimTypes.NameIdentifier));
         }
 
         public override async Task OnDisconnectedAsync(Exception? exception)
@@ -62,7 +62,10 @@ namespace InTouchApi.Infrastructure.Hubs
 
             var groups = user.Friends.Select(f => f.Friend.FriendGroupId);
 
-            await Clients.Groups(groups).FriendIsOffline($"{Context.User.FindFirstValue(ClaimTypes.NameIdentifier)} has disconnected");
+            if (!(await _tracker.IsConnected(user.Id)))
+            {
+                await Clients.Groups(groups).FriendIsOffline(Context.User.FindFirstValue(ClaimTypes.NameIdentifier));
+            }
 
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, user.FriendGroupId);
 

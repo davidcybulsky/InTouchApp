@@ -11,6 +11,11 @@ namespace InTouchApi.Infrastructure.Hubs
             return Task.FromResult(_connectedUsers.Keys.ToList() as IEnumerable<int>);
         }
 
+        public Task<bool> IsConnected(int identity)
+        {
+            return Task.FromResult(_connectedUsers.ContainsKey(identity));
+        }
+
         public Task UserConnectedAsync(int identity, string connectionId)
         {
             lock (_connectedUsers)

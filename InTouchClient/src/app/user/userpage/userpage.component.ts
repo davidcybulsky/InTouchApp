@@ -4,7 +4,7 @@ import {UserLinksCardComponent} from 'src/app/shared/components/user/user-links-
 import {UserPanelComponent} from './user-panel/user-panel.component';
 import {HeaderComponent} from 'src/app/shared/components/header/header.component';
 import {FooterComponent} from 'src/app/shared/components/footer/footer.component';
-import {ReplaySubject, takeUntil} from 'rxjs';
+import {Observable, of, ReplaySubject, takeUntil} from 'rxjs';
 import {PostModel} from 'src/app/core/models/post.model';
 import {PostService} from 'src/app/core/services/post.service';
 import {ActivatedRoute, Params} from '@angular/router';
@@ -14,6 +14,11 @@ import {FriendService} from 'src/app/core/services/friend.service';
 import {FriendModel} from 'src/app/core/models/friend.model';
 import {PostPageComponent} from 'src/app/shared/components/post/post-page/post-page.component';
 import {FriendCardPanelComponent} from 'src/app/shared/components/friend/friend-card-panel/friend-card-panel.component';
+import {MessageService} from "../../core/services/message.service";
+import {MessagePanelComponent} from "./message-panel/message-panel.component";
+import {AuthService} from "../../core/services/auth.service";
+import {MessageModel} from "../../core/models/message.model";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   standalone: true,
@@ -24,7 +29,8 @@ import {FriendCardPanelComponent} from 'src/app/shared/components/friend/friend-
     HeaderComponent,
     FooterComponent,
     PostPageComponent,
-    FriendCardPanelComponent
+    FriendCardPanelComponent,
+    MessagePanelComponent
   ],
   selector: 'app-userpage',
   templateUrl: './userpage.component.html',
@@ -38,11 +44,15 @@ export class UserpageComponent implements OnInit, OnDestroy {
   user: UserModel | null = null
   posts: PostModel[] = []
   friends: FriendModel[] = []
+  messages$: Observable<MessageModel[]> = of([])
 
   constructor(private postService: PostService,
               private userService: UserService,
               private friendService: FriendService,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private messageService: MessageService,
+              private authService: AuthService,
+              private fb: FormBuilder) {
   }
 
   ngOnInit(): void {
@@ -67,10 +77,22 @@ export class UserpageComponent implements OnInit, OnDestroy {
             })
         }
       })
+    let token = this.authService.getJWTTokenData()
+    if(token && this.userId)
+    {
+      this.messageService.createHubConnection(token, this.userId)
+      this.messages$ = this.messageService.messages$
+    }
   }
 
   ngOnDestroy(): void {
     this.destroy$.next(true)
     this.destroy$.complete()
+  }
+
+  onSendMessage(content: string) {
+    if(this.userId)
+      this.messageService.SendMessage(this.userId,content)?.then(() => {
+      })
   }
 }
