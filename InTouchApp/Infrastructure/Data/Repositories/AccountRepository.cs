@@ -26,8 +26,10 @@ namespace InTouchApi.Infrastructure.Data.Repositories
                 .Include(u => u.Posts.Where(c => c.IsDeleted == false).OrderByDescending(p => p.CreationDate))
                 .ThenInclude(u => u.Comments.Where(c => c.IsDeleted == false))
                 .ThenInclude(u => u.Author)
+                .ThenInclude(a => a.UserPhotos.Where(p => p.IsDeleted == false))
                 .Include(u => u.Posts.Where(c => c.IsDeleted == false).OrderByDescending(p => p.CreationDate))
                 .ThenInclude(u => u.Reactions.Where(c => c.IsDeleted == false))
+                .Include(u => u.UserPhotos)
                 .FirstOrDefaultAsync(u => u.Id == id)
                 ?? throw new NotFoundException("Your account was not found",
                     $"User with id: {id} tried to get its account, but it was not found");

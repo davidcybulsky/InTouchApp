@@ -33,6 +33,7 @@ namespace InTouchApi.Infrastructure.Data.Repositories
                 .Where(u => u.IsDeleted == false)
                 .Include(u => u.Address)
                 .Include(u => u.Posts.Where(c => c.IsDeleted == false))
+                .Include(u => u.UserPhotos.Where(c => c.IsDeleted == false))
                 .FirstOrDefaultAsync(u => u.Id == id)
                 ?? throw new NotFoundException("The user was not found",
                 $"User with id: {id} was not found");

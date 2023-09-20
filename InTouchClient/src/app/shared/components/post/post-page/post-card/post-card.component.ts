@@ -183,5 +183,13 @@ export class PostCardComponent implements OnInit{
       }
   }
 
+  get mainPhotoUrl(): string | undefined {
+    if (this.post && this.post.author && this.post.author.userPhoto) {
+      const mainPhoto = this.post.author.userPhoto;
+      return mainPhoto ? mainPhoto.url : undefined;
+    }
+    return undefined;
+  }
+
   protected readonly RoleConstants = RoleConstants;
 }

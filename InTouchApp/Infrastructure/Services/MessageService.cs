@@ -31,6 +31,15 @@ namespace InTouchApi.Infrastructure.Services
         {
             var messages = await _repository.GetMessageThreadAsync(firstUserId, secondUserId);
             var messageDtos = _mapper.Map<IEnumerable<MessageDto>>(messages);
+
+
+            foreach (var message in messages)
+            {
+                var messageDto = messageDtos.FirstOrDefault(x => x.Id == message.Id);
+
+                messageDto.Sender.UserPhoto = SetMainPhoto(message.Sender.UserPhotos);
+            }
+
             return messageDtos;
         }
 
@@ -46,7 +55,20 @@ namespace InTouchApi.Infrastructure.Services
 
             var messageDto = _mapper.Map<MessageDto>(message1);
 
+            messageDto.Sender.UserPhoto = SetMainPhoto(message1.Sender.UserPhotos);
+
             return messageDto;
+        }
+
+        private IncludeUserPhotoDto? SetMainPhoto(IEnumerable<UserPhoto> userPhotos)
+        {
+            IncludeUserPhotoDto dto = null;
+            if (userPhotos.Any(p => p.IsMain == true))
+            {
+                var photo = userPhotos.FirstOrDefault(p => p.IsMain == true);
+                dto = _mapper.Map<IncludeUserPhotoDto>(photo);
+            }
+            return dto;
         }
     }
 }

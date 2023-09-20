@@ -22,3 +22,8 @@
   overflow: hidden;
 }
 
+.little-user-photo__message {
+  width: 1.4rem;
+  border-radius: 0.7rem;
+  margin: 0.3rem;
+}

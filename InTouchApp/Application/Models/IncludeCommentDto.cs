@@ -7,5 +7,6 @@
         public IncludeUserDto Author { get; set; }
         public string Content { get; set; }
         public IncludeReactionDto ReactionsData { get; set; } = new();
+        public IEnumerable<IncludeUserPhotoDto> Photos { get; set; }
     }
 }

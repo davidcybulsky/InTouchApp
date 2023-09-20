@@ -32,6 +32,7 @@ namespace InTouchApi.Infrastructure
             CreateMap<UpdateReactionDto, CommentReaction>();
             CreateMap<SendMessageDto, Message>();
             CreateMap<Message, MessageDto>();
+            CreateMap<UserPhoto, IncludeUserPhotoDto>();
         }
     }
 }

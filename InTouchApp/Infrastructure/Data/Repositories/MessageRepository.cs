@@ -35,7 +35,9 @@ namespace InTouchApi.Infrastructure.Data.Repositories
         {
             var thread = await _apiContext.Messages
                 .Include(m => m.Sender)
+                .ThenInclude(a => a.UserPhotos.Where(c => c.IsDeleted == false))
                 .Include(m => m.Recipient)
+                .ThenInclude(a => a.UserPhotos.Where(c => c.IsDeleted == false))
                 .Where(m => (m.IsDeleted == false &&
                 ((m.SenderId == firstUserId && m.RecipientId == secondUserId) || (m.SenderId == secondUserId && m.RecipientId == firstUserId))))
                 .OrderByDescending(m => m.CreationDate)
@@ -50,7 +52,9 @@ namespace InTouchApi.Infrastructure.Data.Repositories
             await _apiContext.SaveChangesAsync();
             var newMessage = await _apiContext.Messages
                 .Include(m => m.Sender)
+                .ThenInclude(a => a.UserPhotos.Where(c => c.IsDeleted == false))
                 .Include(m => m.Recipient)
+                .ThenInclude(a => a.UserPhotos.Where(c => c.IsDeleted == false))
                 .FirstOrDefaultAsync(m => m.Id == message.Id);
             return newMessage;
         }

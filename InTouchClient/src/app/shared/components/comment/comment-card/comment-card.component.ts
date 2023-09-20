@@ -137,6 +137,14 @@ export class CommentCardComponent {
     }
   }
 
+  get mainPhotoUrl(): string | undefined {
+    if (this.comment && this.comment.author) {
+      const mainPhoto = this.comment.author.userPhoto;
+      return mainPhoto ? mainPhoto.url : undefined;
+    }
+    return undefined;
+  }
+
     protected readonly RoleConstants = RoleConstants;
     protected readonly faStar = faStar;
 }

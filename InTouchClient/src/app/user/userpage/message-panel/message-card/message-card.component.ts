@@ -9,10 +9,14 @@ import {MessageModel} from "../../../../core/models/message.model";
   templateUrl: './message-card.component.html',
   styleUrls: ['./message-card.component.css']
 })
-export class MessageCardComponent implements OnInit{
+export class MessageCardComponent{
   @Input() message: MessageModel | null = null
 
-  ngOnInit(): void {
-    console.log(this.message)
+  get mainPhotoUrl(): string | undefined {
+    if (this.message && this.message.sender) {
+      const mainPhoto = this.message.sender.userPhoto;
+      return mainPhoto ? mainPhoto.url : undefined;
+    }
+    return undefined;
   }
 }

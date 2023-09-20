@@ -21,14 +21,14 @@ namespace InTouchApi.Infrastructure.Services
 
         }
 
-        public async Task<UserPhotoDto> AddUserPhotoAsync(IFormFile file)
+        public async Task<IncludeUserPhotoDto> AddUserPhotoAsync(IFormFile file)
         {
             var userId = _userHttpContextService.Id
                 ?? throw new UnauthorizedException("", "");
 
             var photo = await _repository.AddUserPhotoAsync(userId, file);
 
-            var photoDto = _mapper.Map<UserPhotoDto>(photo);
+            var photoDto = _mapper.Map<IncludeUserPhotoDto>(photo);
 
             return photoDto;
         }

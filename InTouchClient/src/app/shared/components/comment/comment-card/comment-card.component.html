@@ -3,7 +3,8 @@
     class="user-name-anchor"
      routerLink="/user/{{comment?.author?.id}}">
     <div class="comment-card__user-icon">
-      <img alt="default-avatar" src="../../../../../assets/images/default-avatar.webp">
+      <img class="little-user-photo" *ngIf="mainPhotoUrl" alt="default-avatar" [src]="mainPhotoUrl">
+      <img class="little-user-photo" *ngIf="!(mainPhotoUrl)" alt="default-avatar" src="../../../../../assets/images/default-avatar.webp">
     </div>
     <div class="comment-card__user-data">
       {{comment?.author?.firstName}} {{comment?.author?.lastName}}

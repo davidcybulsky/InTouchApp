@@ -18,4 +18,11 @@ export class AccountPanelComponent {
   public bar = faBars;
   displayOptions: boolean = false;
 
+  get mainPhotoUrl(): string | undefined {
+    if (this.account && this.account.userPhotos) {
+      const mainPhoto = this.account.userPhotos.find(p => p.isMain);
+      return mainPhoto ? mainPhoto.url : undefined;
+    }
+    return undefined;
+  }
 }

@@ -83,13 +83,31 @@ namespace InTouchApi.Infrastructure.Services
             foreach (var post in posts)
             {
                 var postDto = postDtos.FirstOrDefault(x => x.Id == post.Id);
+                postDto.Author.UserPhoto = SetMainPhoto(post.Author.UserPhotos);
                 CountPostReactions(postDto, post);
                 CheckedMyPostReaction(postDto, post);
+
+                foreach (var comment in post.Comments)
+                {
+                    var commentDto = postDto.Comments.FirstOrDefault(x => x.Id == comment.Id);
+                    commentDto.Author.UserPhoto = SetMainPhoto(comment.Author.UserPhotos);
+                }
             }
 
             Log.Logger.Information($"List of posts was returned. Count: {postDtos.Count()}");
 
             return postDtos;
+        }
+
+        private IncludeUserPhotoDto? SetMainPhoto(IEnumerable<UserPhoto> entities)
+        {
+            IncludeUserPhotoDto dto = null;
+            if (entities.Any(p => p.IsMain == true))
+            {
+                var photo = entities.FirstOrDefault(p => p.IsMain == true);
+                dto = _mapper.Map<IncludeUserPhotoDto>(photo);
+            }
+            return dto;
         }
 
         private void CheckedMyPostReaction(PostDto postDto, Post post)
@@ -139,6 +157,7 @@ namespace InTouchApi.Infrastructure.Services
             var post = await _repository.GetPostByIdAsync(id);
             var postDto = _mapper.Map<PostDto>(post);
 
+            postDto.Author.UserPhoto = SetMainPhoto(post.Author.UserPhotos);
             CountPostReactions(postDto, post);
             CheckedMyPostReaction(postDto, post);
 
@@ -156,8 +175,16 @@ namespace InTouchApi.Infrastructure.Services
             foreach (var post in userPosts)
             {
                 var postDto = postDtos.FirstOrDefault(x => x.Id == post.Id);
+
+                postDto.Author.UserPhoto = SetMainPhoto(post.Author.UserPhotos);
                 CountPostReactions(postDto, post);
                 CheckedMyPostReaction(postDto, post);
+
+                foreach (var comment in post.Comments)
+                {
+                    var commentDto = postDto.Comments.FirstOrDefault(x => x.Id == comment.Id);
+                    commentDto.Author.UserPhoto = SetMainPhoto(comment.Author.UserPhotos);
+                }
             }
 
             Log.Logger.Information($"List of user with id: {id} posts was returned");

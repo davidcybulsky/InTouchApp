@@ -2,7 +2,8 @@
   <div class="postcard__header">
     <a class="postcard__user__link user-name-anchor" routerLink="/user/{{post?.authorId}}">
       <div class="postcard__user-icon">
-        <img alt="default-avatar" src="../../../../../assets/images/default-avatar.webp">
+        <img class="little-user-photo" *ngIf="mainPhotoUrl" alt="default-avatar" [src]="mainPhotoUrl">
+        <img class="little-user-photo" *ngIf="!(mainPhotoUrl)" alt="default-avatar" src="../../../../../assets/images/default-avatar.webp">
       </div>
       <div class="postcard__user-data">
         {{post?.author?.firstName}} {{post?.author?.lastName}}
