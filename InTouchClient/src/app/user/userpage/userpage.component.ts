@@ -44,15 +44,11 @@ export class UserpageComponent implements OnInit, OnDestroy {
   user: UserModel | null = null
   posts: PostModel[] = []
   friends: FriendModel[] = []
-  messages$: Observable<MessageModel[]> = of([])
 
   constructor(private postService: PostService,
               private userService: UserService,
               private friendService: FriendService,
-              private route: ActivatedRoute,
-              private messageService: MessageService,
-              private authService: AuthService,
-              private fb: FormBuilder) {
+              private route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
@@ -77,22 +73,10 @@ export class UserpageComponent implements OnInit, OnDestroy {
             })
         }
       })
-    let token = this.authService.getJWTTokenData()
-    if(token && this.userId)
-    {
-      this.messageService.createHubConnection(token, this.userId)
-      this.messages$ = this.messageService.messages$
-    }
   }
 
   ngOnDestroy(): void {
     this.destroy$.next(true)
     this.destroy$.complete()
-  }
-
-  onSendMessage(content: string) {
-    if(this.userId)
-      this.messageService.SendMessage(this.userId,content)?.then(() => {
-      })
   }
 }

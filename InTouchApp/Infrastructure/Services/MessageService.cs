@@ -66,6 +66,7 @@ namespace InTouchApi.Infrastructure.Services
 
             message.SenderId = identity;
             message.CreatedById = identity;
+            message.CreationDate = DateTime.UtcNow;
 
             var message1 = await _repository.SendMessageAsync(message);
 

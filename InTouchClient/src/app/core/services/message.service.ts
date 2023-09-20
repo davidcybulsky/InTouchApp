@@ -8,13 +8,14 @@ import {MessageHubMethods} from "../enums/message.hub.methods";
 import {MessageModel} from "../models/message.model";
 import {BehaviorSubject, take} from "rxjs";
 import {error} from "@angular/compiler-cli/src/transformers/util";
+import {SendMessageModel} from "../models/send.message.model";
 
 @Injectable({
   providedIn: 'root'
 })
 export class MessageService {
   private hubConnection?: HubConnection
-  private messages: BehaviorSubject<MessageModel []> = new BehaviorSubject([] as MessageModel[]);
+  messages: BehaviorSubject<MessageModel []> = new BehaviorSubject([] as MessageModel[]);
   messages$ = this.messages.asObservable();
   constructor(@Inject(ENVIRONMENT_TOKEN) private ENVIRONMENT_TOKEN: IEnvoronment) { }
 
@@ -34,8 +35,9 @@ export class MessageService {
 
     this.hubConnection.on(MessageHubMethods.NEW_MESSAGE, (message: MessageModel) => {
       this.messages$.pipe(take(1)).subscribe({
-        next: messages =>
-          ([...messages, message])
+        next: messages => {
+          this.messages.next([message, ...messages])
+        }
         })
     })
   }
@@ -45,7 +47,14 @@ export class MessageService {
   }
 
   SendMessage(recipientId: number, content: string) {
-    return this.hubConnection?.invoke(MessageHubMethods.SEND_MESSAGE)
+    const message: SendMessageModel = {
+      recipientId: recipientId,
+      content: content
+    }
+
+    console.log(message)
+
+    return this.hubConnection?.invoke(MessageHubMethods.SEND_MESSAGE,message)
       .catch(error => console.log(error))
   }
 }

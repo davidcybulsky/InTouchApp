@@ -1,23 +1,29 @@
 ﻿using InTouchApi.Application.Interfaces;
 using InTouchApi.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace InTouchApi.Infrastructure.Data.Repositories
 {
     public class MessageRepository : IMessageRepository
     {
+        private readonly ApiContext _apiContext;
+
+        public MessageRepository(ApiContext apiContext)
+        {
+            _apiContext = apiContext;
+        }
+
         public Task DeleteMessageAsync(int messageId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> DoesRecipientExist(int recipientId)
+        public async Task<bool> DoesRecipientExist(int recipientId)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task EditMessageAsync(Message message)
-        {
-            throw new NotImplementedException();
+            return (await _apiContext.Users
+                .AsNoTracking()
+                .Where(u => u.IsDeleted == false)
+                .FirstOrDefaultAsync(u => u.Id == recipientId)) != null;
         }
 
         public Task<Message> EditMessageContentAsync(Message message)
@@ -25,24 +31,38 @@ namespace InTouchApi.Infrastructure.Data.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<Message> GetMessageAsync(int messageId)
+        public async Task<Message> GetMessageAsync(int messageId)
         {
-            throw new NotImplementedException();
+            var message = await _apiContext.Messages
+                .AsNoTracking()
+                .Where(m => m.IsDeleted == false)
+                .FirstOrDefaultAsync(m => m.Id == messageId);
+
+            return message;
         }
 
-        public Task<IEnumerable<Message>> GetMessageThreadAsync(int firstUserId, int secondUserId)
+        public async Task<IEnumerable<Message>> GetMessageThreadAsync(int firstUserId, int secondUserId)
         {
-            throw new NotImplementedException();
+            var thread = await _apiContext.Messages
+                .Include(m => m.Sender)
+                .Include(m => m.Recipient)
+                .Where(m => (m.IsDeleted == false &&
+                ((m.SenderId == firstUserId && m.RecipientId == secondUserId) || (m.SenderId == secondUserId && m.RecipientId == firstUserId))))
+                .OrderByDescending(m => m.CreationDate)
+                .ToListAsync();
+
+            return thread;
         }
 
-        public Task SendMessageAsync(Message message)
+        public async Task<Message> SendMessageAsync(Message message)
         {
-            throw new NotImplementedException();
-        }
-
-        Task<Message> IMessageRepository.SendMessageAsync(Message message)
-        {
-            throw new NotImplementedException();
+            await _apiContext.AddAsync(message);
+            await _apiContext.SaveChangesAsync();
+            var newMessage = await _apiContext.Messages
+                .Include(m => m.Sender)
+                .Include(m => m.Recipient)
+                .FirstOrDefaultAsync(m => m.Id == message.Id);
+            return newMessage;
         }
     }
 }

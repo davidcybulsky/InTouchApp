@@ -54,22 +54,22 @@ namespace InTouchApi.Infrastructure.Hubs
         {
             var user = int.Parse(Context.User.FindFirstValue(ClaimTypes.NameIdentifier));
 
-            if (!(await _service.DoesRecipientExist(sendMessageDto.RecipientId)))
+            if (!(await _service.DoesRecipientExist(int.Parse(sendMessageDto.RecipientId))))
             {
                 throw new HubException();
             }
 
-            if (user == sendMessageDto.RecipientId)
+            if (user == int.Parse(sendMessageDto.RecipientId))
             {
                 throw new HubException();
             }
 
             var message = await _service.SendMessageAsync(user, sendMessageDto);
-            var group = await _service.GetMessageGroupName(user, sendMessageDto.RecipientId);
+            var group = await _service.GetMessageGroupName(user, int.Parse(sendMessageDto.RecipientId));
 
             if (group is null || message is null)
             {
-                throw new Exception();
+                throw new HubException();
             }
 
             await Clients.Group(group).NewMessage(message);

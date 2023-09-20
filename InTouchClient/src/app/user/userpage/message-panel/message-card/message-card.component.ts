@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {MessageModel} from "../../../../core/models/message.model";
 
@@ -9,6 +9,10 @@ import {MessageModel} from "../../../../core/models/message.model";
   templateUrl: './message-card.component.html',
   styleUrls: ['./message-card.component.css']
 })
-export class MessageCardComponent {
-  @Input() message?: MessageModel;
+export class MessageCardComponent implements OnInit{
+  @Input() message: MessageModel | null = null
+
+  ngOnInit(): void {
+    console.log(this.message)
+  }
 }

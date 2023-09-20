@@ -35,6 +35,7 @@ namespace InTouchApi.Infrastructure
             services.AddScoped<IReactionService, ReactionService>();
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<ISearchService, SearchService>();
+            services.AddScoped<IMessageService, MessageService>();
             services.AddScoped<IUserHttpContextService, UserHttpContextService>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IPostRepository, PostRepository>();
@@ -44,6 +45,7 @@ namespace InTouchApi.Infrastructure
             services.AddScoped<ICommentRepository, CommentRepository>();
             services.AddScoped<IReactionRepository, ReactionRepository>();
             services.AddScoped<ISearchRepository, SearchRepository>();
+            services.AddScoped<IMessageRepository, MessageRepository>();
             services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
             services.AddSingleton<IConnectionTracker, ConnectionTracker>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -103,7 +105,7 @@ namespace InTouchApi.Infrastructure
             services.AddScoped<IValidator<UpdateReactionDto>, UpdateReactionDtoValidator>();
             services.AddScoped<IValidator<UpdateUserDto>, UpdateUserDtoValidator>();
 
-            services.AddSignalR();
+            services.AddSignalR(opt => opt.EnableDetailedErrors = true);
 
             return services;
         }
