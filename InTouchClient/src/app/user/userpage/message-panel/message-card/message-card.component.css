@@ -1,0 +1,24 @@
+.message-card {
+  margin: 0.3rem 0;
+}
+
+.message-card__inline-block {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.message-card__image {
+  width: 1.5rem;
+  vertical-align: middle;
+  margin: 0.2rem;
+}
+
+.message-card__sender {
+  font-size: 0.7rem;
+}
+
+.message-card__content {
+  font-size: 0.7rem;
+  overflow: hidden;
+}
+

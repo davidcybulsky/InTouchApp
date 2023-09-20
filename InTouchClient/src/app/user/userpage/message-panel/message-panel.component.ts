@@ -23,6 +23,7 @@ export class MessagePanelComponent implements OnInit, OnDestroy{
   @Input() userId: number | null = null
   messageForm!: FormGroup
   destroy$ = new ReplaySubject<boolean>(1)
+  numberOfMessages: number = 5;
 
   constructor(private messageService: MessageService,
               private authService: AuthService,
@@ -49,6 +50,7 @@ export class MessagePanelComponent implements OnInit, OnDestroy{
     if(this.userId) {
       this.messageService.SendMessage(this.userId,this.messageForm.get("content")?.value)?.then( value =>
       {
+        this.numberOfMessages = this.numberOfMessages + 1
         this.messageForm.reset()
       })
     }

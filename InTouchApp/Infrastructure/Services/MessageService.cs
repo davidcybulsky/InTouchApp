@@ -45,7 +45,8 @@ namespace InTouchApi.Infrastructure.Services
 
         public Task<string> GetMessageGroupName(int user, int otherUser)
         {
-            return Task.FromResult(user - otherUser > 1 ? $"{user}-{otherUser}" : $"{otherUser}-{user}");
+            var groupName = (user > otherUser) ? $"{user}-{otherUser}" : $"{otherUser}-{user}";
+            return Task.FromResult(groupName);
         }
 
         public async Task<IEnumerable<MessageDto>> GetMessageThreadAsync(int firstUserId, int secondUserId)
