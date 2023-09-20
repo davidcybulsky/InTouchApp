@@ -13,22 +13,12 @@ namespace InTouchApi.Infrastructure.Data.Repositories
             _apiContext = apiContext;
         }
 
-        public Task DeleteMessageAsync(int messageId)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<bool> DoesRecipientExist(int recipientId)
         {
             return (await _apiContext.Users
                 .AsNoTracking()
                 .Where(u => u.IsDeleted == false)
                 .FirstOrDefaultAsync(u => u.Id == recipientId)) != null;
-        }
-
-        public Task<Message> EditMessageContentAsync(Message message)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<Message> GetMessageAsync(int messageId)

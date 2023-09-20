@@ -74,18 +74,5 @@ namespace InTouchApi.Infrastructure.Hubs
 
             await Clients.Group(group).NewMessage(message);
         }
-
-        //TODO
-        public async Task EditMessageAsync(int messageId, string content)
-        {
-            var user = int.Parse(Context.User.FindFirstValue(ClaimTypes.NameIdentifier));
-
-            var messageToUpdate = new UpdateMessageDto
-            {
-                Id = messageId,
-                Content = content,
-                SenderId = user
-            };
-        }
     }
 }

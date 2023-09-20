@@ -29,6 +29,7 @@ namespace InTouchApi.Domain.Entities
         public virtual IEnumerable<PostComment> Comments { get; set; } = new List<PostComment>();
         public virtual IEnumerable<PostReaction> PostReactions { get; set; } = new List<PostReaction>();
         public virtual IEnumerable<CommentReaction> CommentReactions { get; set; } = new List<CommentReaction>();
+        public virtual IEnumerable<UserPhoto> UserPhotos { get; set; } = new List<UserPhoto>();
 
         public override int GetHashCode()
         {

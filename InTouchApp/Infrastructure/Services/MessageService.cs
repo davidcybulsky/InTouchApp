@@ -16,31 +16,9 @@ namespace InTouchApi.Infrastructure.Services
             _mapper = mapper;
         }
 
-        public Task DeleteMessageAsync(int messageId)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<bool> DoesRecipientExist(int recipientId)
         {
             return await _repository.DoesRecipientExist(recipientId);
-        }
-
-        public async Task<MessageDto> EditMessageContentAsync(UpdateMessageDto updateMessageDto)
-        {
-            var getMessage = await _repository.GetMessageAsync(updateMessageDto.Id);
-
-            if (getMessage.SenderId != updateMessageDto.SenderId || getMessage.Id != updateMessageDto.Id)
-            {
-                return null;
-            }
-
-            var updateMessage = _mapper.Map<Message>(updateMessageDto);
-
-            var message = await _repository.EditMessageContentAsync(updateMessage);
-            var messageDto = _mapper.Map<MessageDto>(message);
-
-            return messageDto;
         }
 
         public Task<string> GetMessageGroupName(int user, int otherUser)
@@ -54,11 +32,6 @@ namespace InTouchApi.Infrastructure.Services
             var messages = await _repository.GetMessageThreadAsync(firstUserId, secondUserId);
             var messageDtos = _mapper.Map<IEnumerable<MessageDto>>(messages);
             return messageDtos;
-        }
-
-        public Task ReadMessage(int messageId)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<MessageDto> SendMessageAsync(int identity, SendMessageDto sendMessageDto)
