@@ -14,7 +14,11 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log("INIT")
     this.authService.setTokenFromStorage();
+    this.authService.isTokenValid().subscribe(res =>{},
+      error => {
+      if(error.status == 401)
+        this.authService.logout()
+      })
   }
 }

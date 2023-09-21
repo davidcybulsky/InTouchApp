@@ -99,13 +99,13 @@ namespace InTouchApi.Infrastructure.Services
             return postDtos;
         }
 
-        private IncludeUserPhotoDto? SetMainPhoto(IEnumerable<UserPhoto> entities)
+        private IncludePhotoDto? SetMainPhoto(IEnumerable<UserPhoto> entities)
         {
-            IncludeUserPhotoDto dto = null;
+            IncludePhotoDto dto = null;
             if (entities.Any(p => p.IsMain == true))
             {
                 var photo = entities.FirstOrDefault(p => p.IsMain == true);
-                dto = _mapper.Map<IncludeUserPhotoDto>(photo);
+                dto = _mapper.Map<IncludePhotoDto>(photo);
             }
             return dto;
         }

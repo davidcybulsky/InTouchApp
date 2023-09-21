@@ -37,5 +37,14 @@ namespace InTouchApi.Presentation.Controllers
             await _service.UpdatePasswordAsync(updatePasswordDto);
             return StatusCode(StatusCodes.Status202Accepted);
         }
+
+        [Authorize]
+        [HttpGet("token")]
+        public async Task<ActionResult> IsTokenValid()
+        {
+            await _service.IsTokenValid();
+
+            return StatusCode(StatusCodes.Status200OK);
+        }
     }
 }

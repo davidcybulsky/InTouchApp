@@ -7,5 +7,6 @@ namespace InTouchApi.Application.Interfaces
         Task<TokenDto> LoginAsync(LoginDto loginDto);
         Task<int> SignUpAsync(SignUpDto signUpDto);
         Task UpdatePasswordAsync(UpdatePasswordDto updatePasswordDto);
+        Task IsTokenValid();
     }
 }

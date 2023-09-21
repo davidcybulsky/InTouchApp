@@ -13,6 +13,7 @@ namespace InTouchApi.Domain.Entities
         public virtual User Author { get; set; }
         public virtual IEnumerable<PostComment> Comments { get; set; } = new List<PostComment>();
         public virtual IEnumerable<PostReaction> Reactions { get; set; } = new List<PostReaction>();
+        public virtual IEnumerable<PostPhoto> Photos { get; set; } = new List<PostPhoto>();
 
         public override int GetHashCode()
         {

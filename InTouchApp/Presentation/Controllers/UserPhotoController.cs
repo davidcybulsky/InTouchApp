@@ -16,7 +16,7 @@ namespace InTouchApi.Presentation.Controllers
         }
 
         [HttpPost()]
-        public async Task<ActionResult<IncludeUserPhotoDto>> AddPhotoAsync(IFormFile file)
+        public async Task<ActionResult<IncludePhotoDto>> AddPhotoAsync(IFormFile file)
         {
             var photo = await _service.AddUserPhotoAsync(file);
             return StatusCode(StatusCodes.Status201Created, photo);

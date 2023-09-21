@@ -1,6 +1,6 @@
 ﻿namespace InTouchApi.Application.Models
 {
-    public class IncludeUserPhotoDto
+    public class IncludePhotoDto
     {
         public int Id { get; set; }
         public string Url { get; set; }

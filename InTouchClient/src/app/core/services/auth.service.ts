@@ -67,4 +67,8 @@ export class AuthService {
     this.router.navigate(["/auth", "login"])
     this.connectionService.stopHubConnection()
   }
+
+  isTokenValid() {
+    return this.http.get<void>(`${this.ENVIRONMENT_TOKEN.apiUrl}${AuthServiceEndpoints.VALIDATE_TOKEN}`)
+  }
 }

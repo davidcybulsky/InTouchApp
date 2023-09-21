@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace InTouchApi.Infrastructure.Data.Repositories
 {
-    public class PhotoRepository : IUserPhotoRepository
+    public class PhotoRepository : IUserPhotoRepository, IPostPhotoRepository
     {
         private readonly ApiContext _apiContext;
         private readonly Cloudinary _cloudinary;
@@ -138,6 +138,78 @@ namespace InTouchApi.Infrastructure.Data.Repositories
             {
                 user.UserPhotos.ElementAt(0).IsMain = true;
             }
+
+            await _apiContext.SaveChangesAsync();
+        }
+
+        public async Task<PostPhoto> GetPostPhotoAsync(int photoId)
+        {
+            var photo = await _apiContext.PostPhotos
+                .AsNoTracking()
+                .Where(u => u.IsDeleted == false)
+                .FirstOrDefaultAsync(u => u.Id == photoId)
+                ?? throw new NotFoundException("", "");
+
+            return photo;
+        }
+
+        public async Task<PostPhoto> AddPostPhotoAsync(int userId, int postId, IFormFile file)
+        {
+            var user = await _apiContext.Posts
+                .Where(u => u.IsDeleted == false)
+                .Include(u => u.Photos)
+                .FirstOrDefaultAsync(p => p.Id == postId)
+                ?? throw new NotFoundException("", "");
+
+            var result = new ImageUploadResult();
+
+            if (file.Length > 0)
+            {
+                using var stream = file.OpenReadStream();
+
+                var uploadParams = new ImageUploadParams
+                {
+                    File = new FileDescription(file.FileName, stream),
+                    Transformation = new Transformation()
+                    .Height(900)
+                    .Width(900)
+                    .Crop("fill"),
+                    Folder = "inTouch/Photo/Post"
+                };
+                result = await _cloudinary.UploadAsync(uploadParams);
+            }
+
+            if (result.Error != null)
+            {
+                throw new BadRequestException(result.Error.Message, result.Error.Message);
+            }
+
+            var photo = new PostPhoto
+            {
+                PostId = postId,
+                Url = result.SecureUrl.AbsoluteUri,
+                publicPhotoId = result.PublicId,
+                CreatedById = userId,
+                CreationDate = DateTime.UtcNow
+            };
+
+            await _apiContext.AddAsync(photo);
+            await _apiContext.SaveChangesAsync();
+
+            photo = await _apiContext.PostPhotos.FirstOrDefaultAsync(u => u.Id == photo.Id);
+
+            return photo;
+        }
+
+        public async Task DeletePostPhotoAsync(int photoId, int userId)
+        {
+            var photo = await _apiContext.PostPhotos
+                .FirstOrDefaultAsync(u => u.Id == photoId)
+                ?? throw new NotFoundException("", "");
+
+            photo.IsDeleted = true;
+            photo.LastModifiedById = userId;
+            photo.LastModificationDate = DateTime.UtcNow;
 
             await _apiContext.SaveChangesAsync();
         }

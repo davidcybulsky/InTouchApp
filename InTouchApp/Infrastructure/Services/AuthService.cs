@@ -69,7 +69,9 @@ namespace InTouchApi.Infrastructure.Services
         {
             var id = _userHttpContextService.Id
                 ?? throw new UnauthorizedException("Unauthorized", $"Unauthorized user tried to change password");
-            var user = await _repository.GetUserByIdAsync(id);
+            var user = await _repository.GetUserByIdAsync(id) ??
+                throw new NotFoundException("The user was not found",
+                $"The user with id: {id} was not found. Executed in auth repository"); ;
 
             var result = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, updatePasswordDto.CurrentPassword);
 
@@ -84,6 +86,18 @@ namespace InTouchApi.Infrastructure.Services
             await _repository.ChangePasswordAsync(user.Id, newPasswordHash);
 
             Log.Logger.Information($"User with id {user.Id} changed its password");
+        }
+
+        public async Task IsTokenValid()
+        {
+            var userId = _userHttpContextService.Id ?? throw new UnauthorizedException("", "");
+
+            var user = await _repository.GetUserByIdAsync(userId);
+
+            if (user is null)
+            {
+                throw new UnauthorizedException("", "");
+            }
         }
     }
 }
