@@ -111,7 +111,7 @@ namespace InTouchApi.Infrastructure.Data.Repositories
         {
             var user = await _apiContext.Users
                 .Where(u => u.IsDeleted == false)
-                .Include(u => u.UserPhotos)
+                .Include(u => u.UserPhotos.Where(p => p.IsDeleted == false))
                 .FirstOrDefaultAsync(u => u.Id == userId)
                 ?? throw new NotFoundException("", "");
 
@@ -124,6 +124,8 @@ namespace InTouchApi.Infrastructure.Data.Repositories
                     userPhoto.IsMain = true;
                 }
             }
+
+            await _apiContext.SaveChangesAsync();
         }
 
         public async Task SendRandomAsMain(int userId)

@@ -3,6 +3,7 @@ import {PostModel} from "./post.model"
 import {IncludeUserPhotoModel} from "./include.user.photo.model";
 
 export interface UserModel {
+  id: number
   email: string
   firstName: string
   lastName: string

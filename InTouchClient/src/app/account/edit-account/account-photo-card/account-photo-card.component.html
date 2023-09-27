@@ -1,0 +1,7 @@
+<p>account-photo-card works!</p>
+<div class="user-photo">
+  <img src="{{photo?.url}}">
+  <p *ngIf="photo?.isMain">Main</p>
+  <button type="button" (click)="onSetMain()">Main</button>
+  <button type="button" (click)="onDelete()">Delete</button>
+</div>

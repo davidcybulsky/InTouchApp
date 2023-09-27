@@ -1,9 +1,17 @@
 import {CommonModule} from '@angular/common';
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Router, RouterModule} from '@angular/router';
 import {AccountService} from 'src/app/core/services/account.service';
 import {AuthService} from "../../core/services/auth.service";
+import {PhotoService} from "../../core/services/photo.service";
+import {FileUploader, FileUploadModule} from "ng2-file-upload";
+import {ENVIRONMENT_TOKEN} from "../../core/tokens/environment.token";
+import {IEnvoronment} from "../../../environment/environment.interface";
+import {PhotoServiceEndpoints} from "../../core/enums/photo.service.endpoints";
+import {AccountPhotoCardComponent} from "./account-photo-card/account-photo-card.component";
+import {AccountModel} from "../../core/models/account.model";
+import {IncludeUserPhotoModel} from "../../core/models/include.user.photo.model";
 
 @Component({
   standalone: true,
@@ -11,7 +19,9 @@ import {AuthService} from "../../core/services/auth.service";
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    RouterModule
+    RouterModule,
+    FileUploadModule,
+    AccountPhotoCardComponent
   ],
   selector: 'app-edit-account',
   templateUrl: './edit-account.component.html',
@@ -20,18 +30,27 @@ import {AuthService} from "../../core/services/auth.service";
 export class EditAccountComponent implements OnInit, OnDestroy {
 
   editAccountForm!: FormGroup
+  private selectedPhoto: any = null;
+  account: AccountModel | null = null;
 
-  constructor(private accountService: AccountService,
+  uploader!: FileUploader;
+  hasBaseDropZoneOver = false;
+
+  constructor(@Inject(ENVIRONMENT_TOKEN) private ENVIRONMENT_TOKEN: IEnvoronment,
+              private accountService: AccountService,
               private formBuilder: FormBuilder,
               private router: Router,
+              private photoService: PhotoService,
               private authService: AuthService) {
   }
 
   ngOnInit(): void {
+    this.initializeUploader()
     this.InitForm()
     this.accountService.getAccount().subscribe(
       account => {
         console.log(account)
+        this.account = account
         this.editAccountForm.patchValue({
           firstName: account.firstName,
           lastName: account.lastName,
@@ -74,7 +93,7 @@ export class EditAccountComponent implements OnInit, OnDestroy {
       twitterURL: [''],
       address: this.formBuilder.group({
         localNumber: [],
-        buildingNumber: [, [Validators.required]],
+        buildingNumber: ['', [Validators.required]],
         street: ['', [Validators.required]],
         zipCode: ['', [Validators.required]],
         city: ['', [Validators.required]],
@@ -85,18 +104,26 @@ export class EditAccountComponent implements OnInit, OnDestroy {
   }
 
   onEditAccount() {
-    this.accountService.updateAccount(this.editAccountForm.value).subscribe(success => {
-      this.router.navigate(["/account"])
-    })
+    if(this.uploader.queue.length > 0) {
+      if(confirm("Do you want to update your account? THe queue is no empty!")) {
+        this.accountService.updateAccount(this.editAccountForm.value).subscribe(success => {
+          this.router.navigate(["/account"])
+        })
+      }
+    } else {
+      this.accountService.updateAccount(this.editAccountForm.value).subscribe(success => {
+        this.router.navigate(["/account"])
+      })
+    }
+
   }
 
   onCancel() {
-    if(this.editAccountForm.touched) {
-      if(confirm("Do you want to cancel?")) {
+    if (this.editAccountForm.touched) {
+      if (confirm("Do you want to cancel?")) {
         this.router.navigate(['/account'])
       }
-    }
-    else {
+    } else {
       this.router.navigate(['/account'])
     }
   }
@@ -109,4 +136,57 @@ export class EditAccountComponent implements OnInit, OnDestroy {
       })
     }
   }
+
+  fileOverBase(e: any) {
+    this.hasBaseDropZoneOver = e;
+  }
+
+  initializeUploader() {
+    this.uploader = new FileUploader({
+      url: `${this.ENVIRONMENT_TOKEN.apiUrl}${PhotoServiceEndpoints.ADD_USER_PHOTO}`,
+      authToken: this.authService.getJWTTokenData()?.token,
+      isHTML5: true,
+      allowedFileType: ['image'],
+      removeAfterUpload: true,
+      autoUpload: false,
+      maxFileSize: 10 * 1024 * 1024
+    })
+
+    this.uploader.onAfterAddingFile = (file) => {
+      file.withCredentials = false
+    }
+
+    this.uploader.onSuccessItem = (item, response, status, header) => {
+      if (response) {
+        let photo = JSON.parse(response)
+        this.account?.userPhotos.unshift(photo)
+        console.log(this.account?.userPhotos)
+      }
+    }
+  }
+
+  onSetMainPhoto(photoId: number) {
+    console.log(photoId)
+    this.photoService.setMainUserPhoto(photoId).subscribe( response =>{
+      console.log("setmain")
+      if(this.account?.userPhotos) {
+        this.account.userPhotos.map(p => p.isMain = false)
+        let photo = this.account.userPhotos.find(p => p.id == photoId)
+        if(photo) {
+          photo.isMain = true
+        }
+      }
+      })
+  }
+
+  onDeletePhoto(photoId: number) {
+    console.log(photoId)
+    this.photoService.deleteUserPhoto(photoId).subscribe(response => {
+      console.log("deleted")
+      if(this.account?.userPhotos) {
+        this.account.userPhotos = this.account.userPhotos.filter(p => p.id != photoId)
+      }
+    })
+  }
+
 }

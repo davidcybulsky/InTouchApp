@@ -24,6 +24,7 @@ export class AccountService {
   }
 
   updateAccount(model: any): Observable<void> {
+    console.log(model)
     return this.httpClient.put<void>(`${this.ENVIRONMENT_TOKEN.apiUrl}${AccountServiceEndpoint.UPDATE_ACCOUNT}`, model);
   }
 

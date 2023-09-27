@@ -28,7 +28,7 @@ namespace InTouchApi.Presentation.Controllers
         public async Task<ActionResult> UpdateAccountAsync([FromBody] UpdateAccountDto updateAccountDto)
         {
             await _service.UpdateAccountAsync(updateAccountDto);
-            return StatusCode(StatusCodes.Status204NoContent, updateAccountDto);
+            return StatusCode(StatusCodes.Status204NoContent);
         }
 
         [HttpDelete]

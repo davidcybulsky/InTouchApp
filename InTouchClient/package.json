@@ -23,6 +23,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.2.1",
     "@microsoft/signalr": "^7.0.11",
     "font-awesome": "^4.7.0",
+    "ng2-file-upload": "^4.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.12.0"
