@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace InTouchApi.Presentation.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("reaction")]
     public class ReactionController : ControllerBase
     {
@@ -17,7 +18,6 @@ namespace InTouchApi.Presentation.Controllers
         }
 
         [HttpPost("post/{postId}")]
-        [Authorize]
         public async Task<ActionResult> CreatePostReactionAsync([FromRoute] int postId, [FromBody] CreateReactionDto createReactionDto)
         {
             await _service.CreatePostReactionAsync(postId, createReactionDto);
@@ -25,7 +25,6 @@ namespace InTouchApi.Presentation.Controllers
         }
 
         [HttpPost("comment/{commentId}")]
-        [Authorize]
         public async Task<ActionResult> CreateCommentReactionAsync([FromRoute] int commentId, [FromBody] CreateReactionDto createReactionDto)
         {
             await _service.CreateCommentReactionAsync(commentId, createReactionDto);
@@ -33,7 +32,6 @@ namespace InTouchApi.Presentation.Controllers
         }
 
         [HttpPut("post/{postId}")]
-        [Authorize]
         public async Task<ActionResult> UpdatePostReactionAsync([FromRoute] int postId, [FromBody] UpdateReactionDto updateReactionDto)
         {
             await _service.UpdatePostReactionAsync(postId, updateReactionDto);
@@ -41,7 +39,6 @@ namespace InTouchApi.Presentation.Controllers
         }
 
         [HttpPut("comment/{commentId}")]
-        [Authorize]
         public async Task<ActionResult> UpdateCommentReactionAsync([FromRoute] int commentId, [FromBody] UpdateReactionDto updateReactionDto)
         {
             await _service.UpdateCommentReactionAsync(commentId, updateReactionDto);
@@ -49,7 +46,6 @@ namespace InTouchApi.Presentation.Controllers
         }
 
         [HttpDelete("post/{postId}")]
-        [Authorize]
         public async Task<ActionResult> DeletePostReactionAsync([FromRoute] int postId)
         {
             await _service.DeletePostReactionAsync(postId);
@@ -57,7 +53,6 @@ namespace InTouchApi.Presentation.Controllers
         }
 
         [HttpDelete("comment/{commentId}")]
-        [Authorize]
         public async Task<ActionResult> DeleteCommentReactionAsync([FromRoute] int commentId)
         {
             await _service.DeleteCommentReactionAsync(commentId);

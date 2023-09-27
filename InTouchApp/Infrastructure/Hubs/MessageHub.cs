@@ -1,4 +1,5 @@
-﻿using InTouchApi.Application.Interfaces;
+﻿using InTouchApi.Application.Exceptions;
+using InTouchApi.Application.Interfaces;
 using InTouchApi.Application.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
@@ -22,7 +23,10 @@ namespace InTouchApi.Infrastructure.Hubs
             var user = int.Parse(Context.User.FindFirstValue(ClaimTypes.NameIdentifier));
 
             if (user == otherUser)
-                throw new HubException();
+            {
+                throw new BadRequestException("You can not send a message to yourself",
+                    $"User with id: {user} tried to send a message to itself");
+            }
 
             var group = await _service.GetMessageGroupName(user, otherUser);
 
@@ -40,7 +44,8 @@ namespace InTouchApi.Infrastructure.Hubs
 
             if (user == otherUser)
             {
-                throw new HubException();
+                throw new BadRequestException("You can not send a message to yourself",
+                    $"User with id: {user} tried to send a message to itself");
             }
 
             var group = await _service.GetMessageGroupName(user, otherUser);
@@ -56,12 +61,14 @@ namespace InTouchApi.Infrastructure.Hubs
 
             if (!(await _service.DoesRecipientExist(int.Parse(sendMessageDto.RecipientId))))
             {
-                throw new HubException();
+                throw new BadRequestException("You can not send a message to the user",
+                                    $"User with id: {user} tried to send a message to user that does not exist");
             }
 
             if (user == int.Parse(sendMessageDto.RecipientId))
             {
-                throw new HubException();
+                throw new BadRequestException("You can not send a message to yourself",
+                    $"User with id: {user} tried to send a message to itself");
             }
 
             var message = await _service.SendMessageAsync(user, sendMessageDto);

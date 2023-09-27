@@ -1,10 +1,12 @@
 ﻿using InTouchApi.Application.Interfaces;
 using InTouchApi.Application.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InTouchApi.Presentation.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("search")]
     public class SearchController : ControllerBase
     {

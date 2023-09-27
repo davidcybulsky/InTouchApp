@@ -28,6 +28,7 @@ namespace InTouchApi.Infrastructure.Services
             var id = _userHttpContextService.Id ??
                 throw new UnauthorizedException("Unauthorized",
                 "Unauthorized user tried to delete account");
+
             var account = await _repository.GetAccountAsync(id);
 
             account.Id = id;
@@ -42,6 +43,7 @@ namespace InTouchApi.Infrastructure.Services
             var id = _userHttpContextService.Id
                 ?? throw new UnauthorizedException("Unauthorized",
                 "Unauthorized user tried to get account");
+
             var account = await _repository.GetAccountAsync(id);
 
             var accountDto = _mapper.Map<AccountDto>(account);
@@ -50,6 +52,7 @@ namespace InTouchApi.Infrastructure.Services
             {
                 var postDto = accountDto.Posts.FirstOrDefault(x => x.Id == post.Id);
                 postDto.Author.UserPhoto = SetMainPhoto(post.Author.UserPhotos);
+
                 CountPostReactions(postDto, post);
                 CheckedMyPostReaction(postDto, post);
 
@@ -65,6 +68,21 @@ namespace InTouchApi.Infrastructure.Services
             return accountDto;
         }
 
+        public async Task UpdateAccountAsync(UpdateAccountDto updateAccountDto)
+        {
+            var id = _userHttpContextService.Id
+                ?? throw new UnauthorizedException("Unauthorized",
+                "Unauthorized user tried to update account");
+
+            var account = _mapper.Map<User>(updateAccountDto);
+
+            account.Id = id;
+
+            await _repository.UpdateAccountAsync(account);
+
+            Log.Information($"User with id: {id}, updated its account");
+        }
+
         private void CheckedMyPostReaction(PostDto postDto, Post post)
         {
             var reaction = post.Reactions.FirstOrDefault(r => r.UserId == _userHttpContextService.Id);
@@ -74,7 +92,6 @@ namespace InTouchApi.Infrastructure.Services
                 postDto.ReactionsData.DidIReacted = true;
                 postDto.ReactionsData.ReactionType = reaction.ReactionType;
             }
-
         }
 
         private void CountPostReactions(PostDto postDto, Post post)
@@ -110,27 +127,14 @@ namespace InTouchApi.Infrastructure.Services
         private IncludePhotoDto? SetMainPhoto(IEnumerable<UserPhoto> userPhotos)
         {
             IncludePhotoDto dto = null;
+
             if (userPhotos.Any(p => p.IsMain == true))
             {
                 var photo = userPhotos.FirstOrDefault(p => p.IsMain == true);
                 dto = _mapper.Map<IncludePhotoDto>(photo);
             }
+
             return dto;
-        }
-
-        public async Task UpdateAccountAsync(UpdateAccountDto updateAccountDto)
-        {
-            var id = _userHttpContextService.Id
-                ?? throw new UnauthorizedException("Unauthorized",
-                "Unauthorized user tried to update account");
-
-            var account = _mapper.Map<User>(updateAccountDto);
-
-            account.Id = id;
-
-            await _repository.UpdateAccountAsync(account);
-
-            Log.Information($"User with id: {id}, updated its account");
         }
     }
 }

@@ -17,12 +17,14 @@ namespace InTouchApi.Infrastructure.Services
         public async Task SendEmailAsync(string sendToEmail, string subject, string body)
         {
             var email = new MimeMessage();
+
             email.From.Add(MailboxAddress.Parse(_configuration["EmailSender:Email"]));
             email.To.Add(MailboxAddress.Parse(sendToEmail));
             email.Subject = subject;
             email.Body = new TextPart(MimeKit.Text.TextFormat.Text) { Text = body };
 
             using var smtp = new SmtpClient();
+
             await smtp.ConnectAsync(_configuration["EmailSender:Connection"], 587,
                                     MailKit.Security.SecureSocketOptions.StartTls);
 

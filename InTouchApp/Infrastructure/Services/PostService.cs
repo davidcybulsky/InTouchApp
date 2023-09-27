@@ -84,6 +84,7 @@ namespace InTouchApi.Infrastructure.Services
             {
                 var postDto = postDtos.FirstOrDefault(x => x.Id == post.Id);
                 postDto.Author.UserPhoto = SetMainPhoto(post.Author.UserPhotos);
+
                 CountPostReactions(postDto, post);
                 CheckedMyPostReaction(postDto, post);
 

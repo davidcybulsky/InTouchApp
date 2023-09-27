@@ -36,7 +36,6 @@ namespace InTouchApi.Infrastructure.Services
             foreach (var message in messages)
             {
                 var messageDto = messageDtos.FirstOrDefault(x => x.Id == message.Id);
-
                 messageDto.Sender.UserPhoto = SetMainPhoto(message.Sender.UserPhotos);
             }
 
@@ -63,11 +62,13 @@ namespace InTouchApi.Infrastructure.Services
         private IncludePhotoDto? SetMainPhoto(IEnumerable<UserPhoto> userPhotos)
         {
             IncludePhotoDto dto = null;
+
             if (userPhotos.Any(p => p.IsMain == true))
             {
                 var photo = userPhotos.FirstOrDefault(p => p.IsMain == true);
                 dto = _mapper.Map<IncludePhotoDto>(photo);
             }
+
             return dto;
         }
     }

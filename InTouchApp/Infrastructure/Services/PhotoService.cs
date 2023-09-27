@@ -23,7 +23,7 @@ namespace InTouchApi.Infrastructure.Services
         public async Task<IncludePhotoDto> AddUserPhotoAsync(IFormFile file)
         {
             var userId = _userHttpContextService.Id
-                ?? throw new UnauthorizedException("", "");
+                ?? throw new UnauthorizedException("Unauthorized", "Unauthorized user tried to add a photo");
 
             var photo = await _userPhotoRepository.AddUserPhotoAsync(userId, file);
 
@@ -35,7 +35,7 @@ namespace InTouchApi.Infrastructure.Services
         public async Task DeleteUserPhotoAsync(int photoId)
         {
             var userId = _userHttpContextService.Id
-                ?? throw new UnauthorizedException("", "");
+                ?? throw new UnauthorizedException("Unauthorized", $"Unauthorized user tried to delete the photo with id: {photoId}");
 
             await _userPhotoRepository.DeleteUserPhotoAsync(photoId, userId);
         }
@@ -43,7 +43,7 @@ namespace InTouchApi.Infrastructure.Services
         public async Task SendAsMainUserPhotoAsync(int photoId)
         {
             var userId = _userHttpContextService.Id
-                ?? throw new UnauthorizedException("", "");
+                ?? throw new UnauthorizedException("Unauthorized", $"Unauthorized user tried to sent as a main photo the photo with id: {photoId}");
 
             await _userPhotoRepository.SetAsMainUserPhotoAsync(photoId, userId);
         }

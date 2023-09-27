@@ -56,6 +56,7 @@ namespace InTouchApi.Infrastructure.Services
             var user = _mapper.Map<User>(signUpDto);
             user.Role = ROLES.USER;
             user.PasswordHash = _passwordHasher.HashPassword(user, signUpDto.Password);
+
             var id = _repository.SignUpUserAsync(user);
 
             _emailService.SendEmailAsync(user.Email, "Account creation", "Congratulations! Your account was created.");
@@ -69,6 +70,7 @@ namespace InTouchApi.Infrastructure.Services
         {
             var id = _userHttpContextService.Id
                 ?? throw new UnauthorizedException("Unauthorized", $"Unauthorized user tried to change password");
+
             var user = await _repository.GetUserByIdAsync(id) ??
                 throw new NotFoundException("The user was not found",
                 $"The user with id: {id} was not found. Executed in auth repository"); ;
@@ -90,13 +92,13 @@ namespace InTouchApi.Infrastructure.Services
 
         public async Task IsTokenValid()
         {
-            var userId = _userHttpContextService.Id ?? throw new UnauthorizedException("", "");
+            var userId = _userHttpContextService.Id ?? throw new UnauthorizedException("Invalid token", "User is unauthorized");
 
             var user = await _repository.GetUserByIdAsync(userId);
 
             if (user is null)
             {
-                throw new UnauthorizedException("", "");
+                throw new UnauthorizedException("Invalid token", $"User with id: {userId} and given token does not exist");
             }
         }
     }

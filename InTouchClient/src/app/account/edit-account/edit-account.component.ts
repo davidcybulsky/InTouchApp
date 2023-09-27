@@ -10,6 +10,7 @@ import {IEnvoronment} from "../../../environment/environment.interface";
 import {PhotoServiceEndpoints} from "../../core/enums/photo.service.endpoints";
 import {AccountPhotoCardComponent} from "./account-photo-card/account-photo-card.component";
 import {AccountModel} from "../../core/models/account.model";
+import { ENVIRONMENT_TOKEN } from 'src/app/core/tokens/environment.token';
 
 @Component({
   standalone: true,

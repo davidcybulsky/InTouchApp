@@ -1,5 +1,6 @@
 ﻿using InTouchApi.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace InTouchApi.Infrastructure.Data
 {
@@ -27,72 +28,9 @@ namespace InTouchApi.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<User>(builder =>
-            {
-                builder.HasMany(u => u.Posts)
-                .WithOne(p => p.Author)
-                .HasForeignKey(p => p.AuthorId);
+            builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
-                builder.HasOne(u => u.Address)
-                .WithOne()
-                .HasForeignKey<Address>(a => a.UserId);
-
-                builder.HasMany(u => u.Friends)
-                .WithOne(f => f.User)
-                .HasForeignKey(f => f.UserId);
-
-                builder.HasMany(u => u.Comments)
-                .WithOne(p => p.Author)
-                .HasForeignKey(c => c.UserId);
-
-                builder.HasMany(u => u.PostReactions)
-                .WithOne(p => p.Author)
-                .HasForeignKey(p => p.UserId);
-
-                builder.HasMany(u => u.CommentReactions)
-                .WithOne(p => p.Author)
-                .HasForeignKey(c => c.UserId);
-
-                builder.HasMany(u => u.UserPhotos)
-                .WithOne()
-                .HasForeignKey(p => p.UserId);
-            });
-
-            builder.Entity<Friendship>(builder =>
-            {
-                builder.HasOne(f => f.Friend)
-                .WithOne()
-                .HasForeignKey<Friendship>(f => f.FriendId);
-            });
-
-            builder.Entity<Post>(builder =>
-            {
-                builder.HasMany(p => p.Comments)
-                .WithOne()
-                .HasForeignKey(c => c.PostId);
-
-                builder.HasMany(p => p.Reactions)
-                .WithOne()
-                .HasForeignKey(r => r.PostId);
-            });
-
-            builder.Entity<PostComment>(builder =>
-            {
-                builder.HasMany(c => c.CommentReactions)
-                .WithOne()
-                .HasForeignKey(r => r.CommentId);
-            });
-
-            builder.Entity<Message>(builder =>
-            {
-                builder.HasOne(m => m.Sender)
-                .WithMany()
-                .HasForeignKey(m => m.SenderId);
-
-                builder.HasOne(m => m.Recipient)
-                .WithMany()
-                .HasForeignKey(m => m.RecipientId);
-            });
+            base.OnModelCreating(builder);
         }
     }
 }
