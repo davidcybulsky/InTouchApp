@@ -1,7 +1,7 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 
-import { SearchRoutingModule } from './search-routing.module';
+import {SearchRoutingModule} from './search-routing.module';
 import {HeaderComponent} from "../shared/components/header/header.component";
 import {SearchpageComponent} from "./searchpage/searchpage.component";
 import {UsersSearchComponent} from "./searchpage/users-search/users-search.component";
@@ -24,4 +24,5 @@ import {ReactiveFormsModule} from "@angular/forms";
     ReactiveFormsModule
   ]
 })
-export class SearchModule { }
+export class SearchModule {
+}

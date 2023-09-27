@@ -1,10 +1,10 @@
 <div class="account-panel-container">
   <div class="account-panel-container-icon">
-    <img class="big-user-photo"
-         *ngIf="mainPhotoUrl" alt="default-avatar"
-         [src]="mainPhotoUrl">
-    <img class="big-user-photo"
-         *ngIf="!(mainPhotoUrl)" alt="default-avatar"
+    <img *ngIf="mainPhotoUrl"
+         [src]="mainPhotoUrl" alt="default-avatar"
+         class="big-user-photo">
+    <img *ngIf="!(mainPhotoUrl)"
+         alt="default-avatar" class="big-user-photo"
          src="../../../../../assets/images/default-avatar.webp">
   </div>
   <div class="options account-panel__options">
@@ -13,11 +13,11 @@
       [icon]="bar"
       class="dropdown-menu__icon">
     </fa-icon>
-    <div class="dropdown-menu block"
-         [ngStyle]="{'display': displayOptions ? 'block' : 'none' }">
+    <div [ngStyle]="{'display': displayOptions ? 'block' : 'none' }"
+         class="dropdown-menu block">
       <a
-        routerLink="/account/edit"
-        class="item">
+        class="item"
+        routerLink="/account/edit">
         <span>Edit</span>
       </a>
     </div>

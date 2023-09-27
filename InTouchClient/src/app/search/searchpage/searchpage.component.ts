@@ -7,7 +7,7 @@ import {Router} from "@angular/router";
   templateUrl: './searchpage.component.html',
   styleUrls: ['./searchpage.component.css']
 })
-export class SearchpageComponent implements OnInit{
+export class SearchpageComponent implements OnInit {
   searchForm!: FormGroup
 
   constructor(private formBuilder: FormBuilder,
@@ -22,6 +22,6 @@ export class SearchpageComponent implements OnInit{
 
   onSearch() {
     const request = this.searchForm.get("request")?.value
-    this.router.navigate([],{ queryParams: {request: request}})
+    this.router.navigate([], {queryParams: {request: request}})
   }
 }

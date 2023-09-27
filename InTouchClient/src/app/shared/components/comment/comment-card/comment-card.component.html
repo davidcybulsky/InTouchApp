@@ -1,10 +1,11 @@
 <div class="comment-card">
   <a
     class="user-name-anchor"
-     routerLink="/user/{{comment?.author?.id}}">
+    routerLink="/user/{{comment?.author?.id}}">
     <div class="comment-card__user-icon">
-      <img class="little-user-photo" *ngIf="mainPhotoUrl" alt="default-avatar" [src]="mainPhotoUrl">
-      <img class="little-user-photo" *ngIf="!(mainPhotoUrl)" alt="default-avatar" src="../../../../../assets/images/default-avatar.webp">
+      <img *ngIf="mainPhotoUrl" [src]="mainPhotoUrl" alt="default-avatar" class="little-user-photo">
+      <img *ngIf="!(mainPhotoUrl)" alt="default-avatar" class="little-user-photo"
+           src="../../../../../assets/images/default-avatar.webp">
     </div>
     <div class="comment-card__user-data">
       {{comment?.author?.firstName}} {{comment?.author?.lastName}}
@@ -20,8 +21,8 @@
       [icon]="bar"
       class="dropdown-menu__icon">
     </fa-icon>
-    <div class="dropdown-menu block"
-         [ngStyle]="{'display': displayOptions ? 'block' : 'none' }">
+    <div [ngStyle]="{'display': displayOptions ? 'block' : 'none' }"
+         class="dropdown-menu block">
       <a
         (click)="onEdit()"
         *ngIf="comment?.author?.id==authService.getJWTTokenData()?.userId"
@@ -38,7 +39,7 @@
   </div>
 
   <p *ngIf="!editMode" class="comment-card__content">{{comment?.content}}</p>
-  <form *ngIf="editMode" [formGroup]="editCommentForm" (ngSubmit)="onConfirmEdit()">
+  <form (ngSubmit)="onConfirmEdit()" *ngIf="editMode" [formGroup]="editCommentForm">
     <input
       formControlName="content"
       placeholder="content"

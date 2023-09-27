@@ -10,14 +10,13 @@ import {HeaderComponent} from 'src/app/shared/components/header/header.component
 import {CreateQuickPostComponent} from 'src/app/shared/components/post/create-quick-post/create-quick-post.component';
 import {UserLinksCardComponent} from 'src/app/shared/components/user/user-links-card/user-links-card.component';
 import {AccountPanelComponent} from './account-panel/account-panel.component';
-import {Router} from '@angular/router';
 import {PostPageComponent} from 'src/app/shared/components/post/post-page/post-page.component';
 import {FriendCardPanelComponent} from 'src/app/shared/components/friend/friend-card-panel/friend-card-panel.component';
 import {
   FriendRequestsPanelComponent
 } from 'src/app/shared/components/friend/friend-requests-panel/friend-requests-panel.component';
 import {PostService} from "../../core/services/post.service";
-import {CreateQuickPostModel} from "../../core/models/create.quick.post.model";
+import {CreatePostModel} from "../../core/models/create.post.model";
 
 @Component({
   standalone: true,
@@ -72,8 +71,8 @@ export class AccountpageComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  onCreateQuickPost(model : CreateQuickPostModel) {
-    this.postService.createQuickPost(model).subscribe(response => {
+  onCreatePost(model: CreatePostModel) {
+    this.postService.createPost(model).subscribe(response => {
       this.account?.posts.unshift(response)
     })
   }

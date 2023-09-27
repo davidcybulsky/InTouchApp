@@ -7,7 +7,7 @@ import {CommentCardComponent} from '../../../comment/comment-card/comment-card.c
 import {CommentService} from "../../../../../core/services/comment.service";
 import {ReactionService} from "../../../../../core/services/reaction.service";
 import {ReactionConstants} from "../../../../../core/enums/reaction.constants";
-import {faThumbsUp, faThumbsDown, faBars, faStar} from "@fortawesome/free-solid-svg-icons";
+import {faBars, faStar, faThumbsDown, faThumbsUp} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {AuthService} from "../../../../../core/services/auth.service";
 import {PostService} from "../../../../../core/services/post.service";
@@ -27,7 +27,7 @@ import {RoleConstants} from "../../../../../core/enums/role.constants";
   templateUrl: './post-card.component.html',
   styleUrls: ['./post-card.component.css']
 })
-export class PostCardComponent implements OnInit{
+export class PostCardComponent implements OnInit {
 
   @Input() post: PostModel | null = null
   @ViewChild('CommentForm') commentForm!: NgForm
@@ -43,7 +43,8 @@ export class PostCardComponent implements OnInit{
   canDisplayMoreComments: boolean = false
   displayOptions: boolean = false
   editMode: boolean = false
-
+  protected readonly ReactionConstants = ReactionConstants;
+  protected readonly RoleConstants = RoleConstants;
 
   constructor(private postService: PostService,
               private commentService: CommentService,
@@ -52,10 +53,18 @@ export class PostCardComponent implements OnInit{
               private formBuilder: FormBuilder) {
   }
 
-  ngOnInit(): void {
-    if(this.post?.comments)
-        this.canDisplayMoreComments = this.numberOfComments <= this.post?.comments?.length
+  get mainPhotoUrl(): string | undefined {
+    if (this.post && this.post.author && this.post.author.userPhoto) {
+      const mainPhoto = this.post.author.userPhoto;
+      return mainPhoto ? mainPhoto.url : undefined;
     }
+    return undefined;
+  }
+
+  ngOnInit(): void {
+    if (this.post?.comments)
+      this.canDisplayMoreComments = this.numberOfComments <= this.post?.comments?.length
+  }
 
   onCreateComment() {
     if (this.post) {
@@ -72,25 +81,23 @@ export class PostCardComponent implements OnInit{
   onLikePost() {
     if (this.post?.reactionsData.didIReacted == false) {
       this.reactionService.addPostReaction(this.post.id, ReactionConstants.LIKE).subscribe(success => {
-        if(this.post?.reactionsData) {
+        if (this.post?.reactionsData) {
           this.post.reactionsData.didIReacted = true
           this.post.reactionsData.reactionType = ReactionConstants.LIKE
           this.post.reactionsData.amountOfLikes++
         }
       })
-    }
-    else if(this.post?.reactionsData.reactionType == ReactionConstants.DISLIKE) {
+    } else if (this.post?.reactionsData.reactionType == ReactionConstants.DISLIKE) {
       this.reactionService.updatePostReaction(this.post.id, ReactionConstants.LIKE).subscribe(success => {
-        if(this.post?.reactionsData) {
+        if (this.post?.reactionsData) {
           this.post.reactionsData.reactionType = ReactionConstants.LIKE
           this.post.reactionsData.amountOfLikes++
           this.post.reactionsData.amountOfDislikes--
         }
       })
-    }
-    else if(this.post?.reactionsData.reactionType == ReactionConstants.LIKE) {
+    } else if (this.post?.reactionsData.reactionType == ReactionConstants.LIKE) {
       this.reactionService.deletePostReaction(this.post.id).subscribe(success => {
-        if(this.post?.reactionsData) {
+        if (this.post?.reactionsData) {
           this.post.reactionsData.reactionType = ""
           this.post.reactionsData.didIReacted = false
           this.post.reactionsData.amountOfLikes--
@@ -102,25 +109,23 @@ export class PostCardComponent implements OnInit{
   onDislikePost() {
     if (this.post?.reactionsData.didIReacted == false) {
       this.reactionService.addPostReaction(this.post.id, ReactionConstants.DISLIKE).subscribe(success => {
-        if(this.post?.reactionsData) {
+        if (this.post?.reactionsData) {
           this.post.reactionsData.didIReacted = true
           this.post.reactionsData.reactionType = ReactionConstants.DISLIKE
           this.post.reactionsData.amountOfDislikes++
         }
       })
-    }
-    else if(this.post?.reactionsData.reactionType == ReactionConstants.LIKE) {
+    } else if (this.post?.reactionsData.reactionType == ReactionConstants.LIKE) {
       this.reactionService.updatePostReaction(this.post.id, ReactionConstants.DISLIKE).subscribe(success => {
-        if(this.post?.reactionsData) {
+        if (this.post?.reactionsData) {
           this.post.reactionsData.reactionType = ReactionConstants.DISLIKE
           this.post.reactionsData.amountOfDislikes++
           this.post.reactionsData.amountOfLikes--
         }
       })
-    }
-    else if(this.post?.reactionsData.reactionType == ReactionConstants.DISLIKE) {
+    } else if (this.post?.reactionsData.reactionType == ReactionConstants.DISLIKE) {
       this.reactionService.deletePostReaction(this.post.id).subscribe(success => {
-        if(this.post?.reactionsData) {
+        if (this.post?.reactionsData) {
           this.post.reactionsData.reactionType = ""
           this.post.reactionsData.didIReacted = false
           this.post.reactionsData.amountOfDislikes--
@@ -130,20 +135,18 @@ export class PostCardComponent implements OnInit{
   }
 
   onClearForm() {
-    if(confirm("Do you want to reset the form?"))
+    if (confirm("Do you want to reset the form?"))
       this.commentForm.resetForm()
   }
 
   onShowMoreComments() {
     this.numberOfComments += 5
-    if(this.post?.comments)
+    if (this.post?.comments)
       this.canDisplayMoreComments = this.numberOfComments <= this.post?.comments?.length
   }
 
-  protected readonly ReactionConstants = ReactionConstants;
-
   onDeleteComment(commentId: number) {
-    if(this.post)
+    if (this.post)
       this.post!.comments = this.post?.comments.filter(c => c.id != commentId)
   }
 
@@ -156,9 +159,9 @@ export class PostCardComponent implements OnInit{
   }
 
   onConfirmEditPost() {
-    if(this.post)
+    if (this.post)
       this.postService.updatePost(this.post?.id, this.editPostForm.value).subscribe(success => {
-        if(this.post) {
+        if (this.post) {
           this.post.title = this.editPostForm.get("title")?.value
           this.post.content = this.editPostForm.get("content")?.value
           this.editMode = false
@@ -167,29 +170,19 @@ export class PostCardComponent implements OnInit{
   }
 
   onCancelEditPost() {
-    if(this.editPostForm.touched)
-      if(confirm("Do you want to cancel edition?")) {
+    if (this.editPostForm.touched)
+      if (confirm("Do you want to cancel edition?")) {
         this.editMode = false
       }
   }
 
   onDeletePost() {
-    if(this.post)
-      if(confirm("Do you want to delete the post?")) {
+    if (this.post)
+      if (confirm("Do you want to delete the post?")) {
         this.postService.deletePost(this.post?.id).subscribe(success => {
             this.deletePost.emit(this.post?.id)
           }
         )
       }
   }
-
-  get mainPhotoUrl(): string | undefined {
-    if (this.post && this.post.author && this.post.author.userPhoto) {
-      const mainPhoto = this.post.author.userPhoto;
-      return mainPhoto ? mainPhoto.url : undefined;
-    }
-    return undefined;
-  }
-
-  protected readonly RoleConstants = RoleConstants;
 }

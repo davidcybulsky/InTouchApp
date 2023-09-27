@@ -13,11 +13,7 @@ import {
   FriendRequestsPanelComponent
 } from '../shared/components/friend/friend-requests-panel/friend-requests-panel.component';
 import {PostPageComponent} from '../shared/components/post/post-page/post-page.component';
-import {CommentService} from '../core/services/comment.service';
-import {CreateCommentModel} from '../core/models/create.comment.model';
-import {ReactionService} from '../core/services/reaction.service';
-import {CreateQuickPostModel} from '../core/models/create.quick.post.model';
-import {ReactionConstants} from "../core/enums/reaction.constants";
+import {CreatePostModel} from '../core/models/create.post.model';
 import {ConnectionService} from "../core/services/connection.service";
 
 @Component({
@@ -73,8 +69,8 @@ export class HomepageComponent implements OnInit, OnDestroy {
     this.destroyed$.complete()
   }
 
-  onCreateQuickPost(model: CreateQuickPostModel) {
-    this.postService.createQuickPost(model).subscribe(response => {
+  onCreateQuickPost(model: CreatePostModel) {
+    this.postService.createPost(model).subscribe(response => {
       this.posts.unshift(response)
     })
   }

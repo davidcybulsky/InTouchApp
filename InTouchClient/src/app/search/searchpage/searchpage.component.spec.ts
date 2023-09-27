@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { SearchpageComponent } from './searchpage.component';
+import {SearchpageComponent} from './searchpage.component';
 
 describe('SearchpageComponent', () => {
   let component: SearchpageComponent;
@@ -8,9 +8,9 @@ describe('SearchpageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SearchpageComponent ]
+      declarations: [SearchpageComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(SearchpageComponent);
     component = fixture.componentInstance;

@@ -1,8 +1,8 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {MessageService} from "../../../core/services/message.service";
 import {MessageModel} from "../../../core/models/message.model";
-import {Observable, of, ReplaySubject, takeUntil} from "rxjs";
+import {ReplaySubject, takeUntil} from "rxjs";
 import {MessageCardComponent} from "./message-card/message-card.component";
 import {AuthService} from "../../../core/services/auth.service";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
@@ -18,8 +18,8 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/
   templateUrl: './message-panel.component.html',
   styleUrls: ['./message-panel.component.css']
 })
-export class MessagePanelComponent implements OnInit, OnDestroy{
-  messages : MessageModel[] = []
+export class MessagePanelComponent implements OnInit, OnDestroy {
+  messages: MessageModel[] = []
   @Input() userId: number | null = null
   messageForm!: FormGroup
   destroy$ = new ReplaySubject<boolean>(1)
@@ -32,8 +32,8 @@ export class MessagePanelComponent implements OnInit, OnDestroy{
 
   ngOnInit(): void {
     let authData = this.authService.getJWTTokenData()
-    if(authData && this.userId) {
-      this.messageService.createHubConnection(authData,this.userId)
+    if (authData && this.userId) {
+      this.messageService.createHubConnection(authData, this.userId)
     }
     this.messageForm = this.formBuilder.group({
       content: ['', Validators.required]
@@ -47,9 +47,8 @@ export class MessagePanelComponent implements OnInit, OnDestroy{
   }
 
   onSendMessage() {
-    if(this.userId) {
-      this.messageService.SendMessage(this.userId,this.messageForm.get("content")?.value)?.then( value =>
-      {
+    if (this.userId) {
+      this.messageService.SendMessage(this.userId, this.messageForm.get("content")?.value)?.then(value => {
         this.numberOfMessages = this.numberOfMessages + 1
         this.messageForm.reset()
       })

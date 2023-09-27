@@ -1,10 +1,9 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {UserModel} from 'src/app/core/models/user.model';
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {RoleConstants} from "../../../core/enums/role.constants";
 import {faStar} from "@fortawesome/free-solid-svg-icons";
-import {IncludeUserPhotoModel} from "../../../core/models/include.user.photo.model";
 
 @Component({
   selector: 'app-user-panel',

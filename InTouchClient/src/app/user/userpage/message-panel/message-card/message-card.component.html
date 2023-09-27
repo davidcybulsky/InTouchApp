@@ -1,14 +1,14 @@
 <div class="message-card">
-<div class="message-card__inline-block">
-  <img class="little-user-photo__message"
-       *ngIf="mainPhotoUrl" alt="default-avatar"
-       [src]="mainPhotoUrl">
-  <img class="little-user-photo__message"
-       *ngIf="!(mainPhotoUrl)" alt="default-avatar"
-       src="../../../../../assets/images/default-avatar.webp">
-</div>
-<div class="message-card__inline-block">
-  <p class="message-card__sender">{{message?.sender?.firstName}} {{message?.sender?.lastName}}</p>
-  <p class="message-card__content">{{message?.content}}</p>
-</div>
+  <div class="message-card__inline-block">
+    <img *ngIf="mainPhotoUrl"
+         [src]="mainPhotoUrl" alt="default-avatar"
+         class="little-user-photo__message">
+    <img *ngIf="!(mainPhotoUrl)"
+         alt="default-avatar" class="little-user-photo__message"
+         src="../../../../../assets/images/default-avatar.webp">
+  </div>
+  <div class="message-card__inline-block">
+    <p class="message-card__sender">{{message?.sender?.firstName}} {{message?.sender?.lastName}}</p>
+    <p class="message-card__content">{{message?.content}}</p>
+  </div>
 </div>

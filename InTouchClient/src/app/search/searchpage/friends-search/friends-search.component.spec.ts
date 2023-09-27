@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { FriendsSearchComponent } from './friends-search.component';
+import {FriendsSearchComponent} from './friends-search.component';
 
 describe('FriendsSearchComponent', () => {
   let component: FriendsSearchComponent;
@@ -8,9 +8,9 @@ describe('FriendsSearchComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ FriendsSearchComponent ]
+      declarations: [FriendsSearchComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(FriendsSearchComponent);
     component = fixture.componentInstance;

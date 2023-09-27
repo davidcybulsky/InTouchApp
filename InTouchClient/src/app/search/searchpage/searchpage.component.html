@@ -1,11 +1,11 @@
 <app-header></app-header>
 <aside></aside>
 <main>
-  <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
+  <form (ngSubmit)="onSearch()" [formGroup]="searchForm">
     <input
       formControlName="request"
-      required
-      placeholder="Write something">
+      placeholder="Write something"
+      required>
     <button
       type="submit">
       Search
@@ -14,16 +14,16 @@
   <nav>
     <ul>
       <li>
-        <a routerLink="/search/user"
-        queryParamsHandling="merge">Users</a>
+        <a queryParamsHandling="merge"
+           routerLink="/search/user">Users</a>
       </li>
       <li>
-        <a routerLink="/search/friend"
-           queryParamsHandling="merge">Friends</a>
+        <a queryParamsHandling="merge"
+           routerLink="/search/friend">Friends</a>
       </li>
       <li>
-        <a routerLink="/search/post"
-           queryParamsHandling="merge">Posts</a>
+        <a queryParamsHandling="merge"
+           routerLink="/search/post">Posts</a>
       </li>
     </ul>
   </nav>

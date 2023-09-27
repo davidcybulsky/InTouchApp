@@ -1,18 +1,18 @@
 <p>message-panel works!</p>
-<form #MessageForm="ngForm" [formGroup]="messageForm" (ngSubmit)="onSendMessage()">
+<form #MessageForm="ngForm" (ngSubmit)="onSendMessage()" [formGroup]="messageForm">
   <input
     formControlName="content"
     placeholder="Send a message">
   <button
-  type="submit"
-  [disabled]="MessageForm.invalid">
+    [disabled]="MessageForm.invalid"
+    type="submit">
     Send
   </button>
 </form>
 <app-message-card *ngFor="let message of messages.slice(0,numberOfMessages)"
-[message]="message"></app-message-card>
-<p class="message-card__show-more"
-  (click)="numberOfMessages = numberOfMessages+5"
-  *ngIf="numberOfMessages < messages.length">
+                  [message]="message"></app-message-card>
+<p (click)="numberOfMessages = numberOfMessages+5"
+   *ngIf="numberOfMessages < messages.length"
+   class="message-card__show-more">
   Show more messages
 </p>

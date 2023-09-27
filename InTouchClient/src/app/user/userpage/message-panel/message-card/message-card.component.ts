@@ -1,5 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {Component, Input} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {MessageModel} from "../../../../core/models/message.model";
 
 @Component({
@@ -9,7 +9,7 @@ import {MessageModel} from "../../../../core/models/message.model";
   templateUrl: './message-card.component.html',
   styleUrls: ['./message-card.component.css']
 })
-export class MessageCardComponent{
+export class MessageCardComponent {
   @Input() message: MessageModel | null = null
 
   get mainPhotoUrl(): string | undefined {

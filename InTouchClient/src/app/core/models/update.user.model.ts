@@ -1,4 +1,4 @@
-import {AddressModel} from "./address.model";
+import {UpdateAddressModel} from "./update.address.model";
 
 export interface UpdateUserModel {
   email: string
@@ -14,5 +14,5 @@ export interface UpdateUserModel {
   tikTokURL: string
   youTubeURL: string
   twitterURL: string
-  address: AddressModel
+  address: UpdateAddressModel
 }

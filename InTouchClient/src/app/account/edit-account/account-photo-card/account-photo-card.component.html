@@ -2,6 +2,6 @@
 <div class="user-photo">
   <img src="{{photo?.url}}">
   <p *ngIf="photo?.isMain">Main</p>
-  <button type="button" (click)="onSetMain()">Main</button>
-  <button type="button" (click)="onDelete()">Delete</button>
+  <button (click)="onSetMain()" type="button">Main</button>
+  <button (click)="onDelete()" type="button">Delete</button>
 </div>

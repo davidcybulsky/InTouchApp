@@ -1,10 +1,10 @@
 <div class="user-panel-container">
   <div class="user-panel-container-icon">
-    <img class="big-user-photo"
-         *ngIf="mainPhotoUrl" alt="default-avatar"
-         [src]="mainPhotoUrl">
-    <img class="big-user-photo"
-         *ngIf="!(mainPhotoUrl)" alt="default-avatar"
+    <img *ngIf="mainPhotoUrl"
+         [src]="mainPhotoUrl" alt="default-avatar"
+         class="big-user-photo">
+    <img *ngIf="!(mainPhotoUrl)"
+         alt="default-avatar" class="big-user-photo"
          src="../../../../../assets/images/default-avatar.webp">
   </div>
   <div class="user-panel-container-data">

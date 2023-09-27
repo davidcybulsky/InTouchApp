@@ -1,4 +1,4 @@
-export interface IncludeUserPhotoModel {
+export interface IncludePhotoModel {
   id: number
   url: string
   publicPhotoId: string

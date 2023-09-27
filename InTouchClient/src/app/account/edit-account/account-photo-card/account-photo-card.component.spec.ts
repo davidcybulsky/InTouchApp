@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { AccountPhotoCardComponent } from './account-photo-card.component';
+import {AccountPhotoCardComponent} from './account-photo-card.component';
 
 describe('AccountPhotoCardComponent', () => {
   let component: AccountPhotoCardComponent;
@@ -8,9 +8,9 @@ describe('AccountPhotoCardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AccountPhotoCardComponent ]
+      declarations: [AccountPhotoCardComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(AccountPhotoCardComponent);
     component = fixture.componentInstance;

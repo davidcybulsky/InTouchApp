@@ -8,11 +8,6 @@ const routes: Routes = [
       .then(c => c.PostDetailsComponent)
   },
   {
-    path: "create",
-    loadComponent: () => import('src/app/post/create-post/create-post.component')
-      .then(c => c.CreatePostComponent)
-  },
-  {
     path: "edit",
     loadComponent: () => import('src/app/post/edit-post/edit-post.component')
       .then(c => c.EditPostComponent)

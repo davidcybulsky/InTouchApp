@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {IncludeUserPhotoModel} from "../../../core/models/include.user.photo.model";
+import {IncludePhotoModel} from "../../../core/models/include.photo.model";
 import {NgIf} from "@angular/common";
 
 @Component({
@@ -12,9 +12,10 @@ import {NgIf} from "@angular/common";
   styleUrls: ['./account-photo-card.component.css']
 })
 export class AccountPhotoCardComponent {
-  @Input() photo: IncludeUserPhotoModel | null = null
+  @Input() photo: IncludePhotoModel | null = null
   @Output() deletePhoto = new EventEmitter<number>();
   @Output() setMainPhoto = new EventEmitter<number>();
+
   onSetMain() {
     this.setMainPhoto.emit(this.photo?.id)
   }

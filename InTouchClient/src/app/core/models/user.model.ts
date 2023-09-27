@@ -1,6 +1,6 @@
 import {AddressModel} from "./address.model"
 import {PostModel} from "./post.model"
-import {IncludeUserPhotoModel} from "./include.user.photo.model";
+import {IncludePhotoModel} from "./include.photo.model";
 
 export interface UserModel {
   id: number
@@ -22,5 +22,5 @@ export interface UserModel {
 
   address: AddressModel
   posts: PostModel[]
-  userPhotos: IncludeUserPhotoModel []
+  userPhotos: IncludePhotoModel []
 }

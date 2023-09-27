@@ -1,4 +1,4 @@
-import {AddressModel} from "./address.model";
+import {CreateAddressModel} from "./create.address.model";
 
 export interface CreateUserModel {
   email: string
@@ -12,5 +12,5 @@ export interface CreateUserModel {
 
   role: string
 
-  address: AddressModel
+  address: CreateAddressModel
 }

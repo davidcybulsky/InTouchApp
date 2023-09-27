@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { MessagePanelComponent } from './message-panel.component';
+import {MessagePanelComponent} from './message-panel.component';
 
 describe('MessagePanelComponent', () => {
   let component: MessagePanelComponent;
@@ -8,9 +8,9 @@ describe('MessagePanelComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MessagePanelComponent ]
+      declarations: [MessagePanelComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(MessagePanelComponent);
     component = fixture.componentInstance;

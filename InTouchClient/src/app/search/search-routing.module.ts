@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
 import {SearchpageComponent} from "./searchpage/searchpage.component";
 import {UsersSearchComponent} from "./searchpage/users-search/users-search.component";
 import {FriendsSearchComponent} from "./searchpage/friends-search/friends-search.component";
@@ -35,4 +35,5 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class SearchRoutingModule { }
+export class SearchRoutingModule {
+}

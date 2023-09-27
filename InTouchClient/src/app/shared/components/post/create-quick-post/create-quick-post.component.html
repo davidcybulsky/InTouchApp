@@ -1,6 +1,6 @@
 <div class="quickpost">
   <h1>
-    Create your quick post!
+    Create a post!
   </h1>
   <form
     #QuickPostForm="ngForm"
@@ -17,26 +17,16 @@
       placeholder="Content"
       required>
     <button
+      [disabled]="QuickPostForm.invalid"
       class="btn"
-      type="submit"
-      [disabled]="QuickPostForm.invalid">
+      type="submit">
       Create
     </button>
     <button
+      [disabled]="QuickPostForm.invalid"
       class="btn"
-      type="reset"
-      [disabled]="QuickPostForm.invalid">
+      type="reset">
       Cancel
-    </button>
-    <p>
-      Do you want to share more?
-      Create a full post
-    </p>
-    <button
-      class="btn"
-      routerLink="/post/create"
-      type="button">
-      Full post
     </button>
   </form>
 </div>

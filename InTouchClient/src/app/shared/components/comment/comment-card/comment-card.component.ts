@@ -1,4 +1,4 @@
-import {Component, destroyPlatform, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {IncludeCommentModel} from 'src/app/core/models/include.comment.model';
 import {ReactionService} from "../../../../core/services/reaction.service";
@@ -27,20 +27,30 @@ export class CommentCardComponent {
 
   @Input() comment: IncludeCommentModel | null = null
 
-  editCommentForm! : FormGroup
+  editCommentForm!: FormGroup
   thumbsUp = faThumbsUp
   thumbsDown = faThumbsDown
   bar = faBars
   admin = faStar
-  protected readonly ReactionConstants = ReactionConstants
   displayOptions: boolean = false
   editMode: boolean = false
   @Output() deleteComment = new EventEmitter<number>()
+  protected readonly ReactionConstants = ReactionConstants
+  protected readonly RoleConstants = RoleConstants;
+  protected readonly faStar = faStar;
 
   constructor(private reactionService: ReactionService,
               public authService: AuthService,
               private formBuilder: FormBuilder,
               private commentService: CommentService) {
+  }
+
+  get mainPhotoUrl(): string | undefined {
+    if (this.comment && this.comment.author) {
+      const mainPhoto = this.comment.author.userPhoto;
+      return mainPhoto ? mainPhoto.url : undefined;
+    }
+    return undefined;
   }
 
   onLikeComment() {
@@ -108,7 +118,7 @@ export class CommentCardComponent {
   }
 
   onConfirmEdit() {
-    if(this.comment) {
+    if (this.comment) {
       this.commentService.updatePostComment(this.comment?.id, this.editCommentForm.value).subscribe(success => {
         let content = this.editCommentForm.get("content")?.value
         content = content.toString()
@@ -119,16 +129,16 @@ export class CommentCardComponent {
   }
 
   onCancelEdit() {
-    if(this.editCommentForm.touched){
-      if(confirm("Do you want to cancel edition?")){
+    if (this.editCommentForm.touched) {
+      if (confirm("Do you want to cancel edition?")) {
         this.editMode = false
-    }
+      }
     }
   }
 
   onDelete() {
-    if(this.comment) {
-      if(confirm("Do you want to delete the comment?")) {
+    if (this.comment) {
+      if (confirm("Do you want to delete the comment?")) {
         this.commentService.deletePostComment(this.comment?.id).subscribe(success => {
           if (this.comment)
             this.deleteComment.emit(this.comment.id)
@@ -136,15 +146,4 @@ export class CommentCardComponent {
       }
     }
   }
-
-  get mainPhotoUrl(): string | undefined {
-    if (this.comment && this.comment.author) {
-      const mainPhoto = this.comment.author.userPhoto;
-      return mainPhoto ? mainPhoto.url : undefined;
-    }
-    return undefined;
-  }
-
-    protected readonly RoleConstants = RoleConstants;
-    protected readonly faStar = faStar;
 }

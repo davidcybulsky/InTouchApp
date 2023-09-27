@@ -3,7 +3,6 @@ import {Inject, Injectable} from '@angular/core';
 import {IEnvoronment} from 'src/environment/environment.interface';
 import {PostServiceEndpoints} from '../enums/post.service.endpoints';
 import {PostModel} from '../models/post.model';
-import {CreateQuickPostModel} from '../models/create.quick.post.model';
 import {CreatePostModel} from '../models/create.post.model';
 import {Observable} from 'rxjs';
 import {UpdatePostModel} from '../models/update.post.model';
@@ -27,10 +26,6 @@ export class PostService {
   }
 
   createPost(model: CreatePostModel): Observable<PostModel> {
-    return this.http.post<PostModel>(`${this.ENVIRONMENT_TOKEN.apiUrl}${PostServiceEndpoints.CREATE_POST}`, model)
-  }
-
-  createQuickPost(model: CreateQuickPostModel): Observable<PostModel> {
     return this.http.post<PostModel>(`${this.ENVIRONMENT_TOKEN.apiUrl}${PostServiceEndpoints.CREATE_POST}`, model)
   }
 

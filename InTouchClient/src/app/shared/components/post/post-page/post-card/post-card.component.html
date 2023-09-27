@@ -2,8 +2,9 @@
   <div class="postcard__header">
     <a class="postcard__user__link user-name-anchor" routerLink="/user/{{post?.authorId}}">
       <div class="postcard__user-icon">
-        <img class="little-user-photo" *ngIf="mainPhotoUrl" alt="default-avatar" [src]="mainPhotoUrl">
-        <img class="little-user-photo" *ngIf="!(mainPhotoUrl)" alt="default-avatar" src="../../../../../assets/images/default-avatar.webp">
+        <img *ngIf="mainPhotoUrl" [src]="mainPhotoUrl" alt="default-avatar" class="little-user-photo">
+        <img *ngIf="!(mainPhotoUrl)" alt="default-avatar" class="little-user-photo"
+             src="../../../../../assets/images/default-avatar.webp">
       </div>
       <div class="postcard__user-data">
         {{post?.author?.firstName}} {{post?.author?.lastName}}
@@ -19,8 +20,8 @@
         [icon]="bar"
         class="dropdown-menu__icon">
       </fa-icon>
-      <div class="dropdown-menu block"
-        [ngStyle]="{'display': displayOptions ? 'block' : 'none' }">
+      <div [ngStyle]="{'display': displayOptions ? 'block' : 'none' }"
+           class="dropdown-menu block">
         <a
           (click)="onEditPost()"
           *ngIf="post?.author?.id==authService.getJWTTokenData()?.userId"
@@ -46,7 +47,7 @@
       {{post?.content}}
     </p>
   </div>
-  <form *ngIf="editMode" [formGroup]="editPostForm" (ngSubmit)="onConfirmEditPost()">
+  <form (ngSubmit)="onConfirmEditPost()" *ngIf="editMode" [formGroup]="editPostForm">
     <input
       formControlName="title"
       placeholder="Title"
@@ -60,25 +61,25 @@
       Confirm
     </button>
     <button
-      type="button"
-      (click)="onCancelEditPost()">
+      (click)="onCancelEditPost()"
+      type="button">
       Cancel
     </button>
   </form>
   <div class="postcard__panel">
     <div class="postcard__panel__data">
       <fa-icon
-        class="options postcard__panel__data__item"
         (click)="onLikePost()"
+        [icon]="thumbsUp"
         [ngStyle]="{'color': post?.reactionsData?.reactionType === ReactionConstants.LIKE ? 'green' : 'black'}"
-        [icon]="thumbsUp">
+        class="options postcard__panel__data__item">
       </fa-icon>
       <p class="postcard__panel__data__item">{{post?.reactionsData?.amountOfLikes}}</p>
       <fa-icon
-        class="options postcard__panel__data__item"
         (click)="onDislikePost()"
+        [icon]="thumbsDown"
         [ngStyle]="{'color': post?.reactionsData?.reactionType === ReactionConstants.DISLIKE ? 'red' : 'black'}"
-        [icon]="thumbsDown">
+        class="options postcard__panel__data__item">
       </fa-icon>
       <p class="postcard__panel__data__item">{{post?.reactionsData?.amountOfDislikes}}</p>
     </div>
@@ -100,20 +101,20 @@
         Create
       </button>
       <button
-        [disabled]="CommentForm.invalid"
         (click)="onClearForm()"
+        [disabled]="CommentForm.invalid"
         class="btn"
         type="button">
         Cancel
       </button>
     </form>
-    <app-comment-card *ngFor="let comment of post?.comments?.slice(0,numberOfComments)"
-                      [comment]="comment"
-                      (deleteComment)="onDeleteComment($event)"></app-comment-card>
+    <app-comment-card (deleteComment)="onDeleteComment($event)"
+                      *ngFor="let comment of post?.comments?.slice(0,numberOfComments)"
+                      [comment]="comment"></app-comment-card>
 
-    <p class="postcard__comments--display-more"
-      *ngIf="canDisplayMoreComments"
-      (click)="onShowMoreComments()">
+    <p (click)="onShowMoreComments()"
+       *ngIf="canDisplayMoreComments"
+       class="postcard__comments--display-more">
       Display more comments
     </p>
   </div>

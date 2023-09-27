@@ -6,12 +6,10 @@ import {AccountService} from 'src/app/core/services/account.service';
 import {AuthService} from "../../core/services/auth.service";
 import {PhotoService} from "../../core/services/photo.service";
 import {FileUploader, FileUploadModule} from "ng2-file-upload";
-import {ENVIRONMENT_TOKEN} from "../../core/tokens/environment.token";
 import {IEnvoronment} from "../../../environment/environment.interface";
 import {PhotoServiceEndpoints} from "../../core/enums/photo.service.endpoints";
 import {AccountPhotoCardComponent} from "./account-photo-card/account-photo-card.component";
 import {AccountModel} from "../../core/models/account.model";
-import {IncludeUserPhotoModel} from "../../core/models/include.user.photo.model";
 
 @Component({
   standalone: true,
@@ -30,11 +28,10 @@ import {IncludeUserPhotoModel} from "../../core/models/include.user.photo.model"
 export class EditAccountComponent implements OnInit, OnDestroy {
 
   editAccountForm!: FormGroup
-  private selectedPhoto: any = null;
   account: AccountModel | null = null;
-
   uploader!: FileUploader;
   hasBaseDropZoneOver = false;
+  private selectedPhoto: any = null;
 
   constructor(@Inject(ENVIRONMENT_TOKEN) private ENVIRONMENT_TOKEN: IEnvoronment,
               private accountService: AccountService,
@@ -104,8 +101,8 @@ export class EditAccountComponent implements OnInit, OnDestroy {
   }
 
   onEditAccount() {
-    if(this.uploader.queue.length > 0) {
-      if(confirm("Do you want to update your account? THe queue is no empty!")) {
+    if (this.uploader.queue.length > 0) {
+      if (confirm("Do you want to update your account? THe queue is no empty!")) {
         this.accountService.updateAccount(this.editAccountForm.value).subscribe(success => {
           this.router.navigate(["/account"])
         })
@@ -167,23 +164,23 @@ export class EditAccountComponent implements OnInit, OnDestroy {
 
   onSetMainPhoto(photoId: number) {
     console.log(photoId)
-    this.photoService.setMainUserPhoto(photoId).subscribe( response =>{
+    this.photoService.setMainUserPhoto(photoId).subscribe(response => {
       console.log("setmain")
-      if(this.account?.userPhotos) {
+      if (this.account?.userPhotos) {
         this.account.userPhotos.map(p => p.isMain = false)
         let photo = this.account.userPhotos.find(p => p.id == photoId)
-        if(photo) {
+        if (photo) {
           photo.isMain = true
         }
       }
-      })
+    })
   }
 
   onDeletePhoto(photoId: number) {
     console.log(photoId)
     this.photoService.deleteUserPhoto(photoId).subscribe(response => {
       console.log("deleted")
-      if(this.account?.userPhotos) {
+      if (this.account?.userPhotos) {
         this.account.userPhotos = this.account.userPhotos.filter(p => p.id != photoId)
       }
     })
